@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Homelab | Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>
+<meta name="keywords" content="homelab">
+<meta name="description" content="Homelab for learning cybersecurity, networking, and experimenting">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/projects/homelab/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/projects/homelab/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/projects/homelab/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering (Alt + H)">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/resume/" title="Résumé">
+                    <span>Résumé</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/write-ups/" title="Write-Ups">
+                    <span>Write-Ups</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/notes/" title="Notes">
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/sop/" title="SOPs">
+                    <span>SOPs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/contact/" title="Contact">
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    Homelab
+  </h1>
+</header>
+<div class="post-content"><h2 id="-objective">🎯 Objective<a hidden class="anchor" aria-hidden="true" href="#-objective">#</a></h2>
+<p>To create a functional homelab not only for learning, but for practical uses in security, home networking, and real-world applications.</p>
+<hr>
+<h2 id="-environment--tools">🔧 Environment / Tools<a hidden class="anchor" aria-hidden="true" href="#-environment--tools">#</a></h2>
+<p>List system setup and versions.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Purpose</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>HP EliteDesk 800 G4 Mini i7-8700T 2.4GHz 16GB RAM</td>
+          <td>Main Server</td>
+      </tr>
+      <tr>
+          <td>Python 3.11</td>
+          <td>Scripting and data parsing</td>
+      </tr>
+      <tr>
+          <td>Wireshark</td>
+          <td>Network packet inspection</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-methodology">📐 Methodology<a hidden class="anchor" aria-hidden="true" href="#-methodology">#</a></h2>
+<p>Researching and implementing the following services:</p>
+<ol>
+<li>Pi-Hole
+<ul>
+<li>Blocking ads</li>
+</ul>
+</li>
+</ol>
+<h2 id="-results">🔎 Results<a hidden class="anchor" aria-hidden="true" href="#-results">#</a></h2>
+<p>Summarize measurable output, screenshots, or outcomes.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Metric</th>
+          <th style="text-align: center">Result</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Queries built</td>
+          <td style="text-align: center">12</td>
+      </tr>
+      <tr>
+          <td>True positives</td>
+          <td style="text-align: center">8</td>
+      </tr>
+      <tr>
+          <td>False positives</td>
+          <td style="text-align: center">1</td>
+      </tr>
+  </tbody>
+</table>
+<p>Include images:
+<img alt="DNS exfiltration graph" loading="lazy" src="/images/dns-exfiltration-example.png"></p>
+<h2 id="-lessons-learned">💡 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h2>
+<p>Bullet or paragraph format works fine.</p>
+<ul>
+<li>
+<p>Discovered that DNS queries with TXT records are common indicators.</p>
+</li>
+<li>
+<p>Learned how to filter out false positives using field qtype.</p>
+</li>
+</ul>
+<h2 id="-next-steps">➡️ Next Steps<a hidden class="anchor" aria-hidden="true" href="#-next-steps">#</a></h2>
+<p>What would you add, automate, or scale?</p>
+<ul>
+<li>
+<p>Automate query generation with Python.</p>
+</li>
+<li>
+<p>Integrate with an alerting system.</p>
+</li>
+</ul>
+<h2 id="-references">📍 References<a hidden class="anchor" aria-hidden="true" href="#-references">#</a></h2>
+<ul>
+<li>
+<p><a href="https://github.com/splunk/botsv3">Splunk BOTS v3 Dataset Docs</a></p>
+</li>
+<li>
+<p><a href="https://wiki.wireshark.org/DisplayFilters">Wireshark Filters Cheat Sheet</a></p>
+</li>
+</ul>
+<!--- optional for use
+
+---
+<br/>
+
+## 📝️ Notes
+
+| Topic | Explanation |
+|--------|-------------|
+| **`tech:`** | purely informational; use it to display your stack (e.g., Splunk, Docker).  It’s not a taxonomy unless you define it in `hugo.toml`. |
+| **`tags:`** | these appear under `/tags/.../` and can group all templates, projects, etc. |
+| **`ShowToc:`** | shows an auto-generated table of contents. |
+| **`Images:`** | store them in `/static/images/` and reference with `/images/...`. |
+
+---
+
+## ✅ Result
+
+When you run:
+
+```bash
+hugo server -D
+```
+
+You’ll get a proper **project page with TOC, cover image, and summary**, and it will also appear under:
+
+/tags/template/
+/categories/projects/
+
+if `draft: false`.
+
+
+--->
+
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

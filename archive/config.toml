@@ -1,0 +1,16 @@
+
+
+# ignoreLogs = ['warning-goldmark-raw-html']
+# should I delete this config.toml? 
+# chatgpt says: 1️⃣ Empty config.toml — should it have anything?
+
+# Yes — normally it’s fine to have only one config file, either config.toml or hugo.toml.
+# In your case, you already have hugo.toml (and it’s the one Hugo is using).
+# That empty config.toml is leftover junk from setup and is not used at all.
+
+# 👉 You can safely delete it:
+
+# del config.toml
+
+
+# Hugo will only use one config file — the one named hugo.toml.

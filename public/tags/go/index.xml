@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Go on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>
+    <link>http://localhost:1313/tags/go/</link>
+    <description>Recent content in Go on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
+    <generator>Hugo -- 0.151.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Oct 2025 12:26:32 -0700</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:1313/projects/splunk-bots3/</link>
+      <pubDate>Thu, 16 Oct 2025 12:26:32 -0700</pubDate>
+      <guid>http://localhost:1313/projects/splunk-bots3/</guid>
+      <description>Spunk Bots Example</description>
+    </item>
+  </channel>
+</rss>

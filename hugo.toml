@@ -1,0 +1,89 @@
+baseURL = "https://example.com/"  # set your real domain later (eryklabs.com)
+languageCode = "en-us"
+title = "Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering"
+theme = "PaperMod"
+# paginate = 10
+enableRobotsTXT = true
+
+# build settings
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+# syntax highlighting (Chroma)
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    noClasses = false       # allow theme styles to apply
+
+# menu
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 10
+[[menu.main]]
+  name = "Résumé"
+  url = "/resume/"
+  weight = 20
+[[menu.main]]
+  name = "Projects"
+  url = "/projects/"
+  weight = 30
+[[menu.main]]
+  name = "Write-Ups"
+  url = "/Write-ups/"
+  weight = 40
+[[menu.main]]
+  name = "Notes"
+  url = "/notes/"
+  weight = 50
+[[menu.main]]
+  name = "SOPs"
+  url = "/sop/"
+  weight = 60
+[[menu.main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 70
+
+[params]
+  # PaperMod settings that matter
+  defaultTheme = "auto"    # auto, dark, light
+  ShowReadingTime = true
+  ShowShareButtons = false
+  ShowCodeCopyButtons = true
+  disableSpecial1stPost = true
+  hideSummary = false
+
+  # Home page header (PaperMod profile mode)
+  [params.profileMode]
+    enabled = true
+    title = "Eric (Eryk) O"
+    subtitle = "Security-minded professional specializing in engineering, threat detection, automation, and homelab-driven learning."
+    imageUrl = "images/avatar.jpg"     # put the file in /static/images/avatar.jpg
+    imageTitle = "Eric (Eryk) O — Cybersecurity Portfolio"
+    imageWidth = 160
+    imageHeight = 160
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/eryklabs"
+  [[params.socialIcons]]
+    name = "linkedin"
+    url = "https://www.linkedin.com/in/eric-obzejta/"
+  [[params.socialIcons]]
+    name = "email"
+    url = "javascript:location.href='mailto:' + 'contact' + '@' + 'eryklabs.com'"
+
+# sitemap and robots
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+  filename = "sitemap.xml"
+  
+  # troubleshooting site
+  # this tells Hugo: “allow HTML inside Markdown”.
+  [markup.goldmark.renderer]
+  unsafe = true
+  
+  [pagination]
+  pagerSize = 10
