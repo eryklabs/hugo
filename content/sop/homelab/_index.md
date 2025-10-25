@@ -1,9 +1,10 @@
 ---
 title: "Homelab - Standard Operating Procedures (SOPs)"
+date: 2025-10-19T12:26:32-07:00
 draft: false
 summary: "Homelab - SOPs for Using / Maintaining Homelab running Proxmox."
 description: "A collection of repeatable workflows for a Homelab running Proxmox."
-ShowToc: true
+showtoc: true
 cover: 
   image: "elitedesk-g4-800-mini-pc.jpg"
   alt: "Homelab - SOPs for Using / Maintaining Homelab running Proxmox"

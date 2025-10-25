@@ -41,9 +41,13 @@ enableRobotsTXT = true
   url = "/sop/"
   weight = 60
 [[menu.main]]
+  name = "Progress"
+  url = "/progress/"
+  weight = 70
+[[menu.main]]
   name = "Contact"
   url = "/contact/"
-  weight = 70
+  weight = 80
 
 [params]
   # PaperMod settings that matter

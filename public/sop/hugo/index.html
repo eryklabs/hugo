@@ -130,6 +130,11 @@
                 </a>
             </li>
             <li>
+                <a href="http://localhost:1313/progress/" title="Progress">
+                    <span>Progress</span>
+                </a>
+            </li>
+            <li>
                 <a href="http://localhost:1313/contact/" title="Contact">
                     <span>Contact</span>
                 </a>
@@ -169,7 +174,60 @@
 <p>Once it starts, Hugo will print something like:</p>
 <p><code>Web Server is available at http://localhost:1313/</code></p>
 <p>Open that URL in your browser.</p>
-
+<br/>
+<hr>
+<h2 id="2-correct-global-image-locations-for-cover-image-in-frontmatter">2. Correct global image locations (for Cover Image in Frontmatter)<a hidden class="anchor" aria-hidden="true" href="#2-correct-global-image-locations-for-cover-image-in-frontmatter">#</a></h2>
+<p>If you want images available globally (to any page or post), use:</p>
+<p><code>/static/images/</code></p>
+<p>So in your filesystem:</p>
+<p><code>C:\Projects\ProjectName\static\images\homelab\example.jpg</code></p>
+<p>Then anywhere in your Markdown:</p>
+<p><code>![My Logo](/images/logo.png)</code></p>
+<p>That will render correctly on both the local server and deployed site, because /static maps directly to the web root /.</p>
+<p>For example, on this page, the Hugo logo is inserted via this code snippet in the frontmatter:</p>
+<p><code>cover:</code></p>
+<p><code>image: &quot;/images/hugo/hugo-logo-wide.svg&quot;</code></p>
+<br/>
+<hr>
+<h2 id="3-insert-an-image-into-the-page">3. Insert an image into the page<a hidden class="anchor" aria-hidden="true" href="#3-insert-an-image-into-the-page">#</a></h2>
+<p>If you don’t need custom margins or width:</p>
+<p><code>![Example text](/images/image.jpg)</code></p>
+<p>Example used at the top of this page:</p>
+<p><code>![Hugo logo](/images/hugo/hugo-logo-wide.svg)</code></p>
+<br/>
+<hr>
+<h2 id="4-insert-code-block">4. Insert code block<a hidden class="anchor" aria-hidden="true" href="#4-insert-code-block">#</a></h2>
+<p><strong>Like this:</strong></p>
+<pre tabindex="0"><code>  ```bash
+  hugo server -D```
+</code></pre><br/>
+<p><strong>Explanation:</strong></p>
+<p>Start of code block →</p>
+<pre tabindex="0"><code>```bash ```
+</code></pre><p>tells Markdown “start a fenced code block” and “use Bash syntax highlighting.”
+(The word bash is optional — it just enables color-coding for shell commands.)</p>
+<br/>
+<p><strong>Result:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  hugo server -D
+</span></span></code></pre></div>  <br/>
+<hr>
+<h2 id="5-make-a-hyperlink-open-in-new-tab">5. Make a hyperlink open in new tab<a hidden class="anchor" aria-hidden="true" href="#5-make-a-hyperlink-open-in-new-tab">#</a></h2>
+<p><strong>Option 1:</strong></p>
+<p>Markdown itself doesn&rsquo;t support opening links in a new tab.</p>
+<p>To do so, we&rsquo;ll have to insert HTML inside Markdown, like so:</p>
+<p><code>Check out &lt;a href=&quot;https://eryklabs.com&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;my site&lt;/a&gt;.</code></p>
+<p><strong>Option 2:</strong></p>
+<p>Make all external links open in new tabs automatically</p>
+<p>Add this JavaScript snippet to your PaperMod footer partial or via custom JS (e.g., /assets/js/custom.js):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">&#39;a[href^=&#34;http&#34;]&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">link</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">link</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hostname</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">link</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="s1">&#39;_blank&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">link</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;rel&#39;</span><span class="p">,</span> <span class="s1">&#39;noopener noreferrer&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></div>
 
 </div>
 

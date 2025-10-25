@@ -10,4 +10,4 @@ title: "Contact"
   );
 </script>
 
-LinkedIn: [linkedin.com/in/eric-obzejta](https://www.linkedin.com/in/eric-obzejta//)
+

@@ -15,5 +15,3 @@ title: "Résumé"
 
 **Certifications:** Security+
 
-
-*(Add concise, scannable sections. Keep the PDF as the source of truth.)*

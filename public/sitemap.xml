@@ -2,22 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/projects/homelab/</loc>
-    <lastmod>2025-10-17T12:26:32-07:00</lastmod>
+    <loc>http://localhost:1313/tags/hugo/</loc>
+    <lastmod>2025-10-24T12:26:32-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/homelab/</loc>
-    <lastmod>2025-10-17T12:26:32-07:00</lastmod>
+    <loc>http://localhost:1313/projects/hugo/</loc>
+    <lastmod>2025-10-24T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/progress/hugo/</loc>
+    <lastmod>2025-10-24T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/tags/portfolio/</loc>
+    <lastmod>2025-10-24T12:26:32-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>http://localhost:1313/projects/</loc>
-    <lastmod>2025-10-17T12:26:32-07:00</lastmod>
+    <lastmod>2025-10-24T12:26:32-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-10-24T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/tags/webdev/</loc>
+    <lastmod>2025-10-24T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/tags/homelab/</loc>
+    <lastmod>2025-10-22T12:47:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/progress/github/</loc>
+    <lastmod>2025-10-22T12:47:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/progress/homelab/</loc>
+    <lastmod>2025-10-22T12:47:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/tags/progress-log/</loc>
+    <lastmod>2025-10-22T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/progress/</loc>
+    <lastmod>2025-10-22T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/sop/homelab/</loc>
+    <lastmod>2025-10-19T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/sop/hugo/</loc>
+    <lastmod>2025-10-19T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/sop/</loc>
+    <lastmod>2025-10-19T12:26:32-07:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/projects/homelab/</loc>
     <lastmod>2025-10-17T12:26:32-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -43,16 +103,6 @@
     <priority>0.5</priority>
   </url><url>
     <loc>http://localhost:1313/notes/hugo/</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/tags/hugo/</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/sop/hugo/</loc>
     <lastmod>2025-10-17T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -87,11 +137,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/sop/</loc>
-    <lastmod>2025-10-17T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
     <loc>http://localhost:1313/projects/splunk-bots3/</loc>
     <lastmod>2025-10-16T12:26:32-07:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -112,10 +157,6 @@
     <priority>0.5</priority>
   </url><url>
     <loc>http://localhost:1313/contact/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/sop/homelab/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
