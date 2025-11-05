@@ -6,7 +6,21 @@
     <description>Recent content in Homelab on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
     <generator>Hugo -- 0.151.0</generator>
     <language>en-us</language>
-    <lastBuildDate></lastBuildDate>
+    <lastBuildDate>Mon, 03 Nov 2025 16:26:32 -0700</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>M-Disc Archival Solutions</title>
+      <link>http://localhost:1313/projects/truenas/m-disc/</link>
+      <pubDate>Mon, 03 Nov 2025 16:26:32 -0700</pubDate>
+      <guid>http://localhost:1313/projects/truenas/m-disc/</guid>
+      <description>Offline, immutable long-term data storage using Verbatim M-Disc technology integrated with TrueNAS SCALE.</description>
+    </item>
+    <item>
+      <title>M-Disc Archival Solutions</title>
+      <link>http://localhost:1313/projects/truenas/m-disc_backup/</link>
+      <pubDate>Mon, 03 Nov 2025 16:26:32 -0700</pubDate>
+      <guid>http://localhost:1313/projects/truenas/m-disc_backup/</guid>
+      <description>M-Disc Archival Solutions</description>
+    </item>
   </channel>
 </rss>

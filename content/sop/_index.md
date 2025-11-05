@@ -14,6 +14,8 @@ cover:
 These SOPs serve as detailed, repeatable checklists for key operations in my work—ranging from cybersecurity procedures and homelab automation to documentation and deployment workflows.
 
 
-## [Hugo]({{< relref "/sop/hugo/_index.md" >}})
+<!-- 
+## [Hugo]({{< relref "/sop/hugo/_index.md" >}}) 
 
-## [Homelab]({{< relref "/sop/homelab/_index.md" >}})
+## [Homelab]({{< relref "/sop/homelab/_index.md" >}}) 
+-->

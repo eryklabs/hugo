@@ -17,27 +17,27 @@ cover:
 
 These SOPs serve as detailed, repeatable checklists for Hugo, a simple yet powerful website editor. 
 
-{{< figure src="hugo-logo-wide.svg" alt="Hugo Logo" title="" >}}
+<!-- {{< figure src="hugo-logo-wide.svg" alt="Hugo Logo" title="" >}} -->
 
 <br/>
 
 ---
 
-**<span style="color: #00ff7f">Most basic commands and sequences to remember:</span>**
+## 1. **<span style="color: #00ff7f">Most basic commands and sequences to remember:</span>** 
 
 <br/> 
 
 
 
-## 1. Hugo Startup (Local)
+### 1. Hugo Startup (Local)
 
 Starting up your Hugo Site Locally
 
-### 1. Open your terminal or PowerShell and cd into your site’s root directory — the one that contains config.toml, themes/, and content/.
+**1. Open your terminal or PowerShell and cd into your site’s root directory — the one that contains config.toml, themes/, and content/.**
 
 `cd D:\path\to\your\hugo-site`
 
-### 2. Start the local server
+**2. Start the local server**
 
 Run this command:
 
@@ -47,7 +47,7 @@ or if you want it to automatically rebuild on file changes:
 
 `hugo server -D`
 
-### 3. Open in your browser
+**3. Open in your browser**
 
 Once it starts, Hugo will print something like:
 
@@ -165,3 +165,67 @@ document.querySelectorAll('a[href^="http"]').forEach(link => {
 });
 </script>
 ```
+<br/>
+
+---
+
+## 6. Link to another page within your Hugo site
+
+**Use** `ref` **(absolute to site root)**
+
+If you want links to stay valid regardless of the page's location:
+
+
+Use <span style="color: #00d28f;">**[Home Page]({{&lt; ref "index.md" &gt;}})**</span> to link to another page.
+
+
+- `ref` creates an absolute link from the site root. 
+
+<br/> 
+
+**Another example:**
+
+<span style="color: #00d28f;">**[TrueNAS Project]({{&lt; ref "projects/truenas/index.md" &gt;}})**</span>
+
+<br/>
+
+---
+
+
+## 7. Making text <span style="color: #00d28f;">colored</span>
+
+Insert the code `<span style="color: #00d28f;">`<span style="color: #00d28f;">colored text</span>`</span>` between the text you want a different color.
+
+
+
+<br/>
+
+---
+
+## 8. How to add tables 
+
+Follow this format: 
+
+```Markdown
+| Level	| Tolerance	| Efficiency	| Notes |
+|------------|----------|----------|----------|
+RAIDZ1	|1 disk fails|	~N-1 drives usable|	Not safe with modern large disks; rebuild risk too high|
+RAIDZ2	|2 disks fail|	~N-2 drives usable|	Best trade-off between safety and capacity|
+RAIDZ3	|3 disks fail|	~N-3 drives usable|	Good for mission-critical or 12-16+ disk arrays|
+```
+
+<br/>
+
+That code will create the following table: 
+
+| Level	| Tolerance	| Efficiency	| Notes |
+|------------|----------|----------|----------|
+RAIDZ1	|1 disk fails|	~N-1 drives usable|	Not safe with modern large disks; rebuild risk too high|
+RAIDZ2	|2 disks fail|	~N-2 drives usable|	Best trade-off between safety and capacity|
+RAIDZ3	|3 disks fail|	~N-3 drives usable|	Good for mission-critical or 12-16+ disk arrays|
+
+<br/>
+
+---
+
+

@@ -1,0 +1,30 @@
+---
+title: "GitHub Pages - Standard Operating Procedures (SOPs)"
+date: 2025-11-05T09:00:00-07:00
+draft: false
+summary: "GitHub Pages: Step-by-step deployment procedures for hosting Hugo sites on GitHub."
+description: "A complete SOP for deploying, updating, and maintaining Hugo sites using GitHub Pages."
+showtoc: true
+cover:
+  image: "/images/github/github-logo.svg"
+  alt: "GitHub Pages SOP"
+  caption: "Hugo Deployment via GitHub Pages"
+  relative: false
+---
+
+These SOPs define the standard process for hosting and maintaining Hugo static sites through **GitHub Pages**.  
+This covers both the **manual** and **automated (GitHub Actions)** workflows.
+
+<br/>
+
+---
+
+## 1. **<span style="color:#00ff7f;">Initial Setup</span>**
+
+1️⃣ Create a new repository on GitHub.  
+Name it whatever you want — e.g. `eryklabs` or `my-hugo-site`.  
+
+2️⃣ In your local machine, initialize your Hugo site (if not already done):
+
+```bash
+hugo new site my-hugo-site

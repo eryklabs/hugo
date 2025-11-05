@@ -6,8 +6,15 @@
     <description>Recent content in Notes on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
     <generator>Hugo -- 0.151.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 17 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/notes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Network Diagrams</title>
+      <link>http://localhost:1313/notes/network-diagrams/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/network-diagrams/</guid>
+      <description>Resources for drawing network diagrams</description>
+    </item>
     <item>
       <title>Hugo</title>
       <link>http://localhost:1313/notes/hugo/</link>

@@ -6,8 +6,29 @@
     <description>Recent content in Standard Operating Procedures (SOPs) on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
     <generator>Hugo -- 0.151.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 17 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 05 Nov 2025 09:00:00 -0700</lastBuildDate>
     <atom:link href="http://localhost:1313/sop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GitHub Pages - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/github/</link>
+      <pubDate>Wed, 05 Nov 2025 09:00:00 -0700</pubDate>
+      <guid>http://localhost:1313/sop/github/</guid>
+      <description>A complete SOP for deploying, updating, and maintaining Hugo sites using GitHub Pages.</description>
+    </item>
+    <item>
+      <title>AutoHotkey (AHK) - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/ahk/</link>
+      <pubDate>Mon, 03 Nov 2025 17:32:32 -0700</pubDate>
+      <guid>http://localhost:1313/sop/ahk/</guid>
+      <description>Practical AHK scripts, templates, and automation standards for Windows productivity.</description>
+    </item>
+    <item>
+      <title>Hugo - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/hugo/</link>
+      <pubDate>Sun, 19 Oct 2025 12:26:32 -0700</pubDate>
+      <guid>http://localhost:1313/sop/hugo/</guid>
+      <description>A collection of repeatable workflows for Hugo website builder.</description>
+    </item>
     <item>
       <title>SOP – Template</title>
       <link>http://localhost:1313/sop/template-sop/</link>

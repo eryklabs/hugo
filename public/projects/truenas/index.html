@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>TrueNAS SCALE Server (NAS-001) | Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>
+<meta name="keywords" content="homelab, cybersecurity, storage">
+<meta name="description" content="ZFS-based NAS built for cybersecurity, backups, and homelab infrastructure">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/projects/truenas/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/projects/truenas/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/projects/truenas/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering (Alt + H)">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/resume/" title="Résumé">
+                    <span>Résumé</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/write-ups/" title="Write-Ups">
+                    <span>Write-Ups</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/notes/" title="Notes">
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/sop/" title="SOPs">
+                    <span>SOPs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/progress/" title="Progress">
+                    <span>Progress</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/contact/" title="Contact">
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    TrueNAS SCALE Server (NAS-001)
+  </h1>
+</header>
+<div class="post-content"><h2 id="-objective">🎯 Objective<a hidden class="anchor" aria-hidden="true" href="#-objective">#</a></h2>
+<p>Build a <strong>TrueNAS SCALE</strong> system as a central storage and cybersecurity lab node — designed to provide reliable ZFS-based storage, snapshots, and replication across my network.<br>
+The server acts as a backbone for my <strong>Proxmox cluster</strong>, <strong>Splunk</strong>, <strong>Security Onion</strong>, and <strong>log aggregation</strong>, while simulating enterprise-level NAS operations and access control (SMB, NFS, S3).</p>
+<h2 id="-considerations--specifications">🗺️ Considerations / Specifications<a hidden class="anchor" aria-hidden="true" href="#-considerations--specifications">#</a></h2>
+<h3 id="power-consumption">Power Consumption<a hidden class="anchor" aria-hidden="true" href="#power-consumption">#</a></h3>
+<p>To save on power consumption, our homelab (EliteDesk 800 G4) server (SV-001) will be the server with 24/7 availability, and this TrueNAS server will utilize WoL (Wake-on-LAN) to power on, on a as-needed basis, or with scheduled cron jobs.</p>
+<h3 id="long-term-backup-solution">Long-Term Backup Solution<a hidden class="anchor" aria-hidden="true" href="#long-term-backup-solution">#</a></h3>
+<p>Strong focus on long-term backups. A pain point of mine has been running out of storage on every device (phones, laptops, desktops, etc.)&hellip;
+Keeping track of backups on various external drives scattered about is not good practice, and thus I am looking to find a proper long term, scaleable solution.</p>
+<h4><a href="http://localhost:1313/projects/truenas/m-disc/"><span style="color: #00d28f;">Cold Storage: M-Disc BD-R 25 GB</span></a></h4>
+<p>Taking the 3-2-1 principle into consideration, long term cold-storage backups on 25 GB M-Disks is something I think worthwhile to implement.
+These disks can easily be stored in offsite locations, taking up minimal space (inside a DVD binder, for example).
+Hence, the choice to add a BDXL-capable drive, for burning 25 GB disks (verified with checksum) for long-term archival.</p>
+<p>Each disk will get:</p>
+<ul>
+<li>SHA256 checksum text file inside.</li>
+<li>Label printed with permanent ink or laser etching (no stickers, no sharpies).</li>
+<li>Stored vertically in jewel cases or archival sleeves (avoid spindles).</li>
+<li>Kept in an airtight plastic bin with silica gel, inside a closet (no sunlight).</li>
+</ul>
+<p><em>Note: 25 GB single-layer discs are more reliable than 50 GB ones: fewer layers, fewer focus calibration issues, and much lower uncorrectable error rates over time.)</em>
+<em>I might use 50 GB disks for less critical data however, and verify immediately with checksum after burning.</em></p>
+<p>I was considering 128 GB BDXL disks, however I later became aware of the fact that the lower capacity M-Disks have a much longer true archival lifespan (between 300-1,000 years, theoretically).
+100-128 GB disks are supposed to be much less stable long-term, only 5-10 years, which won&rsquo;t fit our use case.</p>
+<p><em>(Note: Disks should be checked periodically to ensure readability and confirm the efficacy of the backup system).</em></p>
+<br/>
+<hr>
+<br/>
+<h3 id="why-raidz2-over-other-options">Why RAIDZ2 Over Other Options?<a hidden class="anchor" aria-hidden="true" href="#why-raidz2-over-other-options">#</a></h3>
+<p>RAIDZ2 is a ZFS parity level similar to RAID-6—it can survive two drive failures without data loss (It’s extremely robust).</p>
+<p><span style="color: #00d28f;"><strong>Here&rsquo;s a table which shows why RAIDZ2 is the &ldquo;sweet spot&rdquo; for most TrueNAS builds:</strong></span></p>
+<table>
+  <thead>
+      <tr>
+          <th>Level</th>
+          <th>Tolerance</th>
+          <th>Efficiency</th>
+          <th>Notes</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>RAIDZ1</td>
+          <td>1 disk fails</td>
+          <td>~N-1 drives usable</td>
+          <td>Not safe with modern large disks; rebuild risk too high</td>
+      </tr>
+      <tr>
+          <td>RAIDZ2</td>
+          <td>2 disks fail</td>
+          <td>~N-2 drives usable</td>
+          <td>Best trade-off between safety and capacity</td>
+      </tr>
+      <tr>
+          <td>RAIDZ3</td>
+          <td>3 disks fail</td>
+          <td>~N-3 drives usable</td>
+          <td>Good for mission-critical or 12-16+ disk arrays</td>
+      </tr>
+  </tbody>
+</table>
+<p><em><strong>RAIDZ2 is ideal if you’re using 6–10 drives. Once you hit 12+ drives, RAIDZ3 becomes worth considering.</strong></em></p>
+<br/>
+<p><em><strong>Note:</strong></em></p>
+<ul>
+<li>Capacity needs to be planned up front, due to the face you can&rsquo;t add drives to an existing RAIDZ vdev later. (You can only add <em>new vdevs</em>, which are groups of drives).</li>
+<li>Data is striped across all vdevs. Mixing mismatched vdevs (different sizes or layouts) later leads to performance imbalance and wasted space.</li>
+</ul>
+<hr>
+<h2 id="-environment--hardware">🔧 Environment / Hardware<a hidden class="anchor" aria-hidden="true" href="#-environment--hardware">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Purpose</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Cooler Master HAF 932</td>
+          <td>Full-tower chassis with airflow and drive capacity</td>
+      </tr>
+      <tr>
+          <td>Corsair RM850x</td>
+          <td>Stable, silent 850W PSU</td>
+      </tr>
+      <tr>
+          <td>H60x RGB Elite</td>
+          <td>CPU cooler (repurposed)</td>
+      </tr>
+      <tr>
+          <td>ECC-capable motherboard + Ryzen CPU</td>
+          <td>ZFS stability and data integrity</td>
+      </tr>
+      <tr>
+          <td>64GB ECC DDR4 RAM</td>
+          <td>ZFS ARC cache + container workloads</td>
+      </tr>
+      <tr>
+          <td>6× 16TB Seagate Exos drives</td>
+          <td>RAIDZ2 pool (<code>tank</code>) for redundancy</td>
+      </tr>
+      <tr>
+          <td>2× 480GB SSDs</td>
+          <td>Boot mirror (TrueNAS OS)</td>
+      </tr>
+      <tr>
+          <td>LSI 9300-8i HBA (IT Mode)</td>
+          <td>Direct SATA access for ZFS</td>
+      </tr>
+      <tr>
+          <td>Intel X520-DA2</td>
+          <td>Dual-port 10GbE NIC</td>
+      </tr>
+      <tr>
+          <td>APC Smart-UPS</td>
+          <td>Power protection and clean shutdowns</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-software-stack">🧠 Software Stack<a hidden class="anchor" aria-hidden="true" href="#-software-stack">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Tool / Service</th>
+          <th>Function</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>TrueNAS SCALE (23.x)</strong></td>
+          <td>Core NAS OS</td>
+      </tr>
+      <tr>
+          <td><strong>ZFS RAIDZ2</strong></td>
+          <td>Redundant storage pool</td>
+      </tr>
+      <tr>
+          <td><strong>SMB / NFS / iSCSI</strong></td>
+          <td>File sharing and VM storage</td>
+      </tr>
+      <tr>
+          <td><strong>MinIO (S3)</strong></td>
+          <td>Object storage for Proxmox backups</td>
+      </tr>
+      <tr>
+          <td><strong>Rsyslog / Fluent Bit</strong></td>
+          <td>Centralized log forwarding</td>
+      </tr>
+      <tr>
+          <td><strong>Scrub / Snapshot / Replication</strong></td>
+          <td>Data protection and versioning</td>
+      </tr>
+      <tr>
+          <td><strong>AD / LDAP integration</strong></td>
+          <td>Simulated enterprise ACL structure</td>
+      </tr>
+      <tr>
+          <td><strong>UPS daemon (NUT)</strong></td>
+          <td>Power loss detection and shutdown</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-configuration--methodology">📐 Configuration &amp; Methodology<a hidden class="anchor" aria-hidden="true" href="#-configuration--methodology">#</a></h2>
+<ol>
+<li>
+<p><strong>ZFS Pool Setup</strong></p>
+<ul>
+<li>Pool: <code>tank</code></li>
+<li>Layout: 6×16TB → <strong>RAIDZ2</strong></li>
+<li>Compression: <code>zstd</code></li>
+<li>Atime: <code>off</code></li>
+<li>Snapshots:
+<ul>
+<li>15-min: 48h retention</li>
+<li>Hourly: 7 days</li>
+<li>Daily: 90 days</li>
+</ul>
+</li>
+<li>Replication: weekly off-box copy via external disk.</li>
+</ul>
+</li>
+<li>
+<p><strong>Network Configuration</strong></p>
+<ul>
+<li>10GbE backbone → main switch → Proxmox node (SV-001)</li>
+<li>VLAN segmentation for storage vs management</li>
+<li>Jumbo frames (MTU 9000) for NFS/iSCSI throughput</li>
+</ul>
+</li>
+<li>
+<p><strong>File Services</strong></p>
+<ul>
+<li>SMB: Auth via Active Directory (simulated domain)</li>
+<li>NFS: For Linux VM mounts</li>
+<li>iSCSI: For Proxmox test VMs / backup targets</li>
+</ul>
+</li>
+<li>
+<p><strong>Security &amp; Monitoring</strong></p>
+<ul>
+<li>Syslog forwarding from firewall and Proxmox</li>
+<li>Audit logging on SMB shares</li>
+<li>Monthly SMART tests + ZFS scrubs</li>
+<li>Ransomware rollback demo via snapshots</li>
+</ul>
+</li>
+<li>
+<p><strong>Applications</strong></p>
+<ul>
+<li>MinIO container (S3 backup target)</li>
+<li>Rsyslog → Splunk indexer</li>
+<li>Fluent Bit → Security Onion</li>
+<li>Zabbix / Grafana for uptime and temperature monitoring</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="-results">🔎 Results<a hidden class="anchor" aria-hidden="true" href="#-results">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Metric</th>
+          <th style="text-align: center">Result</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Network Throughput</td>
+          <td style="text-align: center">9.8 Gbps sustained</td>
+      </tr>
+      <tr>
+          <td>ZFS Pool IOPS (cached)</td>
+          <td style="text-align: center">~110k</td>
+      </tr>
+      <tr>
+          <td>Snapshot Restore Time</td>
+          <td style="text-align: center">&lt;30 sec</td>
+      </tr>
+      <tr>
+          <td>Power Usage (avg)</td>
+          <td style="text-align: center">85–110 W</td>
+      </tr>
+      <tr>
+          <td>Data Availability</td>
+          <td style="text-align: center">99.99% uptime since deployment</td>
+      </tr>
+  </tbody>
+</table>
+<p>Example ZFS pool layout:</p>
+<p>NAME STATE READ WRITE CKSUM
+tank ONLINE 0 0 0
+raidz2-0 ONLINE 0 0 0
+da0 ONLINE
+da1 ONLINE
+da2 ONLINE
+da3 ONLINE
+da4 ONLINE
+da5 ONLINE</p>
+<hr>
+<h2 id="-lessons-learned">💡 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h2>
+<ul>
+<li>ZFS + ECC = mandatory for long-term reliability. Consumer RAM is a liability.</li>
+<li>RAIDZ1 is obsolete for multi-terabyte drives — URE risk is real.</li>
+<li>iSCSI performs best with separate VLAN and jumbo frames.</li>
+<li>TrueNAS SCALE’s Kubernetes layer is useful but overkill for critical data — isolate core datasets.</li>
+<li>UPS integration with NUT daemon is non-negotiable. Sudden power loss will corrupt metadata.</li>
+</ul>
+<hr>
+<h2 id="-next-steps">➡️ Next Steps<a hidden class="anchor" aria-hidden="true" href="#-next-steps">#</a></h2>
+<ul>
+<li>Deploy <strong>Proxmox Backup Server</strong> with MinIO offload.</li>
+<li>Automate snapshot replication to secondary node (<code>SV-001</code>).</li>
+<li>Add <strong>immutable dataset</strong> for ransomware forensics demo.</li>
+<li>Publish internal SOPs and architecture diagram to eryklabs.com documentation.</li>
+<li>Expand to <strong>two-node failover cluster</strong> with ZFS replication.</li>
+</ul>
+<hr>
+<h2 id="-references">📍 References<a hidden class="anchor" aria-hidden="true" href="#-references">#</a></h2>
+<ul>
+<li><a href="https://www.truenas.com/docs/scale/">TrueNAS SCALE Documentation</a></li>
+<li><a href="https://openzfs.org/wiki/Performance_tuning">ZFS Best Practices Guide</a></li>
+<li><a href="https://min.io/docs/minio/linux/index.html">MinIO Documentation</a></li>
+<li><a href="https://networkupstools.org/docs/">NUT UPS Daemon Config</a></li>
+<li><a href="https://pve.proxmox.com/wiki/Backup_and_Restore">Proxmox Backup + S3 Integration</a></li>
+</ul>
+<hr>
+
+
+</div>
+
+<article class="post-entry"> 
+<figure class="entry-cover">
+        <img loading="lazy" src="http://localhost:1313/images/truenas/truenas-scale-logo.png" alt="Long term cold-storage archival with 25 GB M-Discs">
+</figure>
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">M-Disc Archival Solutions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>M-Disc Archival Solutions</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-11-03 16:26:32 -0700 -0700'>November 3, 2025</span>&nbsp;·&nbsp;<span>5 min</span></footer>
+  <a class="entry-link" aria-label="post link to M-Disc Archival Solutions" href="http://localhost:1313/projects/truenas/m-disc_backup/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">M-Disc Archival Solutions
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Offline, immutable long-term data storage using Verbatim M-Disc technology integrated with TrueNAS SCALE.</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-11-03 16:26:32 -0700 -0700'>November 3, 2025</span>&nbsp;·&nbsp;<span>1 min</span></footer>
+  <a class="entry-link" aria-label="post link to M-Disc Archival Solutions" href="http://localhost:1313/projects/truenas/m-disc/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

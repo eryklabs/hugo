@@ -21,6 +21,10 @@ Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server.
 
 ---
 
+### 📅 2025-11-03
+- Installed 64GB Samsung RAM kit, testing memory by running **MemTest86**, which has been running for about 6 hours now.
+- Researching specs for building a trueNAS server, which will work within our homelab ecosystem to supply sufficient storage. 
+
 ### 📅 2025-10-24
 - Due to trend of increasing prices of most consumer goods, searching for SO-DIMM DDR4 64GB memory kit to install in the EliteDesk G4 800 as an upgrade, to support future services on the server. 
 - Use high quality memory (Crucial, Samsung, Kingston, etc.)

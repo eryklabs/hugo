@@ -49,6 +49,25 @@ Click Create repository.
 
 <br/>
 
+**Then run these commands:**
+
+```powershell
+git remote add origin https://github.com/YOUR_USERNAME/hugo.git   # ← I named it "hugo" because I'm using hugo to build my website
+git branch -M main
+git push -u origin main
+```
+
+<br/>
+
+**STEP 3 – Verify**
+
+After the push, go to your GitHub repo URL — it should now show your Hugo project files (config.toml, etc.). *(See image below)*
+
+![Initial Commit to GitHub](/images/github/initial_commit.png)
+
+
+<br/>
+
 ---
 
 
