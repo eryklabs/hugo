@@ -1,4 +1,4 @@
-baseURL = "https://example.com/"  # set your real domain later (eryklabs.com)
+baseURL = "https://eryklabs.com/"  # set your real domain later (eryklabs.com)
 languageCode = "en-us"
 title = "Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering"
 theme = "PaperMod"
