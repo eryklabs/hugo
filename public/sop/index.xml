@@ -9,6 +9,20 @@
     <lastBuildDate>Wed, 05 Nov 2025 09:00:00 -0700</lastBuildDate>
     <atom:link href="http://localhost:1313/sop/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Cloudflare Pages - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/cloudflare/</link>
+      <pubDate>Wed, 05 Nov 2025 09:00:00 -0700</pubDate>
+      <guid>http://localhost:1313/sop/cloudflare/</guid>
+      <description>A complete SOP for connecting a GitHub-hosted Hugo site to Cloudflare Pages for free hosting.</description>
+    </item>
+    <item>
+      <title>GitHub Pages - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/documentation/</link>
+      <pubDate>Wed, 05 Nov 2025 09:00:00 -0700</pubDate>
+      <guid>http://localhost:1313/sop/documentation/</guid>
+      <description>A complete SOP for deploying, updating, and maintaining Hugo sites using GitHub Pages.</description>
+    </item>
+    <item>
       <title>GitHub Pages - Standard Operating Procedures (SOPs)</title>
       <link>http://localhost:1313/sop/github/</link>
       <pubDate>Wed, 05 Nov 2025 09:00:00 -0700</pubDate>

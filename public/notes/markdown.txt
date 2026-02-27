@@ -1,0 +1,59 @@
+---
+title: "Markdown Language"
+date: 2025-11-09
+draft: false
+tags: ["notes", "reference", "markdown", "formatting", "hugo", "joplin"]
+summary: "References for using Markdown Language."
+ShowToc: true
+---
+
+## Overview
+
+Markdown is a lightweight markup language used to format text for notes, documentation, and websites. 
+It converts plain text into structured HTML, making it ideal for fast, readable writing that looks clean in 
+editors like Joplin and static site generators like Hugo. 
+This note collects key syntax, shortcuts, and best practices for consistent formatting. 
+
+---
+
+## Key Details
+
+Add the main information, instructions, or findings here.  
+Use simple markdown formatting:
+
+- **Bold** for emphasis  
+- *Italics* for subtle context  
+- Inline `code` for commands or filenames  
+
+Example:  
+If you ever wondered how to do the double headed arrow ↔ in Markdown, type `&harr;`.
+
+---
+
+## Cheat Sheet / Quick Reference
+
+| Symbol | Description | Markdown Code |
+|--------|--------------|----------------|
+| ↑ | Up arrow | `&uarr;` |
+| ↓ | Down arrow | `&darr;` |
+| ← | Left arrow | `&larr;` |
+| → | Right arrow | `&rarr;` |
+| ↔ | Double-headed arrow | `&harr;` |
+
+---
+
+## Notes
+
+Additional clarifications, context, or links:
+
+- [Markdown entities list](https://www.w3schools.com/html/html_entities.asp)
+- Works in HTML-rendered markdown (like Hugo).
+
+---
+
+## Commands I Use Often
+
+```bash
+# Example for Hugo
+hugo new content/notes/new-note.md
+hugo server -D

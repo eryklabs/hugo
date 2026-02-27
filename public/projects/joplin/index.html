@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Self-Hosted Joplin Server | Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>
+<meta name="keywords" content="joplin, self-hosted, homelab, proxmox">
+<meta name="description" content="End-to-end setup and operation of a self-hosted Joplin Server using Proxmox and Debian.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/projects/joplin/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/projects/joplin/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/projects/joplin/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering (Alt + H)">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/resume/" title="Résumé">
+                    <span>Résumé</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/write-ups/" title="Write-Ups">
+                    <span>Write-Ups</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/notes/" title="Notes">
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/sop/" title="SOPs">
+                    <span>SOPs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/progress/" title="Progress">
+                    <span>Progress</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/contact/" title="Contact">
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    Self-Hosted Joplin Server
+  </h1>
+  <div class="post-description">
+    End-to-end setup and operation of a self-hosted Joplin Server using Proxmox and Debian.
+  </div>
+</header>
+<div class="post-content"><h2 id="-objective">🎯 Objective<a hidden class="anchor" aria-hidden="true" href="#-objective">#</a></h2>
+<p>Deploy a <strong>fully private, self-hosted Joplin Server</strong> to synchronize notes across multiple personal devices without relying on third-party cloud providers.</p>
+<p>Primary goals:</p>
+<ul>
+<li>Full data ownership</li>
+<li>End-to-end control of infrastructure</li>
+<li>Long-term reliability with minimal maintenance</li>
+<li>Clean separation between hypervisor and application services</li>
+</ul>
+<hr>
+<h2 id="-environment--tools">🔧 Environment / Tools<a hidden class="anchor" aria-hidden="true" href="#-environment--tools">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Purpose</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>HP EliteDesk 800 G4 Mini (i7-8700T, 64 GB RAM)</strong></td>
+          <td>Physical host (homelab server)</td>
+      </tr>
+      <tr>
+          <td><strong>Proxmox VE</strong></td>
+          <td>Bare-metal hypervisor</td>
+      </tr>
+      <tr>
+          <td><strong>Debian (VM)</strong></td>
+          <td>Dedicated service host OS</td>
+      </tr>
+      <tr>
+          <td><strong>Joplin Server</strong></td>
+          <td>Private note synchronization backend</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-architecture--methodology">📐 Architecture &amp; Methodology<a hidden class="anchor" aria-hidden="true" href="#-architecture--methodology">#</a></h2>
+<p>Proxmox → Debian/Ubuntu VM → Docker/Compose → Joplin Server (+ Postgres)</p>
+<h3 id="1-proxmox-bare-metal">1. Proxmox (Bare Metal)<a hidden class="anchor" aria-hidden="true" href="#1-proxmox-bare-metal">#</a></h3>
+<ul>
+<li>Installed directly on sv-001 (Homelab)</li>
+<li>Used strictly as a hypervisor</li>
+<li>No application services run on the host itself</li>
+</ul>
+<h3 id="2-debian-virtual-machine">2. Debian Virtual Machine<a hidden class="anchor" aria-hidden="true" href="#2-debian-virtual-machine">#</a></h3>
+<ul>
+<li>Created and managed via Proxmox</li>
+<li>Acts as an isolated service container</li>
+<li>Snapshots and backups handled at VM level</li>
+</ul>
+<h3 id="3-joplin-server-deployment">3. Joplin Server Deployment<a hidden class="anchor" aria-hidden="true" href="#3-joplin-server-deployment">#</a></h3>
+<ul>
+<li>Installed inside the Debian VM</li>
+<li>Used exclusively for personal note synchronization</li>
+<li>Syncs multiple devices (desktop + mobile)</li>
+<li>No dependency on Joplin Cloud or third-party storage</li>
+</ul>
+<h3 id="4-network--security">4. Network &amp; Security<a hidden class="anchor" aria-hidden="true" href="#4-network--security">#</a></h3>
+<ul>
+<li>Service isolation via VM boundaries</li>
+<li>Network traffic validated during setup using Wireshark</li>
+<li>Designed to later integrate VPN-only access</li>
+</ul>
+<hr>
+<h2 id="-results">🔎 Results<a hidden class="anchor" aria-hidden="true" href="#-results">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th>Item</th>
+          <th>Status</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Proxmox installed and stable</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Debian VM provisioned</td>
+          <td>✅</td>
+      </tr>
+      <tr>
+          <td>Wireguard installed and operational</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Joplin Server operational</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Multi-device sync verified</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-lessons-learned">💡 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h2>
+<ul>
+<li>Running services inside a VM dramatically simplifies recovery and migration.</li>
+<li>Proxmox snapshots provide a clean rollback strategy before upgrades.</li>
+<li>Self-hosting Joplin removes vendor lock-in and long-term pricing risk.</li>
+<li>Clear separation between <strong>hypervisor</strong>, <strong>OS</strong>, and <strong>application</strong> reduces operational mistakes.</li>
+</ul>
+<hr>
+<h2 id="-next-steps">➡️ Next Steps<a hidden class="anchor" aria-hidden="true" href="#-next-steps">#</a></h2>
+<ul>
+<li>Automated VM backups to NAS</li>
+<li>VPN-only access for Joplin Server</li>
+<li>Hardening Debian (firewall rules, SSH lockdown)</li>
+<li>Monitoring uptime and resource usage</li>
+<li>Optional integration with additional self-hosted services</li>
+</ul>
+<hr>
+<h2 id="-progress-log">👷 Progress Log<a hidden class="anchor" aria-hidden="true" href="#-progress-log">#</a></h2>
+<h3 id="2026-2-10">2026-2-10<a hidden class="anchor" aria-hidden="true" href="#2026-2-10">#</a></h3>
+<ul>
+<li>Getting SSH to work with Wireguard, to <code>SSH</code> into <code>Homelab (Proxmox)</code> and the <code>Proxmox VM</code>&rsquo;s themselves
+<ul>
+<li>Not sure why it&rsquo;s not Working</li>
+<li><em><strong>Solution:</strong></em> it was because I had to disable <code>TinyWall</code> firewall on <code>PC</code> to get <code>SSH</code> to work.</li>
+</ul>
+</li>
+<li>Starting on implementing Joplin, since WireGuard is now successfully up and running.</li>
+</ul>
+<h3 id="2026-2-9">2026-2-9<a hidden class="anchor" aria-hidden="true" href="#2026-2-9">#</a></h3>
+<ul>
+<li>Successfully setup domain, since was having problems with ipv4. Now getting <span style="color: #00d28f;">WireGuard</span> to work.
+<ul>
+<li>Working on getting Cloudflare to propagate our domain. Changing DNS CNAME entries, redirects, etc</li>
+<li>Creating custom API entry, and writing custom DDNS update script for homelab (<code>Proxmox Debian VM</code>) to forward any IP changes to Cloudflare
+<ul>
+<li>Using the <code>python3 -m http.server 8000</code> command to create a very simple (local) HTTP server, to move files easily from <code>Proxmox Debian VM</code> to <code>Client PC</code></li>
+</ul>
+</li>
+<li>Ran script to test it, and automated it to run every 5 minutes with <code>cron</code> by using the following command:
+<ul>
+<li><code>sudo crontab -e</code> and adding the following line at the bottom: <code>*/5 * * * * /usr/local/bin/&lt;script name&gt;.sh &gt;/dev/null 2&gt;&amp;1</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><span style="color: #00d28f;"><em><strong>Our WireGuard infrastructure now looks like this:</strong></em></span></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">Client (pc / phone / laptop)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">vpn.&lt;yourdomain.com&gt; → &lt;your dynamic IP address&gt;
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Home Router (NAT)
+</span></span><span class="line"><span class="cl">        ↓ UDP 51820
+</span></span><span class="line"><span class="cl">192.168.0.X (Proxmox Debian VM)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">WireGuard (0.0.0.0:51820)
+</span></span></code></pre></div><h3 id="2026-2-8">2026-2-8<a hidden class="anchor" aria-hidden="true" href="#2026-2-8">#</a></h3>
+<ul>
+<li>Finished installing Wireguard on <code>Proxmox Debian VM</code> (VM that will run Joplin and other services, within Proxmox).</li>
+<li>Installing Wireguard on <code>Client PC</code> (Windows) for testing.
+<ul>
+<li>Having issues with the Wireguard config settings and getting ipv4 to work&hellip; so going to setup the Cloudflare DDNS with a domain I purchased, to mitigate
+the fact that my ISP changes my IP address often. This will give us a stable hostname and simplify things.
+<ul>
+<li>Creating simple HTML page that will be hosted on Cloudflare Pages (to have something there when address is typed inside a web browser).</li>
+<li>Will use GitHub private repo + Cloudflare Pages, to make any future updates easier</li>
+<li>Successfully created GitHub private repo + Cloudflare Page, and working landing page, for the domain.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2026-2-7">2026-2-7<a hidden class="anchor" aria-hidden="true" href="#2026-2-7">#</a></h3>
+<ul>
+<li>
+<p>Installing <a href="https://www.youtube.com/watch?v=ShDM-moMHwU" target="_blank" rel="noopener noreferrer">QEMU Guest Agent</a>, which runs inside the VM and serves to enable
+enhance communication between the guest operating system and the host hypervisor (ie. Proxmox)</p>
+<ul>
+<li>Lets Proxmox:
+<ul>
+<li>See VM IP automatically</li>
+<li>Shut down VM cleanly</li>
+<li>Do proper backups/snapshots</li>
+</ul>
+</li>
+<li>Enabling QEMU Guest Agent in Proxmox UI</li>
+</ul>
+</li>
+<li>
+<p>Figuring out how this will sync with my phone. Use Wireguard or Tailscale?</p>
+<ul>
+<li>Moving focus to installing Wireguard right now, as I need that to properly work first, if I want Joplin to work correctly.</li>
+</ul>
+</li>
+<li>
+<p>Installed <a href="https://putty.org/" target="_blank" rel="noopener noreferrer">PuTTY</a> as a better terminal program&hellip; as I coulnd&rsquo;t copy/paste into <code>Proxmox Debian VM</code>
+via Powershell nor Command Line programs, on <code>Client PC</code></p>
+</li>
+</ul>
+<hr>
+<h2 id="-references">📍 References<a hidden class="anchor" aria-hidden="true" href="#-references">#</a></h2>
+<ul>
+<li><a href="https://joplinapp.org/help/">https://joplinapp.org/help/</a></li>
+<li><a href="https://github.com/laurent22/joplin">https://github.com/laurent22/joplin</a></li>
+<li><a href="https://pve.proxmox.com/wiki/Main_Page">https://pve.proxmox.com/wiki/Main_Page</a></li>
+</ul>
+
+
+</div>
+
+<article class="post-entry"> 
+<figure class="entry-cover">
+        <img loading="lazy" src="http://localhost:1313/images/joplin/joplin_logo.png" alt="Joplin running on a homelab as a central node">
+</figure>
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Self-Hosted Joplin Server
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Private, self-hosted Joplin Server running on Debian inside Proxmox for secure note synchronization</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-10-17 12:26:32 -0700 PDT'>October 17, 2025</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to Self-Hosted Joplin Server" href="http://localhost:1313/projects/joplin/_index_backup_2-7-26/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

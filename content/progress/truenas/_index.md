@@ -25,6 +25,12 @@ Tracking setup, upgrades, and progress for building out a TrueNAS local backup s
 We will be using an old tower PC, recycling some old parts, and buying some new / used parts to build a solid TrueNAS machine, with 60TB+ of useable storage. 
 
 ---
+### 📅 2026-01-26
+- **Put together computer, but it won't POST**... troubleshooting the problem the following ways:
+	- <a href="https://forums.tomshardware.com/threads/no-post-system-wont-boot-and-no-video-output-troubleshooting-checklist.1285536/" target="_blank" rel="noopener noreferrer">"No POST", "system won't boot", and "no video output" troubleshooting checklist (Tom's Hardware)</a>. 
+		- Inspired by this guide, I realized the "ATX12V2" port on the <a href="https://download.asrock.com/Manual/B550%20Pro4.pdf" target="_blank" rel="noopener noreferrer">B550 Pro4 motherboard</a> isn't plugged in. So I'll try to connect that port to the PSU.
+
+<br/>
 
 ### 📅 2025-11-03
 - Researching best parts to get, while maximizing savings. Will buy refurbished HDD hard drives, and used ECC RAM to save on costs. 
@@ -32,5 +38,3 @@ We will be using an old tower PC, recycling some old parts, and buying some new 
 - We will refer / tag the TrueNAS server as NAS-001 to stay consistent with our naming conventions (PC-00x for workstations, SV-00x for servers, LT-00x for laptops, etc.)
 - To save on electricity, this TrueNAS will only be powered on once or twice a week to run backups and snapshots (or as-needed), and SV-001 (low-power homelab server) will be the always-on machine, taking care of most everyday tasks. 
 
-#### HDD drives
-- 

@@ -76,7 +76,7 @@ Comment a line|	`;` |	`; This is a comment`
 ## 3. Useful Scripts / Shortcuts / Macros I've Made
 
 ### 1. Markdown
-#### 1. <span style="color: #00d28f;">Ctrl + Alt + B</span> = Insert Break, Line Separator, and Break
+#### 1. *<span style="color: #00d28f;">Ctrl + Alt + B</span> = Insert Break, Line Separator, and Break*
 
 ```AHK
 ; ===========================================
@@ -105,6 +105,79 @@ This will insert the following text:
 This is very useful for formatting, when creating notes in Joplin, or creating content within Hugo (such as this very page). 
 I found myself typing out `<br/>` `---` `<br/>` a bunch of times over and over, so this saves a lot of time within those programs (and anywhere markdown is used). 
 
+
+<br/>
+
+
+
+#### 2. *<span style="color: #00d28f;">Left Ctrl + Left Shift + C</span> = Insert Colored Text Style: `<span style="color: #00d28f;">`* 
+#### 3. *<span style="color: #00d28f;">Left Ctrl + Left Shift + X</span> = Insert Text : `</span>`*
+
+```AHK
+; 2/14/26 
+; ===============================
+; For use ONLY inside of Notepad++, to make a text colored
+; It will insert the text: <span style="color: #00d28f;">
+; (You still have to add </span> at the end of it, with Left Control + Left Shift + X)
+; 
+; Activate this macro with: Left Control + Left Shift + C
+; Then to close the span element, press: Left Control + Left Shift + X
+; ===============================
+
+#HotIf WinActive("ahk_exe notepad++.exe")
+
+<^<+c::SendText '<span style="color: #00d28f;">'
+
+<^<+x::SendText '</span>'
+
+#HotIf
+```
+
+<br/>
+
+This will insert the following text:
+
+```Markdown
+<span style="color: #00d28f;">
+```
+<br/>
+
+... But only inside of the `Notepad++` program. 
+
+*Note that we still have to add the </span> at the end of text snippet, to close the `<span>` element, 
+but for that we've added the 2nd shortcut within the code, activated by <span style="color: #00d28f;">`Left Control + Left Shift + X`</span>, which will insert:*
+ 
+
+```html 
+</span>
+```
+
+<br/>
+
+The <span style="color: #00d28f;">colored text `<span>`</span> element is something I use very often when writing up markdown files, for use in notes, documentation, and this website. 
+
+Note that in the future, it might be better practice to use a shortcode, and implement something like: 
+
+```html 
+<span class="green-text">
+```
+
+And then define the color in CSS:
+
+```CSS
+.green-text {
+  color: #00d28f;
+}
+```
+<br/>
+
+This will make inline styles:
+- Easier to maintain
+- Reusable
+- Theme-aware
+	- *Can reuse the site architecture (theme)... but modify the individual colors inside the .css file... thus changing the 
+	whole color scheme and feel of the site... while only changing a few lines of code in the .css file... instead of individually going through 
+the whole site and changing every single #00d28f instance.*
 
 <br/>
 

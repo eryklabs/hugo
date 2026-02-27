@@ -151,6 +151,223 @@
 <div class="post-content"><h2 id="-overview">🌐 Overview<a hidden class="anchor" aria-hidden="true" href="#-overview">#</a></h2>
 <p>Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server.</p>
 <hr>
+<h2 id="-milestones">🏁 Milestones<a hidden class="anchor" aria-hidden="true" href="#-milestones">#</a></h2>
+<p><strong>2026-2-15</strong>: <span style="color: #00d28f;">Joplin Server</span> on <code>Proxmox VM - VM 100</code> up and running.</p>
+<p><strong>2026-2-14</strong>: <span style="color: #00d28f;">Gitea</span> on <code>Proxmox VM - VM 100</code> up and running.</p>
+<p><strong>2026-2-9</strong>: <span style="color: #00d28f;">WireGuard</span> up and running. Successfully established connection from <code>PC</code> to <code>Homelab</code> via <span style="color: #00d28f;">WireGuard</span></p>
+<p><strong>2026-2-8</strong>: First <span style="color: #00d28f;">Proxmox VM (Debian)</span> up and running, on <code>Homelab</code> (<span style="color: #00d28f;"><code>Proxmox VM - VM 100</code></span>)</p>
+<p><strong>2026-2-7</strong>: <span style="color: #00d28f;">Proxmox</span> up and running on <code>Homelab</code> server</p>
+<hr>
+<h2 id="-next-steps">📥 Next Steps<a hidden class="anchor" aria-hidden="true" href="#-next-steps">#</a></h2>
+<ul>
+<li>Install a private <span style="color: #00d28f;">git</span> solution on <code>Homelab</code>, as the source of truth for documentation of working on <code>Homelab</code> (and any other projects)</li>
+<li>Install <span style="color: #00d28f;">PiHole</span> for internal DNS resolution and ad-blocking</li>
+</ul>
+<hr>
+<h2 id="-progress-log">👷 Progress Log<a hidden class="anchor" aria-hidden="true" href="#-progress-log">#</a></h2>
+<h3 id="-2026-02-27">📅 2026-02-27<a hidden class="anchor" aria-hidden="true" href="#-2026-02-27">#</a></h3>
+<ul>
+<li>Troubleshooting why <code>Homelab</code> server keeps crashing and restarting every 1-2 days.</li>
+</ul>
+<br/>
+<h3 id="-2026-02-15">📅 2026-02-15<a hidden class="anchor" aria-hidden="true" href="#-2026-02-15">#</a></h3>
+<ul>
+<li>Deployed <span style="color: #00d28f;"><strong>Joplin Server v3.5.2</strong></span> inside Docker on <code>Proxmox VM</code> (VM-100).</li>
+<li>Separated secrets from compose file:
+<ul>
+<li>Runtime secrets stored at <code>/srv/secrets/joplin/.env</code></li>
+<li>Permissions set to <code>root:root</code> with <code>600</code></li>
+</ul>
+</li>
+<li>Rebuilt stack cleanly using <code>docker compose down -v</code> and reinitialized PostgreSQL.</li>
+<li>Bound Joplin to WireGuard interface only:
+<ul>
+<li><code>10.6.0.1:22300</code></li>
+</ul>
+</li>
+<li>Verified container health:
+<ul>
+<li><code>joplin-db</code></li>
+<li><code>joplin-server</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="-authentication-architecture">🔐 Authentication Architecture<a hidden class="anchor" aria-hidden="true" href="#-authentication-architecture">#</a></h4>
+<ul>
+<li>Logged in with default <code>admin@localhost</code></li>
+<li>Rotated admin password immediately</li>
+<li>Created dedicated non-admin sync user</li>
+<li>Stored both credentials in <span style="color: #00d28f;">KeePassXC</span></li>
+</ul>
+<h4 id="-synchronization-migration">🔄 Synchronization Migration<a hidden class="anchor" aria-hidden="true" href="#-synchronization-migration">#</a></h4>
+<ul>
+<li>Exported full JEX backup from <code>Windows PC</code> prior to migration.</li>
+<li>Switched sync target from File System → Joplin Server.</li>
+<li>Verified configuration via sync check.</li>
+<li>Seeded server with full dataset (~400+ items).</li>
+<li>Confirmed:
+<ul>
+<li>0 conflicts</li>
+<li>0 errors</li>
+<li>Complete note/resource parity</li>
+</ul>
+</li>
+</ul>
+<h4 id="-current-joplin-architecture">📡 Current Joplin Architecture<a hidden class="anchor" aria-hidden="true" href="#-current-joplin-architecture">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Windows PC (Primary Authoritative Client)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">WireGuard (10.6.0.0/24)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Proxmox VM (VM-100)
+</span></span><span class="line"><span class="cl">        ├── joplin-server
+</span></span><span class="line"><span class="cl">        └── postgres
+</span></span></code></pre></div><br/>
+<p><code>Proxmox VM</code> now acts as central sync authority.</p>
+<p>Server contains full dataset and revision history.</p>
+<p>Laptop Joplin not yet migrated (pending clean alignment).</p>
+<br/>
+<h3 id="-2026-02-14">📅 2026-02-14<a hidden class="anchor" aria-hidden="true" href="#-2026-02-14">#</a></h3>
+<ul>
+<li>Deployed <span style="color: #00d28f;"><strong>Gitea</strong></span> inside Docker on Proxmox VM.</li>
+<li>Reset containers and performed clean rebuild of:
+<ul>
+<li><code>gitea</code></li>
+<li><code>postgres</code></li>
+</ul>
+</li>
+<li>Verified services with <code>docker ps</code>.</li>
+</ul>
+<h4 id="-configuration">⚙️ Configuration<a hidden class="anchor" aria-hidden="true" href="#-configuration">#</a></h4>
+<ul>
+<li>PostgreSQL containerized and connected.</li>
+<li>Persistent volumes configured.</li>
+<li>SSH configured on non-standard internal port.</li>
+<li>HTTP running on internal port.</li>
+<li>Local-only access (WireGuard network).</li>
+</ul>
+<h4 id="-ssh-architecture">🔐 SSH Architecture<a hidden class="anchor" aria-hidden="true" href="#-ssh-architecture">#</a></h4>
+<ul>
+<li>Generated dedicated <strong>ED25519</strong> keypair for Gitea.</li>
+<li>Added public key in Gitea user settings.</li>
+<li>Verified SSH authentication works (Git-only access — no shell, expected behavior).</li>
+<li>Added host alias inside <code>~/.ssh/config</code> for simplified cloning.</li>
+</ul>
+<p>Example structure:</p>
+<pre tabindex="0"><code class="language-ssh" data-lang="ssh">Host gitea
+    HostName &lt;internal-ip&gt;
+    Port &lt;custom-port&gt;
+    User git
+    IdentityFile ~/.ssh/id_ed25519_gitea
+</code></pre><h4 id="architecture-snapshot">Architecture Snapshot:<a hidden class="anchor" aria-hidden="true" href="#architecture-snapshot">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-matlab" data-lang="matlab"><span class="line"><span class="cl"><span class="n">Proxmox</span> <span class="n">VM</span>
+</span></span><span class="line"><span class="cl">│
+</span></span><span class="line"><span class="cl">├── <span class="n">wireguard</span>
+</span></span><span class="line"><span class="cl">├── <span class="n">docker</span>
+</span></span><span class="line"><span class="cl">│   ├── <span class="n">gitea</span>
+</span></span><span class="line"><span class="cl">│   └── <span class="n">postgres</span>
+</span></span><span class="line"><span class="cl">│
+</span></span><span class="line"><span class="cl">└── <span class="k">persistent</span> <span class="n">volumes</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Client</span><span class="w"> </span><span class="n">Machine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">│</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">├──</span><span class="w"> </span><span class="n">Dedicated</span><span class="w"> </span><span class="n">SSH</span><span class="w"> </span><span class="nf">key</span><span class="w"> </span><span class="p">(</span><span class="n">Gitea</span><span class="o">-</span><span class="n">specific</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">└──</span><span class="w"> </span><span class="n">Structured</span><span class="w"> </span><span class="n">project</span><span class="w"> </span><span class="nf">directory</span><span class="w"> </span><span class="p">(</span><span class="n">non</span><span class="o">-</span><span class="n">system</span><span class="w"> </span><span class="n">drive</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></div><br/>
+<h3 id="-2026-2-13">📅 2026-2-13<a hidden class="anchor" aria-hidden="true" href="#-2026-2-13">#</a></h3>
+<ul>
+<li>Researching what the best privately hosted <code>git</code> solution will be, and the best approach to documenting this <code>Homelab</code> (and any other further projects), following
+industry best-practices
+<ul>
+<li>I will use <span style="color: #00d28f;"><code>Gitea</code></span> (private git) + <span style="color: #00d28f;"><code>Woodpecker</code></span> (CI/CD tool to pair with Gitea)</li>
+</ul>
+</li>
+</ul>
+<p><span style="color: #00d28f;"><em><strong>Current Architecture:</strong></em></span></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-scss" data-lang="scss"><span class="line"><span class="cl"><span class="nt">VM-100</span> <span class="o">(</span><span class="nt">Proxmox</span> <span class="nt">VM</span> <span class="nt">on</span> <span class="nt">Homelab</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>
+</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="nt">wireguard</span> <span class="o">(</span><span class="nt">already</span> <span class="nt">running</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="nt">docker</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>    <span class="err">├──</span> <span class="nt">gitea</span> <span class="nt">container</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>    <span class="err">├──</span> <span class="nt">woodpecker-server</span> <span class="nt">container</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>    <span class="err">├──</span> <span class="nt">woodpecker-agent</span> <span class="nt">container</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>    <span class="err">└──</span> <span class="nt">postgres</span> <span class="o">(</span><span class="nt">shared</span> <span class="nt">or</span> <span class="nt">separate</span><span class="o">)</span>
+</span></span></code></pre></div><br>
+<h3 id="-2026-2-9">📅 2026-2-9<a hidden class="anchor" aria-hidden="true" href="#-2026-2-9">#</a></h3>
+<ul>
+<li>Successfully setup domain, since was having problems with ipv4. Now getting <span style="color: #00d28f;">WireGuard</span> to work.
+<ul>
+<li>Working on getting Cloudflare to propagate our domain. Changing DNS CNAME entries, redirects, etc</li>
+<li>Creating custom API entry, and writing custom DDNS update script for homelab (<code>Proxmox Debian VM</code>) to forward any IP changes to Cloudflare
+<ul>
+<li>Using the <code>python3 -m http.server 8000</code> command to create a very simple (local) HTTP server, to move files easily from <code>Proxmox Debian VM</code> to <code>Client PC</code></li>
+</ul>
+</li>
+<li>Ran script to test it, and automated it to run every 5 minutes with <code>cron</code> by using the following command:
+<ul>
+<li><code>sudo crontab -e</code> and adding the following line at the bottom: <code>*/5 * * * * /usr/local/bin/&lt;script name&gt;.sh &gt;/dev/null 2&gt;&amp;1</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><span style="color: #00d28f;"><em><strong>Our WireGuard infrastructure now looks like this:</strong></em></span></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">Client (pc / phone / laptop)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">vpn.&lt;yourdomain.com&gt; → &lt;your dynamic IP address&gt;
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">Home Router (NAT)
+</span></span><span class="line"><span class="cl">        ↓ UDP 51820
+</span></span><span class="line"><span class="cl">192.168.0.X (Proxmox Debian VM)
+</span></span><span class="line"><span class="cl">        ↓
+</span></span><span class="line"><span class="cl">WireGuard (0.0.0.0:51820)
+</span></span></code></pre></div><h3 id="-2026-2-8">📅 2026-2-8<a hidden class="anchor" aria-hidden="true" href="#-2026-2-8">#</a></h3>
+<ul>
+<li>Finished installing Wireguard on <code>Proxmox Debian VM</code> (VM that will run Joplin and other services, within Proxmox).</li>
+<li>Installing Wireguard on <code>Client PC</code> (Windows) for testing.
+<ul>
+<li>Having issues with the Wireguard config settings and getting ipv4 to work&hellip; so going to setup the Cloudflare DDNS with a domain I purchased, to mitigate
+the fact that my ISP changes my IP address often. This will give us a stable hostname and simplify things.
+<ul>
+<li>Creating simple HTML page that will be hosted on Cloudflare Pages (to have something there when address is typed inside a web browser).</li>
+<li>Will use GitHub private repo + Cloudflare Pages, to make any future updates easier</li>
+<li>Successfully created GitHub private repo + Cloudflare Page, and working landing page, for the domain.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="-2026-2-7">📅 2026-2-7<a hidden class="anchor" aria-hidden="true" href="#-2026-2-7">#</a></h3>
+<ul>
+<li>
+<p>Installed <strong>Proxmox</strong> on homelab</p>
+</li>
+<li>
+<p>Researching how to install <strong>Joplin</strong>, to have a private &ldquo;Evernote&rdquo;-type note system, that will sync across various devices</p>
+</li>
+<li>
+<p>Installing <a href="https://www.youtube.com/watch?v=ShDM-moMHwU" target="_blank" rel="noopener noreferrer">QEMU Guest Agent</a>, which runs inside the VM and serves to enable
+enhance communication between the guest operating system and the host hypervisor (ie. Proxmox)</p>
+<ul>
+<li>Lets Proxmox:
+<ul>
+<li>See VM IP automatically</li>
+<li>Shut down VM cleanly</li>
+<li>Do proper backups/snapshots</li>
+</ul>
+</li>
+<li>Enabling QEMU Guest Agent in Proxmox UI</li>
+</ul>
+</li>
+<li>
+<p>Figuring out how this will sync with my phone. Use Wireguard or Tailscale?</p>
+<ul>
+<li>Moving focus to installing Wireguard right now, as I need that to properly work first, if I want Joplin to work correctly.</li>
+</ul>
+</li>
+<li>
+<p>Installed <a href="https://putty.org/" target="_blank" rel="noopener noreferrer">PuTTY</a> as a better terminal program&hellip; as I coulnd&rsquo;t copy/paste into <code>Proxmox Debian VM</code>
+via Powershell nor Command Line programs, on <code>Client PC</code></p>
+</li>
+</ul>
 <h3 id="-2025-11-03">📅 2025-11-03<a hidden class="anchor" aria-hidden="true" href="#-2025-11-03">#</a></h3>
 <ul>
 <li>Installed 64GB Samsung RAM kit, testing memory by running <strong>MemTest86</strong>, which has been running for about 6 hours now.</li>
@@ -187,7 +404,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
 
     <span>
         Powered by

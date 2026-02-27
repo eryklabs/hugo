@@ -149,14 +149,43 @@
   </h1>
 </header>
 <div class="post-content"><h2 id="-objective">🎯 Objective<a hidden class="anchor" aria-hidden="true" href="#-objective">#</a></h2>
-<p>Build a <strong>TrueNAS SCALE</strong> system as a central storage and cybersecurity lab node — designed to provide reliable ZFS-based storage, snapshots, and replication across my network.<br>
-The server acts as a backbone for my <strong>Proxmox cluster</strong>, <strong>Splunk</strong>, <strong>Security Onion</strong>, and <strong>log aggregation</strong>, while simulating enterprise-level NAS operations and access control (SMB, NFS, S3).</p>
+<p>Build a <strong>TrueNAS SCALE</strong> system as a central storage and cybersecurity lab node — designed to provide reliable ZFS-based storage, snapshots, and replication across my network.</p>
+<p>The server acts as a backbone for my <strong>Proxmox cluster</strong>, <strong>Splunk</strong>, <strong>Security Onion</strong>, and <strong>log aggregation</strong>, while simulating enterprise-level NAS operations and access control (SMB, NFS, S3).</p>
+<br/>
+<hr>
+<br/>
 <h2 id="-considerations--specifications">🗺️ Considerations / Specifications<a hidden class="anchor" aria-hidden="true" href="#-considerations--specifications">#</a></h2>
+<h3 id="hdd-capacity-in-the-case-im-using-cooler-master-haf-932">HDD Capacity in the Case I&rsquo;m Using (Cooler Master HAF 932)<a hidden class="anchor" aria-hidden="true" href="#hdd-capacity-in-the-case-im-using-cooler-master-haf-932">#</a></h3>
+<p>The <strong>Cooler Master HAF 932</strong> has:</p>
+<ul>
+<li>5 x 3.5&quot; bays at the bottom (to hold our HDD NAS hard drives)</li>
+<li>5 x 5.25&quot; bays above that (however <strong>one</strong> of those 5.25&quot; bays will be occupied by a BDXL-capable drive).</li>
+</ul>
+<p>Utilizing a <strong>3 x 5.25&quot; to 5 x 3.5&quot; Hot-Swap Cage</strong>, and a <strong>5.25&quot; to 3.5&quot; adapter</strong> (both described below), we effectively will increase the HAF 932&rsquo;s
+capacity to <strong>11 x 3.5&quot; HDDs</strong>.</p>
+<p><span style="color: #00d28f">This will utilize <strong>all available free space</strong> within the HAF 932 case, to hold:</span></p>
+<ul>
+<li><strong>1</strong> x 5.25&quot; BDXL-capable drive</li>
+<li><strong>11</strong> x 3.5&quot; NAS-grade HDD&rsquo;s</li>
+</ul>
+<br/>
+<h3 id="525-to-35-hot-swap-cage">5.25&quot; to 3.5&quot; Hot-Swap Cage<a hidden class="anchor" aria-hidden="true" href="#525-to-35-hot-swap-cage">#</a></h3>
+<p>How are we going to fit 3.5&quot; HDD Hard Drives where the 5.25&quot; bays are (where optical drives typically go)?</p>
+<p>Before researching NAS&rsquo;s, I didn&rsquo;t know there was a solution for this. They&rsquo;re called &ldquo;Hot Swap Cages&rdquo;.</p>
+<p>They&rsquo;re basically adapters that convert 3 x 5.25&quot; bays into a space for 5 x 3.5&quot; devices (typically HDD&rsquo;s).</p>
+<p>There&rsquo;s also 2 x 5.25&quot; cages (that fits 3 x 3.5&quot; devices), and adapters that can convert one 5.25&quot; bay to one 3.5&quot; slot.</p>
+<br/>
+<hr>
 <h3 id="power-consumption">Power Consumption<a hidden class="anchor" aria-hidden="true" href="#power-consumption">#</a></h3>
-<p>To save on power consumption, our homelab (EliteDesk 800 G4) server (SV-001) will be the server with 24/7 availability, and this TrueNAS server will utilize WoL (Wake-on-LAN) to power on, on a as-needed basis, or with scheduled cron jobs.</p>
+<p>To save on power consumption, our homelab <span style="color: #00d28f">(EliteDesk 800 G4) server (sv-001)</span> will be the server with <span style="color: #00d28f">24/7 availability</span>, and this TrueNAS server will utilize WoL (Wake-on-LAN) to power on, on a as-needed basis, or with scheduled cron jobs.</p>
+<p>The <span style="color: #00d28f">power savings</span> will be substantial, given electricity prices in our location.</p>
+<p>It&rsquo;s the difference between paying about <strong>$10 a month</strong> in electricity, to power on once or twice a week for a few hours&hellip; versus <strong>$500+ / yr</strong>, for keeping it on 24/7.</p>
+<br/>
+<hr>
 <h3 id="long-term-backup-solution">Long-Term Backup Solution<a hidden class="anchor" aria-hidden="true" href="#long-term-backup-solution">#</a></h3>
 <p>Strong focus on long-term backups. A pain point of mine has been running out of storage on every device (phones, laptops, desktops, etc.)&hellip;
 Keeping track of backups on various external drives scattered about is not good practice, and thus I am looking to find a proper long term, scaleable solution.</p>
+<br/>
 <h4><a href="http://localhost:1313/projects/truenas/m-disc/"><span style="color: #00d28f;">Cold Storage: M-Disc BD-R 25 GB</span></a></h4>
 <p>Taking the 3-2-1 principle into consideration, long term cold-storage backups on 25 GB M-Disks is something I think worthwhile to implement.
 These disks can easily be stored in offsite locations, taking up minimal space (inside a DVD binder, for example).
@@ -216,7 +245,56 @@ Hence, the choice to add a BDXL-capable drive, for burning 25 GB disks (verified
 <li>Capacity needs to be planned up front, due to the face you can&rsquo;t add drives to an existing RAIDZ vdev later. (You can only add <em>new vdevs</em>, which are groups of drives).</li>
 <li>Data is striped across all vdevs. Mixing mismatched vdevs (different sizes or layouts) later leads to performance imbalance and wasted space.</li>
 </ul>
+<br/>
+<h4 id="when-mirrors-raidz1-or-other-setups-make-sense">When Mirrors, RAIDZ1, or Other Setups Make Sense<a hidden class="anchor" aria-hidden="true" href="#when-mirrors-raidz1-or-other-setups-make-sense">#</a></h4>
+<p>The right RAID setup depends entirely on what you’re building the system for — disk size doesn’t really matter.
+If you’re running <strong>virtual machines</strong>, go with mirrors.
+If you’re building <strong>long-term archival storage</strong>, go with a wide RAIDZ2.
+For an <strong>active file share</strong>, either mirrors or a smaller Z2 setup works fine.</p>
+<p>A 3-wide RAIDZ1 can make sense if you’re trying to squeeze more usable space out of SSDs.
+A <strong>5–7-wide RAIDZ2</strong> is a good middle ground, while <strong>11–12-wide Z2</strong> is about as far as you want to push it.</p>
 <hr>
+<br/>
+<h3 id="definitions">Definitions<a hidden class="anchor" aria-hidden="true" href="#definitions">#</a></h3>
+<p><span style="color: #00d28f"><em><strong>HBA</strong></em></span> = Host Bus Adapter</p>
+<ul>
+<li>Dedicated PCIe card designed for enterprise-level storage connectivity.</li>
+</ul>
+<p><span style="color: #00d28f"><em><strong>SLOG</strong></em></span> = Separate Intent Log</p>
+<ul>
+<li>Optional dedicated device (usually a fast SSD) used to handle synchronous writes more safely and efficiently.</li>
+<li>ZFS has a built-in write log called the ZIL (ZFS Intent Log), which temporarily records synchronous write operations
+(writes that must be confirmed as “safely stored” before the system can continue).</li>
+<li>Normally, the ZIL lives on your main pool disks (slower HDD drives)&hellip; so if you add a SLOG device, it moves the ZIL off those slower disks
+onto a separate, faster SSD, highly improving performance for certain workloads.</li>
+</ul>
+<br/>
+<hr>
+<br/>
+<h3 id="considerations">Considerations<a hidden class="anchor" aria-hidden="true" href="#considerations">#</a></h3>
+<h4 id="capacity">Capacity<a hidden class="anchor" aria-hidden="true" href="#capacity">#</a></h4>
+<p>Once your pool hits around <strong>60–70% full</strong>, it’s time to either add another <code>vdev</code> or create a new pool with one.
+ZFS doesn’t rebalance data across <code>vdev</code>&rsquo;s, so you need to leave some free space on the older one — otherwise, it’ll start throwing data wherever it can.
+For long-term health and performance, never let your pool go past 80% full.</p>
+<br/>
+<h4 id="mirrored-boot-pool">Mirrored Boot Pool<a hidden class="anchor" aria-hidden="true" href="#mirrored-boot-pool">#</a></h4>
+<p>For the boot pool, it’s generally best to avoid NVMe drives since TrueNAS barely reads from the boot device after startup,
+and you’ll want to keep your M.2 slots free for cache or VMs.</p>
+<p>Instead, I&rsquo;ll be using two small enterprise-grade SATA SSDs (like Intel DC S3510 or S3610) in a mirrored ZFS boot pool.
+These drives have <strong>power-loss protection (PLP)</strong> and higher endurance, which prevents corruption during sudden power loss (a real risk on consumer SSDs).</p>
+<p>This setup gives true redundancy, stable performance, and long-term reliability, while leaving the high-speed slots open for
+important roles later (L2ARC, SLOG, or app storage). It’s the simplest and most robust option for a Ryzen-based NAS like this one.</p>
+<br/>
+<p><strong>But isn&rsquo;t a mirrored boot superfluous if I&rsquo;m using a UPS (Uninterruptible Power Supply) to power my NAS?</strong></p>
+<p>While a UPS protects against external power loss, it doesn&rsquo;t protect against sudden system crashes, controller hangs,
+user error (accidental power-off), etc.</p>
+<p>If power is cut mid-write, consumer SSDs without PLP can lose in-flight data still sitting in volatile DRAM cache.
+Enterprise SSDs with PLP finish flushing that cache to NAND using capacitors.</p>
+<p>Used enterprise SATA SSDs (such as the Intel DC S3510) can be found for quite cheap in the second-hand market,
+so it&rsquo;s not an expensive decision to make, for this build.</p>
+<br/>
+<hr>
+<br/>
 <h2 id="-environment--hardware">🔧 Environment / Hardware<a hidden class="anchor" aria-hidden="true" href="#-environment--hardware">#</a></h2>
 <table>
   <thead>
@@ -432,9 +510,10 @@ da5 ONLINE</p>
 <ul>
 <li><a href="https://www.truenas.com/docs/scale/">TrueNAS SCALE Documentation</a></li>
 <li><a href="https://openzfs.org/wiki/Performance_tuning">ZFS Best Practices Guide</a></li>
-<li><a href="https://min.io/docs/minio/linux/index.html">MinIO Documentation</a></li>
-<li><a href="https://networkupstools.org/docs/">NUT UPS Daemon Config</a></li>
 <li><a href="https://pve.proxmox.com/wiki/Backup_and_Restore">Proxmox Backup + S3 Integration</a></li>
+<li><a href="https://www.youtube.com/watch?v=ykhaXo6m-04">Choosing The BEST Drive Layout For Your NAS (Hardware Haven)</a></li>
+<li><a href="https://jrs-s.net/2015/02/06/zfs-you-should-use-mirror-vdevs-not-raidz/">ZFS: You should use mirror vdevs, not RAIDZ.</a></li>
+<li><a href="https://nex7.blogspot.com/2013/03/readme1st.html">Things Nobody Told You About ZFS (Nex7)</a></li>
 </ul>
 <hr>
 
@@ -470,7 +549,7 @@ da5 ONLINE</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
 
     <span>
         Powered by

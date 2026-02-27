@@ -152,7 +152,7 @@
     <div class="post-description">
       A complete SOP for deploying, updating, and maintaining Hugo sites using GitHub Pages.
     </div>
-    <div class="post-meta"><span title='2025-11-05 09:00:00 -0700 -0700'>November 5, 2025</span>&nbsp;·&nbsp;<span>1 min</span>
+    <div class="post-meta"><span title='2025-11-05 09:00:00 -0700 -0700'>November 5, 2025</span>&nbsp;·&nbsp;<span>2 min</span>
 
 </div>
   </header> 
@@ -174,7 +174,15 @@
                 <li>
                     <a href="#1-check-status" aria-label="1️⃣ Check Status">1️⃣ Check Status</a></li>
                 <li>
-                    <a href="#2-stage-changes" aria-label="2️⃣ Stage Changes">2️⃣ Stage Changes</a>
+                    <a href="#2-stage-changes" aria-label="2️⃣ Stage Changes">2️⃣ Stage Changes</a></li>
+                <li>
+                    <a href="#3-commit-with-a-clear-message" aria-label="3️⃣ Commit with a Clear Message">3️⃣ Commit with a Clear Message</a></li>
+                <li>
+                    <a href="#4-push-to-github-main-branch" aria-label="4️⃣ Push to GitHub (Main Branch)">4️⃣ Push to GitHub (Main Branch)</a></li>
+                <li>
+                    <a href="#5-optional-pull-latest-changes-before-next-edit" aria-label="5️⃣ (Optional) Pull Latest Changes Before Next Edit">5️⃣ (Optional) Pull Latest Changes Before Next Edit</a></li>
+                <li>
+                    <a href="#-summary" aria-label="✅ Summary">✅ Summary</a>
                 </li>
             </ul>
             </li>
@@ -214,10 +222,74 @@ Name it whatever you want — e.g. <code>eryklabs</code> or <code>my-hugo-site</
 <h3 id="2-stage-changes">2️⃣ Stage Changes<a hidden class="anchor" aria-hidden="true" href="#2-stage-changes">#</a></h3>
 <p>To stage all new and modified files:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git add .
-</span></span></code></pre></div><p>Or, to stage specific files:</p>
+</span></span></code></pre></div><p>*(What this code does is &ldquo;Add (stage) all changes in the current directory and its subdirectories to the next commit.&rdquo;)</p>
+<ul>
+<li><em>(The &ldquo;.&rdquo; means current directory, and everything inside of it, recursively.)</em></li>
+</ul>
+<p>Or, to stage specific files:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git add content/sops/hugo.md
 </span></span><span class="line"><span class="cl">git add config.toml
 </span></span></code></pre></div><br/>
+<h3 id="3-commit-with-a-clear-message">3️⃣ Commit with a Clear Message<a hidden class="anchor" aria-hidden="true" href="#3-commit-with-a-clear-message">#</a></h3>
+<p>Commit all staged files:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git commit -m <span class="s2">&#34;Update SOPs and fix image paths&#34;</span>
+</span></span></code></pre></div><p>Commit message format (recommended):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-vbnet" data-lang="vbnet"><span class="line"><span class="cl"><span class="na">&lt;category&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="kt">short</span> <span class="n">description</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Examples</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s">&#34;content: updated hugo commands section&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s">&#34;config: fixed baseURL for github pages&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s">&#34;images: replaced outdated hugo logo&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s">&#34;sops: added github push procedure&#34;</span>
+</span></span></code></pre></div><br/>
+<h3 id="4-push-to-github-main-branch">4️⃣ Push to GitHub (Main Branch)<a hidden class="anchor" aria-hidden="true" href="#4-push-to-github-main-branch">#</a></h3>
+<p>Push your changes to the main branch:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin main
+</span></span></code></pre></div><p>If you’re using another branch (e.g. dev):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push origin dev
+</span></span></code></pre></div><br/>
+<h3 id="5-optional-pull-latest-changes-before-next-edit">5️⃣ (Optional) Pull Latest Changes Before Next Edit<a hidden class="anchor" aria-hidden="true" href="#5-optional-pull-latest-changes-before-next-edit">#</a></h3>
+<p>Before making more edits or switching devices, always sync your repo:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git pull origin main
+</span></span></code></pre></div><p>This ensures you’re working on the most current version and prevents merge conflicts.</p>
+<br/>
+<h3 id="-summary">✅ Summary<a hidden class="anchor" aria-hidden="true" href="#-summary">#</a></h3>
+<table>
+  <thead>
+      <tr>
+          <th>Step</th>
+          <th>Command</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>git status</td>
+          <td>Review what changed</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>git add .</td>
+          <td>Stage all changes</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>git commit -m &ldquo;&hellip;&rdquo;</td>
+          <td>Commit with message</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>git push origin main</td>
+          <td>Push updates</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>git pull origin main</td>
+          <td>Sync next time</td>
+      </tr>
+  </tbody>
+</table>
 
 
   </div>
@@ -230,7 +302,7 @@ Name it whatever you want — e.g. <code>eryklabs</code> or <code>my-hugo-site</
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
 
     <span>
         Powered by

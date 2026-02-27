@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Programming on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>
+    <link>http://localhost:1313/tags/programming/</link>
+    <description>Recent content in Programming on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
+    <generator>Hugo -- 0.151.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python</title>
+      <link>http://localhost:1313/notes/python/</link>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/python/</guid>
+      <description>Personal notes and tips for learning the Python programming language.</description>
+    </item>
+  </channel>
+</rss>

@@ -25,7 +25,7 @@ Tracking setup, learning, and deployment to GitHub, for future reference.
 
 ### 📅 2025-10-25
 
-**Step 1: Initialize Git in Huge Site Folder**
+**Step 1: Initialize Git in Hugo Site Folder**
 
 ```bash
 cd C:\Projects\eryklabs   # ← your folder

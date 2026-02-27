@@ -3,14 +3,14 @@ title: "Homelab"
 date: 2025-10-17T12:26:32-07:00
 draft: false
 summary: "Homelab for learning cybersecurity, networking, and experimenting"
-tech: ["homelab", "Go", "Splunk"]
+tech: ["homelab", "go", "splunk", "python", "joplin", "wireguard", "proxmox", "debian"]
 tags: ["homelab"]
 role: ""
 links:
   repo: ""
   demo: ""
 cover:
-  image: "cover.jpg"     # put alongside index.md
+  image: "/images/homelab/elitedesk-g4-800-mini-pc.jpg"     # put alongside index.md
   caption: ""
 ---
 
@@ -20,53 +20,69 @@ To create a functional homelab not only for learning, but for practical uses in 
 ---
 
 ## 🔧 Environment / Tools
-List system setup and versions.
+
+*List of system setup and versions:*
 
 | Component | Purpose |
 |------------|----------|
-| HP EliteDesk 800 G4 Mini i7-8700T 2.4GHz 16GB RAM | Main Server |
+| HP EliteDesk 800 G4 Mini i7-8700T 2.4GHz 64GB RAM | Main Server |
 | Python 3.11 | Scripting and data parsing |
+| Proxmox VE | Bare-metal hypervisor |
+| Debian (VM) | Service host OS |
+| Joplin Server | Self-hosted note sync backend |
 | Wireshark | Network packet inspection |
 
 ---
 
 ## 📐 Methodology
 
-Researching and implementing the following services:
+*Researching and implementing the following services:*
 
-1. Pi-Hole
+1. Proxmox
+   - Installed as bare-metal hypervisor on sv-001
+
+2. Debian Virtual Machine
+   - Created and managed via Proxmox
+   - Used as an isolated service host
+
+3. Joplin Server
+   - Deployed inside the Debian VM
+   - Used for private, self-hosted note synchronization
+
+4. Pi-Hole
 	- Blocking ads
 
   
 
 ## 🔎 Results
 
-Summarize measurable output, screenshots, or outcomes.
+*Summary of measurable output, screenshots, and/or outcomes:*
 
-| Metric | Result |
-|--------|:--------:|
-| Queries built	| 12 |
-| True positives | 	8 |
-| False positives |	1 |
+| Item | Status |
+|------|--------|
+| Proxmox installed | ✅ |
+| Debian VM running | ✅ |
+| Joplin server syncing | ✅ |
 
-Include images:
-![DNS exfiltration graph](/images/dns-exfiltration-example.png)
 
 ## 💡 Lessons Learned
 
-Bullet or paragraph format works fine.
+- Keeping services off the Proxmox host reduces risk and simplifies recovery.
+- VM isolation makes backups, snapshots, and migrations safer.
+- Self-hosting Joplin removes reliance on third-party sync providers.
 
-- Discovered that DNS queries with TXT records are common indicators.
-
-- Learned how to filter out false positives using field qtype.
 
 ## ➡️ Next Steps
 
-What would you add, automate, or scale?
+*What to add, automate, and/or scale:*
 
 - Automate query generation with Python.
 
 - Integrate with an alerting system.
+
+- Add automated backups of the Debian VM.
+- Secure remote access to sv-001 (VPN or SSH hardening).
+- Integrate NAS-001 for storage and backups.
 
 ## 📍 References
 

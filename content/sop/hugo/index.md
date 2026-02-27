@@ -93,6 +93,7 @@ For example, on this page, the Hugo logo is inserted via this code snippet in th
 
 ## 3. Insert an image into the page
 
+
 If you don’t need custom margins or width:
 
 `![Example text](/images/image.jpg)`
@@ -103,6 +104,12 @@ Example used at the top of this page:
 
 
 <br/>
+
+### *Image Standardation SOP*
+
+<a href="https://eryklabs.com/sop/hugo/image-sop" target="_blank" rel="noopener noreferrer">my site</a>
+
+[Image SOP](/sop/hugo/image-sop/)
 
 ---
 
@@ -228,4 +235,14 @@ RAIDZ3	|3 disks fail|	~N-3 drives usable|	Good for mission-critical or 12-16+ di
 
 ---
 
+## 9. Add a page in Hugo
 
+Everything you want Hugo to publish must be a Markdown file (`.md`) under the `content/` folder. Hugo will turn that `.md` into an HTML page.
+
+<span style="color: #00d28f;">If you want to create a new page (for example a `Joplin` page under the `Projects` section of the website), then:</span>
+
+1. Create a new folder under that section of the site (e.g. a `joplin` folder, inside of the `projects` folder, of the `eryklabs` hugo site).
+2. Create (or copy/paste an existing) `_index.md` file in the `joplin` folder.
+3. Your new `joplin` page is now live at `yourwebsite.com/projects/joplin`.
+
+*Note: If you want to create any subpages under the new `joplin` folder, just add them into the same `projects` folder. See the `trueNAS` section for an example.*

@@ -6,8 +6,50 @@
     <description>Recent content in Home on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
     <generator>Hugo -- 0.151.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 Nov 2025 09:00:00 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 23 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Memorize Python Methods (4-Question Method)</title>
+      <link>http://localhost:1313/notes/python/memorize-methods/</link>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/python/memorize-methods/</guid>
+      <description>A practical framework for learning and recalling Python methods.</description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>http://localhost:1313/notes/python/</link>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/python/</guid>
+      <description>Personal notes and tips for learning the Python programming language.</description>
+    </item>
+    <item>
+      <title>Intel CPUs</title>
+      <link>http://localhost:1313/notes/intel-cpu/</link>
+      <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/intel-cpu/</guid>
+      <description>Technical notes, architecture breakdowns, and generation reference for Intel CPUs.</description>
+    </item>
+    <item>
+      <title>Markdown Language</title>
+      <link>http://localhost:1313/notes/markdown/</link>
+      <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/markdown/</guid>
+      <description>References for using Markdown Language.</description>
+    </item>
+    <item>
+      <title>Cloudflare Pages - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/cloudflare/</link>
+      <pubDate>Wed, 05 Nov 2025 09:00:00 -0700</pubDate>
+      <guid>http://localhost:1313/sop/cloudflare/</guid>
+      <description>A complete SOP for connecting a GitHub-hosted Hugo site to Cloudflare Pages for free hosting.</description>
+    </item>
+    <item>
+      <title>GitHub Pages - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/documentation/</link>
+      <pubDate>Wed, 05 Nov 2025 09:00:00 -0700</pubDate>
+      <guid>http://localhost:1313/sop/documentation/</guid>
+      <description>A complete SOP for deploying, updating, and maintaining Hugo sites using GitHub Pages.</description>
+    </item>
     <item>
       <title>GitHub Pages - Standard Operating Procedures (SOPs)</title>
       <link>http://localhost:1313/sop/github/</link>
@@ -49,6 +91,13 @@
       <pubDate>Sun, 19 Oct 2025 12:26:32 -0700</pubDate>
       <guid>http://localhost:1313/sop/hugo/</guid>
       <description>A collection of repeatable workflows for Hugo website builder.</description>
+    </item>
+    <item>
+      <title>Self-Hosted Joplin Server</title>
+      <link>http://localhost:1313/projects/joplin/_index_backup_2-7-26/</link>
+      <pubDate>Fri, 17 Oct 2025 12:26:32 -0700</pubDate>
+      <guid>http://localhost:1313/projects/joplin/_index_backup_2-7-26/</guid>
+      <description>Private, self-hosted Joplin Server running on Debian inside Proxmox for secure note synchronization</description>
     </item>
     <item>
       <title>Write-Ups Template</title>
