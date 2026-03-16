@@ -41,9 +41,64 @@ Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server.
 ---
 ## 👷 Progress Log
 
+### 📅 2026-03-15
+
+- Troubleshooting `WireGuard` service, assigning `DHCP` addresses in router configuration to keep persistant IPs in homelab LAN.
+(I hadn't been able to login to `Homelab` server remotely lately). 
+- Adding port forwarding for UDP port `51820` to `Homelab`
+- Enabled packet forwarding with the following commands:
+	- `sudo nano /etc/sysctl.conf`
+		- Adding this line: `net.ipv4.ip_forward=1`
+	- Applying it with `sudo sysctl -p`
+	- Adding NAT rule to LAN machines think VPN clients are local:
+		- `sudo iptables -t nat -A POSTROUTING -o ens00 -j MASQUERADE`
+		- (`ens00` is my LAN interface)
+	- <span style="color: #00d28f;">Editing `WireGuard` client configs to tell the client to send LAN traffic through the VPN:</span>
+		- Change `AllowedIPs = 10.6.0.0/24` to `AllowedIPs = 10.6.0.0/24, 192.168.0.0/24`
+
+Current new `Homelab` architecture:
+
+```python
+internet
+   │
+   │ UDP 51820
+   ▼
+router
+   │
+192.168.0.0/24
+   │
+   ├── sv-001 (proxmox)
+   │
+   ├── sv-001-svc (services - Debian VM)
+   │       ├─ wireguard (wg0 → 10.6.0.1)
+   │	   └─ docker
+   │       	├─ gitea
+   │       	└─ joplin
+   │
+   ├── nas-001
+   │
+   └── other devices
+
+VPN network
+10.6.0.0/24
+   │
+   ├── sv-001-svc (10.6.0.1)
+   │
+   └── clients
+```
+
+<br/>
+
 ### 📅 2026-02-27
 
 - Troubleshooting why `Homelab` server keeps crashing and restarting every 1-2 days.
+- Solved: Had to add `i915.enable_dc=0` to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`
+	```bash
+	GRUB_CMDLINE_LINUX_DEFAULT="quiet i915.enable_dc=0"
+	```
+- It fixed the reboots because `i915.enable_dc=0` disables a buggy Intel GPU power-saving feature in the 
+Linux i915 driver that can cause GPU hangs and random system crashes on some Intel CPUs, so the driver 
+never enters the unstable power state that was triggering the hard resets.
 
 <br/>
 

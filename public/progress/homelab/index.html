@@ -165,9 +165,70 @@
 </ul>
 <hr>
 <h2 id="-progress-log">👷 Progress Log<a hidden class="anchor" aria-hidden="true" href="#-progress-log">#</a></h2>
+<h3 id="-2026-03-15">📅 2026-03-15<a hidden class="anchor" aria-hidden="true" href="#-2026-03-15">#</a></h3>
+<ul>
+<li>Troubleshooting <code>WireGuard</code> service, assigning <code>DHCP</code> addresses in router configuration to keep persistant IPs in homelab LAN.
+(I hadn&rsquo;t been able to login to <code>Homelab</code> server remotely lately).</li>
+<li>Adding port forwarding for UDP port <code>51820</code> to <code>Homelab</code></li>
+<li>Enabled packet forwarding with the following commands:
+<ul>
+<li><code>sudo nano /etc/sysctl.conf</code>
+<ul>
+<li>Adding this line: <code>net.ipv4.ip_forward=1</code></li>
+</ul>
+</li>
+<li>Applying it with <code>sudo sysctl -p</code></li>
+<li>Adding NAT rule to LAN machines think VPN clients are local:
+<ul>
+<li><code>sudo iptables -t nat -A POSTROUTING -o ens00 -j MASQUERADE</code></li>
+<li>(<code>ens00</code> is my LAN interface)</li>
+</ul>
+</li>
+<li><span style="color: #00d28f;">Editing <code>WireGuard</code> client configs to tell the client to send LAN traffic through the VPN:</span>
+<ul>
+<li>Change <code>AllowedIPs = 10.6.0.0/24</code> to <code>AllowedIPs = 10.6.0.0/24, 192.168.0.0/24</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Current new <code>Homelab</code> architecture:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">internet</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span> <span class="n">UDP</span> <span class="mi">51820</span>
+</span></span><span class="line"><span class="cl">   <span class="err">▼</span>
+</span></span><span class="line"><span class="cl"><span class="n">router</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl"><span class="mf">192.168.0.0</span><span class="o">/</span><span class="mi">24</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span> <span class="p">(</span><span class="n">proxmox</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="n">services</span> <span class="o">-</span> <span class="n">Debian</span> <span class="n">VM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>       <span class="err">├─</span> <span class="n">wireguard</span> <span class="p">(</span><span class="n">wg0</span> <span class="err">→</span> <span class="mf">10.6.0.1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>	   <span class="err">└─</span> <span class="n">docker</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>       	<span class="err">├─</span> <span class="n">gitea</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>       	<span class="err">└─</span> <span class="n">joplin</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">nas</span><span class="o">-</span><span class="mi">001</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">other</span> <span class="n">devices</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">VPN</span> <span class="n">network</span>
+</span></span><span class="line"><span class="cl"><span class="mf">10.6.0.0</span><span class="o">/</span><span class="mi">24</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="mf">10.6.0.1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">clients</span>
+</span></span></code></pre></div><br/>
 <h3 id="-2026-02-27">📅 2026-02-27<a hidden class="anchor" aria-hidden="true" href="#-2026-02-27">#</a></h3>
 <ul>
 <li>Troubleshooting why <code>Homelab</code> server keeps crashing and restarting every 1-2 days.</li>
+<li>Solved: Had to add <code>i915.enable_dc=0</code> to <code>GRUB_CMDLINE_LINUX_DEFAULT</code> in <code>/etc/default/grub</code>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s2">&#34;quiet i915.enable_dc=0&#34;</span>
+</span></span></code></pre></div></li>
+<li>It fixed the reboots because <code>i915.enable_dc=0</code> disables a buggy Intel GPU power-saving feature in the
+Linux i915 driver that can cause GPU hangs and random system crashes on some Intel CPUs, so the driver
+never enters the unstable power state that was triggering the hard resets.</li>
 </ul>
 <br/>
 <h3 id="-2026-02-15">📅 2026-02-15<a hidden class="anchor" aria-hidden="true" href="#-2026-02-15">#</a></h3>

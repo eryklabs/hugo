@@ -32,6 +32,9 @@ Tracking my progress in learning the **Python** programming language.
 
 ---
 
+### 📅 2026-02-27
+- Continuing with this tutorial @ 2:52:00: <a href="https://youtu.be/_uQrJ0TkZlc?t=10355" target="_blank" rel="noopener noreferrer">Python Full Course for Beginners (Mosh)</a>
+
 ### 📅 2026-01-23
 - Continuing with this tutorial @ 2:25:00: <a href="https://youtu.be/_uQrJ0TkZlc?t=8405" target="_blank" rel="noopener noreferrer">Python Full Course for Beginners (Mosh)</a>
 - Dictionaries, Methods
