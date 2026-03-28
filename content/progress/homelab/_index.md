@@ -17,19 +17,21 @@ cover:
 ---
 
 ## 🌐 Overview
-Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server.
+Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server (`sv-001`).
 
 ---
 
 ## 🏁 Milestones
 
-**2026-2-15**: <span style="color: #00d28f;">Joplin Server</span> on `Proxmox VM - VM 100` up and running.
+**2026-3-27**: <span style="color: #00d28f;">Technitium DNS Server, Nginx Reverse Proxy, Syncthing</span> on `sv-001-svc` up and running.
 
-**2026-2-14**: <span style="color: #00d28f;">Gitea</span> on `Proxmox VM - VM 100` up and running.
+**2026-2-15**: <span style="color: #00d28f;">Joplin Server</span> on `sv-001-svc` up and running.
+
+**2026-2-14**: <span style="color: #00d28f;">Gitea</span> on `sv-001-svc` up and running.
 
 **2026-2-9**: <span style="color: #00d28f;">WireGuard</span> up and running. Successfully established connection from `PC` to `Homelab` via <span style="color: #00d28f;">WireGuard</span>
 
-**2026-2-8**: First <span style="color: #00d28f;">Proxmox VM (Debian)</span> up and running, on `Homelab` (<span style="color: #00d28f;">`Proxmox VM - VM 100`</span>)
+**2026-2-8**: First <span style="color: #00d28f;">Proxmox VM (Debian)</span> up and running, on `Homelab` (<span style="color: #00d28f;">`sv-001-svc: Proxmox VM - VM 100`</span>)
 
 
 **2026-2-7**: <span style="color: #00d28f;">Proxmox</span> up and running on `Homelab` server
@@ -41,9 +43,6 @@ Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server.
 ---
 ## 👷 Progress Log
 
-
-
-<br/>
 
 ### 📅 2026-03-27
 

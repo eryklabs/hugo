@@ -1,0 +1,900 @@
+[33mcommit ca6abef2677156c5610d8014df4903c1acdce27f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Eric O. <contact@eryklabs.com>
+Date:   Fri Mar 27 22:53:57 2026 -0700
+
+    Update Homelab Progress Page
+
+[1mdiff --git a/content/progress/homelab/_index.md b/content/progress/homelab/_index.md[m
+[1mindex 1422eff..642437c 100644[m
+[1m--- a/content/progress/homelab/_index.md[m
+[1m+++ b/content/progress/homelab/_index.md[m
+[36m@@ -41,6 +41,204 @@[m [mTracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server.[m
+ ---[m
+ ## 👷 Progress Log[m
+ [m
+[32m+[m
+[32m+[m
+[32m+[m[32m<br/>[m
+[32m+[m
+[32m+[m[32m### 📅 2026-03-27[m
+[32m+[m
+[32m+[m[32m- Built a full internal access stack (DNS + WireGuard + reverse proxy) to access homelab services via clean hostnames instead of IP:port[m
+[32m+[m[32m- Solved multiple connectivity issues across DNS resolution, VPN routing, reverse proxy config, and Docker service exposure[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## 🔧 Systems Worked On[m
+[32m+[m
+[32m+[m[32m### Technitium (Internal DNS Server)[m
+[32m+[m[32m- Set up Technitium internal DNS to resolve local services to a single server IP[m
+[32m+[m[32m- Verified resolution works both locally and over VPN[m
+[32m+[m[32m- Fixed inconsistent resolution caused by OS using multiple DNS sources[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### WireGuard (VPN + DNS Routing)[m
+[32m+[m[32m- Configured clients to use internal DNS server instead of ISP DNS[m
+[32m+[m[32m- Ensured DNS queries route through VPN instead of leaking externally[m
+[32m+[m[32m- Verified full internal access via VPN subnet (10.x network)[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### Reverse Proxy (Nginx Proxy Manager)[m
+[32m+[m[32m- Configured hostname-based routing to internal services (no ports)[m
+[32m+[m[32m- Fixed multiple 502 errors caused by incorrect upstream targets[m
+[32m+[m[32m- Learned correct proxy flow: DNS → proxy → service[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### Joplin Server[m
+[32m+[m[32m- Debugged “Invalid origin” error caused by base URL mismatch[m
+[32m+[m[32m- Fixed environment config (`APP_BASE_URL`)[m
+[32m+[m[32m- Verified correct behavior via curl + Host header simulation[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### Syncthing[m
+[32m+[m[32m- Diagnosed container crash loop due to permission issues[m
+[32m+[m[32m- Fixed volume ownership + permissions[m
+[32m+[m[32m- Successfully exposed UI and routed via reverse proxy[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### ⚖️ Decisions Made[m
+[32m+[m
+[32m+[m[32m#### Use Reverse Proxy instead of Direct Ports[m
+[32m+[m[32m- **Pros:**[m
+[32m+[m[32m  - Clean URLs (no ports)[m
+[32m+[m[32m  - Centralized routing[m
+[32m+[m[32m  - Matches real-world production setups[m[41m [m
+[32m+[m[32m- **Cons:**[m
+[32m+[m[32m  - Adds complexity (can break with misconfig)[m
+[32m+[m[32m- **Decision:** Use reverse proxy → necessary for scaling + professionalism[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m#### Keep Services Internal (VPN-only)[m
+[32m+[m[32m- **Pros:**[m
+[32m+[m[32m  - Reduces attack surface[m
+[32m+[m[32m  - Avoids exposing home network publicly[m[41m [m
+[32m+[m[32m- **Cons:**[m
+[32m+[m[32m  - Requires VPN for access[m
+[32m+[m[32m- **Decision:** VPN-first architecture → security over convenience[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m#### Run Services in Docker[m
+[32m+[m[32m- **Pros:**[m
+[32m+[m[32m  - Consistency across services[m
+[32m+[m[32m  - Easier deployment + rebuild[m
+[32m+[m[32m- **Cons:**[m
+[32m+[m[32m  - Permissions + networking issues can break things[m
+[32m+[m[32m- **Decision:** Continue using Docker → industry standard skill[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### ⚠️ Problems Encountered[m
+[32m+[m
+[32m+[m[32m- DNS resolving inconsistently → caused by OS mixing DNS sources[m
+[32m+[m[32m- Reverse proxy 502 errors → caused by wrong IP/port targets[m
+[32m+[m[32m- Joplin rejecting requests → caused by base URL mismatch[m
+[32m+[m[32m- Syncthing failing to start → caused by filesystem permissions[m
+[32m+[m[32m- Services working via IP but not domain → caused by DNS misconfiguration[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### 🧠 Lessons Learned[m
+[32m+[m
+[32m+[m[32m#### DNS vs Routing (critical)[m
+[32m+[m[32m- DNS only resolves names → does NOT control traffic path[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m#### Reverse Proxy Behavior[m
+[32m+[m[32m- Routes based on **hostname (Host header)**, not IP[m
+[32m+[m[32m- All domains should point to proxy, not services directly[m[41m [m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m#### WireGuard Reality[m
+[32m+[m[32m- DNS must be explicitly configured per client[m
+[32m+[m[32m- Otherwise system falls back to ISP DNS silently[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m#### Docker Networking[m
+[32m+[m[32m- Binding services to wrong interface breaks proxy access[m
+[32m+[m[32m- Services must be reachable from proxy layer[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m#### Permissions Are a Common Failure Point[m
+[32m+[m[32m- Many container crashes are caused by volume permission issues, not app bugs[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m#### Standard Homelab Architecture (validated)[m
+[32m+[m[32m- DNS + Reverse Proxy + VPN is a common pattern for secure access[m[41m [m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### 🔁 Final Architecture Built[m
+[32m+[m
+[32m+[m[32mClient (PC / Phone) <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mWireGuard VPN <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mInternal DNS <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mReverse Proxy <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mDocker Services <br/>[m
+[32m+[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### 🧾 Ultra-Short Summary[m
+[32m+[m
+[32m+[m[32m- Built internal DNS for service discovery across LAN + VPN[m[41m  [m
+[32m+[m[32m- Integrated WireGuard with DNS to prevent leaks and ensure consistency[m[41m  [m
+[32m+[m[32m- Deployed reverse proxy for clean hostname-based routing[m[41m  [m
+[32m+[m[32m- Fixed Joplin origin issues and proxy misconfiguration[m[41m  [m
+[32m+[m[32m- Debugged and deployed Syncthing with correct permissions[m[41m  [m
+[32m+[m
+[32m+[m[32m<br/>[m
+[32m+[m
+[32m+[m[32mCurrent new `Homelab` architecture:[m
+[32m+[m
+[32m+[m[32m```python[m
+[32m+[m
+[32m+[m[32minternet[m
+[32m+[m[32m   │[m
+[32m+[m[32m   │ UDP 51820[m
+[32m+[m[32m   ▼[m
+[32m+[m[32mrouter[m
+[32m+[m[32m   │[m
+[32m+[m[32m192.168.0.0/24[m
+[32m+[m[32m   │[m
+[32m+[m[32m   ├── sv-001 (proxmox)[m
+[32m+[m[32m   │[m
+[32m+[m[32m   ├── sv-001-svc (services - Debian VM)[m
+[32m+[m[32m   │       ├─ wireguard (wg0 → 10.6.0.1)[m
+[32m+[m[32m   │       └─ docker[m
+[32m+[m[32m   │            ├─ technitium (DNS server, port 53)[m
+[32m+[m[32m   │            ├─ nginx-proxy-manager (ports 80, 443)[m
+[32m+[m[32m   │            ├─ gitea (3000)[m
+[32m+[m[32m   │            ├─ joplin (22300)[m
+[32m+[m[32m   │            └─ syncthing (8384)[m
+[32m+[m[32m   │[m
+[32m+[m[32m   ├── nas-001[m
+[32m+[m[32m   │[m
+[32m+[m[32m   └── other devices[m
+[32m+[m[32m   │[m
+[32m+[m[32m   │ DNS resolution path:[m
+[32m+[m[32m   │   device → DNS (192.168.0.22)[m
+[32m+[m[32m   │           → resolves to 192.168.0.22[m
+[32m+[m[32m   │           → nginx (port 80/443)[m
+[32m+[m[32m   │           → service (port)[m
+[32m+[m[32m   │[m
+[32m+[m[32m   ▼[m
+[32m+[m
+[32m+[m[32mVPN network[m
+[32m+[m[32m10.6.0.0/24[m
+[32m+[m[32m   │[m
+[32m+[m[32m   ├── sv-001-svc (10.6.0.1)[m
+[32m+[m[32m   │       └─ DNS + reverse proxy entry point[m
+[32m+[m[32m   │[m
+[32m+[m[32m   └── clients[m
+[32m+[m[32m           ├─ DNS = 10.6.0.1 (→ forwards to 192.168.0.22)[m
+[32m+[m[32m           └─ access services via hostnames (no ports)[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m
+ ### 📅 2026-03-15[m
+ [m
+ - Troubleshooting `WireGuard` service, assigning `DHCP` addresses in router configuration to keep persistant IPs in homelab LAN.[m
+[36m@@ -87,7 +285,8 @@[m [mVPN network[m
+    └── clients[m
+ ```[m
+ [m
+[31m-<br/>[m
+[32m+[m
+[32m+[m
+ [m
+ ### 📅 2026-02-27[m
+ [m
+[1mdiff --git a/content/projects/trueNAS/_index.md b/content/projects/trueNAS/_index.md[m
+[1mindex 9eb56cd..6f9ba4a 100644[m
+[1m--- a/content/projects/trueNAS/_index.md[m
+[1m+++ b/content/projects/trueNAS/_index.md[m
+[36m@@ -326,6 +326,7 @@[m [mda5 ONLINE[m
+ ## 📍 References[m
+ [m
+ - [TrueNAS SCALE Documentation](https://www.truenas.com/docs/scale/)[m
+[32m+[m[32m- [Building, Burn-In, and Testing your FreeNAS system (jgreco)](https://www.truenas.com/community/resources/building-burn-in-and-testing-your-freenas-system.38/)[m
+ - [ZFS Best Practices Guide](https://openzfs.org/wiki/Performance_tuning)[m
+ - [Proxmox Backup + S3 Integration](https://pve.proxmox.com/wiki/Backup_and_Restore)[m
+ - [Choosing The BEST Drive Layout For Your NAS (Hardware Haven)](https://www.youtube.com/watch?v=ykhaXo6m-04)[m
+[1mdiff --git a/public/index.json b/public/index.json[m
+[1mindex e4785ca..1a5f49d 100644[m
+[1m--- a/public/index.json[m
+[1m+++ b/public/index.json[m
+[36m@@ -1 +1 @@[m
+[31m-[{"content":"The 4-Question Method You don’t memorize method lists. That’s a waste of time.\nYou memorize patterns.\nHere’s the only mental model that works long-term:\nThe 4-Question Method (this is the core skill)\nEvery time you touch a variable, ask in this order:\n1️⃣ What type is this?\ntype(message) If you don’t know the type, you’re guessing.\nDo this to figure out the type:\nprint(type(message)) or in PyCharm:\nhover over message or temporarily insert the print You must see output, e.g.:\n\u0026lt;class 'str'\u0026gt;\nDon\u0026rsquo;t proceed until you\u0026rsquo;ve figured out the type.\n2️⃣ What problem am I trying to solve?\nExamples:\nBreak text apart → split\nGlue text together → join\nClean text → strip, replace\nInspect text → startswith, isdigit\nMethods exist because these problems are common.\n3️⃣ Does this problem belong to the object or the algorithm?\nRule:\nIf the action is about the data itself, it’s probably a method\nIf it’s about logic across many things, it’s probably a function\nExamples:\nmessage.split() # about THIS string len(message) # general operation sorted(items) # general algorithm 4️⃣ Ask Python what’s available (no memory required)\nIn REPL / PyCharm:\ndir(message) This is not cheating. This is how professionals work.\nYou’ll see:\nsplit replace strip lower upper startswith endswith Your brain will naturally start recognizing:\n“Oh, text cleanup → string methods”\n","permalink":"http://localhost:1313/notes/python/memorize-methods/","summary":"A practical framework for learning and recalling Python methods.","title":"How to Memorize Python Methods (4-Question Method)"},{"content":"Overview Intel CPUs are divided into product tiers (i3, i5, i7, i9) and generations (e.g., 12th Gen “Alder Lake”, 13th Gen “Raptor Lake”, 14th Gen “Meteor Lake”).\nThe first digit(s) in the CPU model number usually indicate the generation, while the suffix defines the performance class.\nHow Intel CPU Naming Works 1. Core tier: i3 / i5 / i7 / i9\nThis is the performance tier:\ni3 = budget / entry-level (fewer cores, lower clocks)\ni5 = mainstream (balanced price vs performance)\ni7 = high-end consumer (more cores, higher turbo)\ni9 = top-tier (maximum cores, clocks, cache)\n2. Generation number\nThe first two digits after the dash show the generation (for most modern CPUs):\nExample: i5-13600K\n“13” → 13th generation (Raptor Lake, released 2022–2023)\nExample: i7-9700K\n“9” → 9th generation (Coffee Lake Refresh, released 2018–2019)\nIf it’s an older model (before 10th gen), it might only have one digit:\ni5-8400 → 8th gen\ni7-4790K → 4th gen\nFrom 10th gen onward, Intel switched to five-digit model numbers, like 10400, 12400, etc.\n3. SKU (model) number\nThe next two or three digits after the generation show the specific model within that generation. Example:\ni5-13600K → model “600” (mid-tier within i5 lineup)\ni5-13400 → lower-end\ni5-13900K → high-end (close to i9 performance)\nHigher model numbers usually = more cores or better clocks.\n4. Suffix letters (very important)\nLetters after the number describe the type of chip:\nK = unlocked (you can overclock)\nKF = unlocked + no integrated graphics\nF = locked + no integrated graphics\nT = low-power desktop version ← (Note: Ideal for Low-Power Homelabs - what we\u0026rsquo;re using)\nH = high-performance laptop chip\nU = ultra-low-power laptop chip\nG = includes discrete-class graphics\nE / TE = embedded / industrial versions\nExample:\ni7-13700K → 13th-gen unlocked desktop CPU\ni5-13400F → 13th-gen locked desktop, no iGPU\ni7-12700H → 12th-gen laptop CPU, high performance\n5. Quick comparison\nExample CPU Gen Tier Suffix Meaning i3-12100 12th Entry none budget desktop i5-13500 13th Mid none solid midrange desktop i7-13700K 13th High K unlocked desktop i9-14900KF 14th Top KF overclockable, no iGPU i5-1135G7 11th Mid G7 laptop, integrated Iris Xe GPU 6. In short\nThe prefix (i3/i5/i7/i9) tells you the tier.\nThe first two digits tell you the generation.\nThe next two–three digits tell you the model ranking.\nThe suffix letter(s) tell you the type (desktop, laptop, low power, unlocked, etc).\n","permalink":"http://localhost:1313/notes/intel-cpu/","summary":"Technical notes, architecture breakdowns, and generation reference for Intel CPUs.","title":"Intel CPUs"},{"content":"Overview Markdown is a lightweight markup language used to format text for notes, documentation, and websites.\nIt converts plain text into structured HTML, making it ideal for fast, readable writing that looks clean in editors like Joplin and static site generators like Hugo.\nThis note collects key syntax, shortcuts, and best practices for consistent formatting.\nKey Details **Bold** for emphasis *Italics* for subtle context Inline `code` for commands or filenames Left Arrow ( ←) with \u0026amp;larr; (See more below) \u0026amp;nbsp; to add an inline extra space Cheat Sheet / Quick Reference Arrows Symbol Description Markdown Code ↑ Up arrow \u0026amp;uarr; ↓ Down arrow \u0026amp;darr; ← Left arrow \u0026amp;larr; → Right arrow \u0026amp;rarr; ↔ Double-headed arrow \u0026amp;harr; Notes Additional clarifications, context, or links:\nMarkdown entities list Works in HTML-rendered markdown (like Hugo). Commands I Use Often # Example for Hugo hugo new content/notes/new-note.md hugo server -D ","permalink":"http://localhost:1313/notes/markdown/","summary":"References for using Markdown Language.","title":"Markdown Language"},{"content":"This SOP defines the exact process for hosting a Hugo site for free using Cloudflare Pages, starting from the point where your Hugo site is already pushed to GitHub.\nPush Hugo Site to Cloudflare for Free Hosting (Cloudflare Pages) 1️⃣ Prepare Your Hugo Repo on GitHub Make sure:\nYour site’s repo (e.g., eryklabs) contains the full Hugo project — not just the public/ folder.\nThere’s a valid hugo.toml or config.toml file in the root.\nYour Hugo theme is either:\nincluded as a Git submodule, or\ncopied into /themes/.\nCheck by running locally:\nhugo server If it builds correctly, it’s ready.\n2️⃣ Go to Cloudflare Pages Visit: https://dash.cloudflare.com/\nLog in (or create a free account).\nThen:\nSearch \u0026ldquo;Pages\u0026rdquo; in the top right search box. Click on \u0026ldquo;Workers and Pages\u0026rdquo;, and select the \u0026ldquo;Pages\u0026rdquo; tab.\nClick “Import an existing Git repository.”\nChoose “Connect to Git.”\nSelect GitHub, authorize access, and choose your Hugo repo.\n(Note: \u0026ldquo;Install \u0026amp; Authorize\u0026rdquo; for \u0026ldquo;Only select repositories\u0026rdquo;. Granting access to \u0026ldquo;All repositories\u0026rdquo; leads to unnecessary exposure. In my case I only chose the eryklabs repository.) Follow the steps for \u0026ldquo;Deploy a site from your account.\u0026rdquo; 3️⃣ Configure the Build Settings When Cloudflare asks for build options, set them exactly like this:\nSetting Value Framework preset Hugo Build command hugo Build output directory public Environment variable HUGO_VERSION = 0.151.0 (or whatever version you use locally) If you’re using Hugo extended (for SCSS, etc.), use:\nHUGO_VERSION = 0.151.0 HUGO_ENV = production Then click Save and Deploy.\n4️⃣ Wait for the Build Cloudflare will automatically:\nPull your repo from GitHub\nRun the Hugo build\nHost it on a free .pages.dev subdomain (like eryklabs.pages.dev)\nIf it succeeds, the log will end with something like:\nSite successfully built and deployed! 5️⃣ Connect Your Custom Domain Once the .pages.dev version works:\nIn the Pages project dashboard → “Custom domains” (Next to \u0026ldquo;Metrics\u0026rdquo;)\nClick “Set up a custom domain”\nEnter your domain: eryklabs.com\nCloudflare will give you DNS records to add:\nCNAME www → eryklabs.pages.dev\nOptional: A record for the root (@) if needed\nIf your domain is already on Cloudflare DNS, it’s automatic.\n(Note: Make sure your domain is managed by Cloudflare DNS, for this to work correctly)\n6️⃣ Connect Your Custom Domain Redirect www to Root (or vice versa)\nSidebar → Click Rules → Create Rule → Redirect Rules:\nTo make www.eryklabs.com → eryklabs.com:\nSelect Redirect from WWW to root [Template]\n7️⃣ Verify HTTPS and Cache Cloudflare automatically gives:\nFree HTTPS (no certificate setup needed)\nCDN caching and DDoS protection\n8️⃣ Optional (but Recommended) - Edit hugo.toml: Add this to your hugo.toml:\nbaseURL = \u0026#34;https://eryklabs.com/\u0026#34; Then rebuild and push again:\ngit add hugo.toml git commit -m \u0026#34;update baseURL for deployment\u0026#34; git push ","permalink":"http://localhost:1313/sop/cloudflare/","summary":"Cloudflare Pages: Step-by-step procedure to host Hugo sites for free using Cloudflare Pages.","title":"Cloudflare Pages - Standard Operating Procedures (SOPs)"},{"content":"These SOPs define the standard process for hosting and maintaining Hugo static sites through GitHub Pages.\nThis covers both the manual and automated (GitHub Actions) workflows.\n1. Initial Setup 1️⃣ Create a new repository on GitHub.\nName it whatever you want — e.g. eryklabs or my-hugo-site.\n2️⃣ In your local machine, initialize your Hugo site (if not already done):\nhugo new site my-hugo-site 2. Push Updates to GitHub (Hugo Site) This SOP covers the exact steps to commit and push changes (content, config, or theme updates) from your local Hugo site to GitHub.\nRemember to make sure you have cd\u0026rsquo;d into your Hugo directory.\ncd C:\\folder\\folder\\eryklabs 1️⃣ Check Status Before pushing, verify what’s changed:\ngit status Red files = modified or deleted but not staged\nGreen files = staged (ready to commit)\n2️⃣ Stage Changes To stage all new and modified files:\ngit add . *(What this code does is \u0026ldquo;Add (stage) all changes in the current directory and its subdirectories to the next commit.\u0026rdquo;)\n(The \u0026ldquo;.\u0026rdquo; means current directory, and everything inside of it, recursively.) Or, to stage specific files:\ngit add content/sops/hugo.md git add config.toml 3️⃣ Commit with a Clear Message Commit all staged files:\ngit commit -m \u0026#34;Update SOPs and fix image paths\u0026#34; Commit message format (recommended):\n\u0026lt;category\u0026gt;: \u0026lt;short description\u0026gt; Examples: git commit -m \u0026#34;content: updated hugo commands section\u0026#34; git commit -m \u0026#34;config: fixed baseURL for github pages\u0026#34; git commit -m \u0026#34;images: replaced outdated hugo logo\u0026#34; git commit -m \u0026#34;sops: added github push procedure\u0026#34; 4️⃣ Push to GitHub (Main Branch) Push your changes to the main branch:\ngit push origin main If you’re using another branch (e.g. dev):\ngit push origin dev 5️⃣ (Optional) Pull Latest Changes Before Next Edit Before making more edits or switching devices, always sync your repo:\ngit pull origin main This ensures you’re working on the most current version and prevents merge conflicts.\n✅ Summary Step Command Description 1 git status Review what changed 2 git add . Stage all changes 3 git commit -m \u0026ldquo;\u0026hellip;\u0026rdquo; Commit with message 4 git push origin main Push updates 5 git pull origin main Sync next time ","permalink":"http://localhost:1313/sop/documentation/","summary":"GitHub Pages: Step-by-step deployment procedures for hosting Hugo sites on GitHub.","title":"GitHub Pages - Standard Operating Procedures (SOPs)"},{"content":"These SOPs define the standard process for hosting and maintaining Hugo static sites through GitHub Pages.\nThis covers both the manual and automated (GitHub Actions) workflows.\n1. Initial Setup 1️⃣ Create a new repository on GitHub.\nName it whatever you want — e.g. eryklabs or my-hugo-site.\n2️⃣ In your local machine, initialize your Hugo site (if not already done):\nhugo new site my-hugo-site 2. Push Updates to GitHub (Hugo Site) This SOP covers the exact steps to commit and push changes (content, config, or theme updates) from your local Hugo site to GitHub.\nRemember to make sure you have cd\u0026rsquo;d into your Hugo directory.\ncd C:\\folder\\folder\\eryklabs 1️⃣ Check Status Before pushing, verify what’s changed:\ngit status Red files = modified or deleted but not staged\nGreen files = staged (ready to commit)\n2️⃣ Stage Changes To stage all new and modified files:\ngit add . *(What this code does is \u0026ldquo;Add (stage) all changes in the current directory and its subdirectories to the next commit.\u0026rdquo;)\n(The \u0026ldquo;.\u0026rdquo; means current directory, and everything inside of it, recursively.) Or, to stage specific files:\ngit add content/sops/hugo.md git add config.toml 3️⃣ Commit with a Clear Message Commit all staged files:\ngit commit -m \u0026#34;Update SOPs and fix image paths\u0026#34; Commit message format (recommended):\n\u0026lt;category\u0026gt;: \u0026lt;short description\u0026gt; Examples: git commit -m \u0026#34;content: updated hugo commands section\u0026#34; git commit -m \u0026#34;config: fixed baseURL for github pages\u0026#34; git commit -m \u0026#34;images: replaced outdated hugo logo\u0026#34; git commit -m \u0026#34;sops: added github push procedure\u0026#34; 4️⃣ Push to GitHub (Main Branch) Push your changes to the main branch:\ngit push origin main If you’re using another branch (e.g. dev):\ngit push origin dev 5️⃣ (Optional) Pull Latest Changes Before Next Edit Before making more edits or switching devices, always sync your repo:\ngit pull origin main This ensures you’re working on the most current version and prevents merge conflicts.\n✅ Summary Step Command Description 1 git status Review what changed 2 git add . Stage all changes 3 git commit -m \u0026ldquo;\u0026hellip;\u0026rdquo; Commit with message 4 git push origin main Push updates 5 git pull origin main Sync next time ","permalink":"http://localhost:1313/sop/github/","summary":"GitHub Pages: Step-by-step deployment procedures for hosting Hugo sites on GitHub.","title":"GitHub Pages - Standard Operating Procedures (SOPs)"},{"content":"These SOPs serve as a reference and memory base for using AutoHotkey: mapping shortcuts, automating repetitive sequences, and controlling Windows programs with precision.\n1. Startup and Script Management 1. Open AHK Script Right-click any .ahk file → Run Script\nTo edit → Edit Script (opens in Notepad or your preferred editor).\n2. Launch AHK on Windows Startup Create a shortcut to your AHK script and place it in:\nC:\\Users\u0026lt;username\u0026gt;\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\n2. Useful Syntax and General Overview 1. Common Keycodes ^ = Ctrl\n! = Alt\n+ = Shift\n# = Win\nExample: #n::Run, notepad.exe → Press Win+N to open Notepad.\n2. Common Workflow Examples Action Command Example Send text Send, text Send, Hello World Open program Run, path Run, C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe Reload script ^!r::Reload Ctrl+Alt+R reloads your active script Exit script ^!q::ExitApp Ctrl+Alt+Q quits AHK Comment a line ; ; This is a comment 3. Useful Built-in Variables Variable Description %A_ScriptDir% Directory of the running script %A_Desktop% Path to the user desktop %A_Temp% Path to Windows temporary folder %A_Hour%, %A_Min%, %A_Sec% Current time 3. Useful Scripts / Shortcuts / Macros I\u0026rsquo;ve Made 1. Markdown 1. Ctrl + Alt + B = Insert Break, Line Separator, and Break ; =========================================== ; Inserts line break separator block for Markdown/HTML spacing (edit 11/3/25) ; Explanation: ; ^!b = Ctrl + Alt + B (no major software conflicts) ; SendRaw = sends text exactly as written (without interpreting symbols) ; `n = newline ; =========================================== ^!b::SendText(\u0026#34;\u0026lt;br/\u0026gt;`n`n---`n`n\u0026lt;br/\u0026gt;\u0026#34;)\t; ^!b:: = Ctrl + Alt + B This will insert the following text:\n\u0026lt;br/\u0026gt; --- \u0026lt;br/\u0026gt; This is very useful for formatting, when creating notes in Joplin, or creating content within Hugo (such as this very page). I found myself typing out \u0026lt;br/\u0026gt; --- \u0026lt;br/\u0026gt; a bunch of times over and over, so this saves a lot of time within those programs (and anywhere markdown is used).\n2. Left Ctrl + Left Shift + C = Insert Colored Text Style: \u0026lt;span style=\u0026quot;color: #00d28f;\u0026quot;\u0026gt; 3. Left Ctrl + Left Shift + X = Insert Text : \u0026lt;/span\u0026gt; ; 2/14/26 ; =============================== ; For use ONLY inside of Notepad++, to make a text colored ; It will insert the text: \u0026lt;span style=\u0026#34;color: #00d28f;\u0026#34;\u0026gt; ; (You still have to add \u0026lt;/span\u0026gt; at the end of it, with Left Control + Left Shift + X) ; ; Activate this macro with: Left Control + Left Shift + C ; Then to close the span element, press: Left Control + Left Shift + X ; =============================== #HotIf WinActive(\u0026#34;ahk_exe notepad++.exe\u0026#34;) \u0026lt;^\u0026lt;+c::SendText \u0026#39;\u0026lt;span style=\u0026#34;color: #00d28f;\u0026#34;\u0026gt;\u0026#39; \u0026lt;^\u0026lt;+x::SendText \u0026#39;\u0026lt;/span\u0026gt;\u0026#39; #HotIf This will insert the following text:\n\u0026lt;span style=\u0026#34;color: #00d28f;\u0026#34;\u0026gt; \u0026hellip; But only inside of the Notepad++ program.\nNote that we still have to add the at the end of text snippet, to close the \u0026lt;span\u0026gt; element, but for that we\u0026rsquo;ve added the 2nd shortcut within the code, activated by Left Control + Left Shift + X, which will insert:\n\u0026lt;/span\u0026gt; The colored text \u0026lt;span\u0026gt; element is something I use very often when writing up markdown files, for use in notes, documentation, and this website.\nNote that in the future, it might be better practice to use a shortcode, and implement something like:\n\u0026lt;span class=\u0026#34;green-text\u0026#34;\u0026gt; And then define the color in CSS:\n.green-text { color: #00d28f; } This will make inline styles:\nEasier to maintain Reusable Theme-aware Can reuse the site architecture (theme)\u0026hellip; but modify the individual colors inside the .css file\u0026hellip; thus changing the whole color scheme and feel of the site\u0026hellip; while only changing a few lines of code in the .css file\u0026hellip; instead of individually going through the whole site and changing every single #00d28f instance. Reference Links Official AHK Documentation\nAutoHotkey Forum\nAHK GitHub Repository\n","permalink":"http://localhost:1313/sop/ahk/","summary":"AHK: Reference notes and step-by-step systems for keyboard automation, macros, and workflow shortcuts.","title":"AutoHotkey (AHK) - Standard Operating Procedures (SOPs)"},{"content":"🎯 Objective Implement a long-term, low-maintenance cold-storage system using M-Disc Blu-ray technology within the TrueNAS backup server (NAS-001).\nThis ensures data remains readable for centuries without dependency on cloud providers, power, or magnetic storage integrity.\n🧱 System Overview Component Description TrueNAS Server (NAS-001) Primary data repository, ZFS RAIDZ2 array, 60 TB+ usable. M-Disc Burner LG WH16NS58 (SATA) with BDXL support. Backup Manager SV-001 (EliteDesk 800 G4 Mini) runs scheduled jobs and Wake-on-LAN triggers. Backup Media Verbatim M-Disc BD-R 25 GB (archival grade). 🗺️ Considerations / Specifications 🔥 Best Burners for M-Disc LG WH16NS40 / WH16NS58 — Official M-Disc support, consistent write quality. ASUS BW-16D1HT — Supports both M-Disc and BDXL (100 GB). Good for testing, not ideal for long-term critical data. Best Practices\nUse only Verbatim or Milleniata branded media. Burn at 4× speed or lower — slower burns improve pit formation and readability. Always enable verify-after-write in ImgBurn or Nero. Generate checksums before and after burn: sha256sum * \u0026gt; checksums.txt ","permalink":"http://localhost:1313/projects/truenas/m-disc/","summary":"Offline, immutable long-term data storage using Verbatim M-Disc technology integrated with TrueNAS SCALE.","title":"M-Disc Archival Solutions"},{"content":"🎯 Objective Implement a\n🗺️ Considerations / Specifications Best Burners for M-Disc LG WH16NS40 or LG WH16NS58 → Both support M-Disc officially.\nASUS BW-16D1HT → Supports M-Disc and BDXL, reliable if you ever want to experiment with 100 GB discs.\nMake sure to:\nUse Verbatim or Milleniata-branded M-Disc media only.\nBurn at 4× speed (slow and consistent = best long-term integrity).\nUse ImgBurn or Nero Burning ROM with “verify after write” enabled.\nGenerate and store checksums (sha256sum * \u0026gt; checksums.txt).\n3-2-1 M-Disc Workflow Example How the M-Disc burner will function within our TrueNAS backup server (NAS-001):\nOnce per quarter: Snapshot important datasets (e.g. /mnt/pool01/Documents, /mnt/pool01/MusicProjects).\nCompress into .7z archives of ≤23 GB each.\nGenerate checksums and burn to Verbatim M-Disc 25 GB.\nVerification: After each burn, run a full CRC/SHA check against source data.\nLog results in backup_log_YYYYMMDD.txt.\nOffsite: Copy same discs and store at a secondary site.\nOptionally upload encrypted duplicates to cloud storage.\nResult:\nNAS = fast access + redundancy\nM-Disc = offline, immutable, EMP-resistant backup\nCloud = disaster insurance\nThe result is a classic 3-2-1 architecture: physically and digitally redundant.\nPower Consumption To save on power consumption, our homelab (EliteDesk 800 G4) server (SV-001) will be the server with 24/7 availability, and this TrueNAS server will utilize WoL (Wake-on-LAN) to power on, on a as-needed basis, or with scheduled cron jobs.\nLong-Term Backup Solution Strong focus on long-term backups. A pain point of mine has been running out of storage on every device (phones, laptops, desktops, etc.)\u0026hellip; Keeping track of backups on various external drives scattered about is not good practice, and thus I am looking to find a proper long term, scaleable solution.\nCold Storage: M-Disc BD-R 25 GB Taking the 3-2-1 principle into consideration, long term cold-storage backups on 25 GB M-Disks is something I think worthwhile to implement. These disks can easily be stored in offsite locations, taking up minimal space (inside a DVD binder, for example). Hence, the choice to add a BDXL-capable drive, for burning 25 GB disks (verified with checksum) for long-term archival.\nEach disk will get:\nSHA256 checksum text file inside. Label printed with permanent ink or laser etching (no stickers, no sharpies). Stored vertically in jewel cases or archival sleeves (avoid spindles). Kept in an airtight plastic bin with silica gel, inside a closet (no sunlight). Note: 25 GB single-layer discs are more reliable than 50 GB ones: fewer layers, fewer focus calibration issues, and much lower uncorrectable error rates over time.) I might use 50 GB disks for less critical data however, and verify immediately with checksum after burning.\nI was considering 128 GB BDXL disks, however I later became aware of the fact that the lower capacity M-Disks have a much longer true archival lifespan (between 300-1,000 years, theoretically). 100-128 GB disks are supposed to be much less stable long-term, only 5-10 years, which won\u0026rsquo;t fit our use case.\n(Note: Disks should be checked periodically to ensure readability and confirm the efficacy of the backup system).\n🔧 Environment / Hardware Component Purpose Cooler Master HAF 932 Full-tower chassis with airflow and drive capacity Corsair RM850x Stable, silent 850W PSU H60x RGB Elite CPU cooler (repurposed) ECC-capable motherboard + Ryzen CPU ZFS stability and data integrity 64GB ECC DDR4 RAM ZFS ARC cache + container workloads 6× 16TB Seagate Exos drives RAIDZ2 pool (tank) for redundancy 2× 480GB SSDs Boot mirror (TrueNAS OS) LSI 9300-8i HBA (IT Mode) Direct SATA access for ZFS Intel X520-DA2 Dual-port 10GbE NIC APC Smart-UPS Power protection and clean shutdowns 🧠 Software Stack Tool / Service Function TrueNAS SCALE (23.x) Core NAS OS ZFS RAIDZ2 Redundant storage pool SMB / NFS / iSCSI File sharing and VM storage MinIO (S3) Object storage for Proxmox backups Rsyslog / Fluent Bit Centralized log forwarding Scrub / Snapshot / Replication Data protection and versioning AD / LDAP integration Simulated enterprise ACL structure UPS daemon (NUT) Power loss detection and shutdown 📐 Configuration \u0026amp; Methodology ZFS Pool Setup\nPool: tank Layout: 6×16TB → RAIDZ2 Compression: zstd Atime: off Snapshots: 15-min: 48h retention Hourly: 7 days Daily: 90 days Replication: weekly off-box copy via external disk. Network Configuration\n10GbE backbone → main switch → Proxmox node (SV-001) VLAN segmentation for storage vs management Jumbo frames (MTU 9000) for NFS/iSCSI throughput File Services\nSMB: Auth via Active Directory (simulated domain) NFS: For Linux VM mounts iSCSI: For Proxmox test VMs / backup targets Security \u0026amp; Monitoring\nSyslog forwarding from firewall and Proxmox Audit logging on SMB shares Monthly SMART tests + ZFS scrubs Ransomware rollback demo via snapshots Applications\nMinIO container (S3 backup target) Rsyslog → Splunk indexer Fluent Bit → Security Onion Zabbix / Grafana for uptime and temperature monitoring 🔎 Results Metric Result Network Throughput 9.8 Gbps sustained ZFS Pool IOPS (cached) ~110k Snapshot Restore Time \u0026lt;30 sec Power Usage (avg) 85–110 W Data Availability 99.99% uptime since deployment Example ZFS pool layout:\nNAME STATE READ WRITE CKSUM tank ONLINE 0 0 0 raidz2-0 ONLINE 0 0 0 da0 ONLINE da1 ONLINE da2 ONLINE da3 ONLINE da4 ONLINE da5 ONLINE\n💡 Lessons Learned ZFS + ECC = mandatory for long-term reliability. Consumer RAM is a liability. RAIDZ1 is obsolete for multi-terabyte drives — URE risk is real. iSCSI performs best with separate VLAN and jumbo frames. TrueNAS SCALE’s Kubernetes layer is useful but overkill for critical data — isolate core datasets. UPS integration with NUT daemon is non-negotiable. Sudden power loss will corrupt metadata. ➡️ Next Steps Deploy Proxmox Backup Server with MinIO offload. Automate snapshot replication to secondary node (SV-001). Add immutable dataset for ransomware forensics demo. Publish internal SOPs and architecture diagram to eryklabs.com documentation. Expand to two-node failover cluster with ZFS replication. 📍 References TrueNAS SCALE Documentation ZFS Best Practices Guide MinIO Documentation NUT UPS Daemon Config Proxmox Backup + S3 Integration ","permalink":"http://localhost:1313/projects/truenas/m-disc_backup/","summary":"M-Disc Archival Solutions","title":"M-Disc Archival Solutions"},{"content":"Best Editors Draw.io\nFree, runs locally or in browser, imports/export PNG/SVG/PDF. If you want professional network symbols: Diagrams.net + Cisco symbol pack is best. ","permalink":"http://localhost:1313/notes/network-diagrams/","summary":"Resources for drawing network diagrams","title":"Network Diagrams"},{"content":"These SOPs serve as detailed, repeatable checklists for Hugo, a simple yet powerful website editor.\n1. Most basic commands and sequences to remember: 1. Hugo Startup (Local) Starting up your Hugo Site Locally\n1. Open your terminal or PowerShell and cd into your site’s root directory — the one that contains config.toml, themes/, and content/.\ncd D:\\path\\to\\your\\hugo-site\n2. Start the local server\nRun this command:\nhugo server\nor if you want it to automatically rebuild on file changes:\nhugo server -D\n3. Open in your browser\nOnce it starts, Hugo will print something like:\nWeb Server is available at http://localhost:1313/\nOpen that URL in your browser.\n2. Correct global image locations (for Cover Image in Frontmatter) If you want images available globally (to any page or post), use:\n/static/images/\nSo in your filesystem:\nC:\\Projects\\ProjectName\\static\\images\\homelab\\example.jpg\nThen anywhere in your Markdown:\n![My Logo](/images/logo.png)\nThat will render correctly on both the local server and deployed site, because /static maps directly to the web root /.\nFor example, on this page, the Hugo logo is inserted via this code snippet in the frontmatter:\ncover:\nimage: \u0026quot;/images/hugo/hugo-logo-wide.svg\u0026quot;\n3. Insert an image into the page If you don’t need custom margins or width:\n![Example text](/images/image.jpg)\nExample used at the top of this page:\n![Hugo logo](/images/hugo/hugo-logo-wide.svg)\nImage Standardation SOP my site\nImage SOP\n4. Insert code block Like this:\n```bash\rhugo server -D``` Explanation:\nStart of code block →\n```bash ``` tells Markdown “start a fenced code block” and “use Bash syntax highlighting.” (The word bash is optional — it just enables color-coding for shell commands.)\nResult:\nhugo server -D 5. Make a hyperlink open in new tab Option 1:\nMarkdown itself doesn\u0026rsquo;t support opening links in a new tab.\nTo do so, we\u0026rsquo;ll have to insert HTML inside Markdown, like so:\nCheck out \u0026lt;a href=\u0026quot;https://eryklabs.com\u0026quot; target=\u0026quot;_blank\u0026quot; rel=\u0026quot;noopener noreferrer\u0026quot;\u0026gt;my site\u0026lt;/a\u0026gt;.\nOption 2:\nMake all external links open in new tabs automatically\nAdd this JavaScript snippet to your PaperMod footer partial or via custom JS (e.g., /assets/js/custom.js):\n\u0026lt;script\u0026gt; document.querySelectorAll(\u0026#39;a[href^=\u0026#34;http\u0026#34;]\u0026#39;).forEach(link =\u0026gt; { if (!link.href.includes(window.location.hostname)) { link.setAttribute(\u0026#39;target\u0026#39;, \u0026#39;_blank\u0026#39;); link.setAttribute(\u0026#39;rel\u0026#39;, \u0026#39;noopener noreferrer\u0026#39;); } }); \u0026lt;/script\u0026gt; 6. Link to another page within your Hugo site Use ref (absolute to site root)\nIf you want links to stay valid regardless of the page\u0026rsquo;s location:\nUse [Home Page]({{\u0026lt; ref \u0026ldquo;index.md\u0026rdquo; \u0026gt;}}) to link to another page.\nref creates an absolute link from the site root. Another example:\n[TrueNAS Project]({{\u0026lt; ref \u0026ldquo;projects/truenas/index.md\u0026rdquo; \u0026gt;}})\n7. Making text colored Insert the code \u0026lt;span style=\u0026quot;color: #00d28f;\u0026quot;\u0026gt;colored text\u0026lt;/span\u0026gt; between the text you want a different color.\n8. How to add tables Follow this format:\n| Level\t| Tolerance\t| Efficiency\t| Notes | |------------|----------|----------|----------| RAIDZ1\t|1 disk fails|\t~N-1 drives usable|\tNot safe with modern large disks; rebuild risk too high| RAIDZ2\t|2 disks fail|\t~N-2 drives usable|\tBest trade-off between safety and capacity| RAIDZ3\t|3 disks fail|\t~N-3 drives usable|\tGood for mission-critical or 12-16+ disk arrays| That code will create the following table:\nLevel Tolerance Efficiency Notes RAIDZ1 1 disk fails ~N-1 drives usable Not safe with modern large disks; rebuild risk too high RAIDZ2 2 disks fail ~N-2 drives usable Best trade-off between safety and capacity RAIDZ3 3 disks fail ~N-3 drives usable Good for mission-critical or 12-16+ disk arrays 9. Add a page in Hugo Everything you want Hugo to publish must be a Markdown file (.md) under the content/ folder. Hugo will turn that .md into an HTML page.\nIf you want to create a new page (for example a Joplin page under the Projects section of the website), then:\nCreate a new folder under that section of the site (e.g. a joplin folder, inside of the projects folder, of the eryklabs hugo site). Create (or copy/paste an existing) _index.md file in the joplin folder. Your new joplin page is now live at yourwebsite.com/projects/joplin. Note: If you want to create any subpages under the new joplin folder, just add them into the same projects folder. See the trueNAS section for an example.\n","permalink":"http://localhost:1313/sop/hugo/","summary":"Hugo: Documented step-by-step systems and procedures I’ve built or standardized.","title":"Hugo - Standard Operating Procedures (SOPs)"},{"content":"🎯 Objective Deploy a fully private, self-hosted Joplin Server to synchronize notes across multiple personal devices without relying on third-party cloud providers.\nPrimary goals:\nFull data ownership End-to-end control of infrastructure Long-term reliability with minimal maintenance Clean separation between hypervisor and application services 🔧 Environment / Tools Component Purpose HP EliteDesk 800 G4 Mini (i7-8700T, 64 GB RAM) Physical host (sv-001) Proxmox VE Bare-metal hypervisor Debian (VM) Dedicated service host OS Joplin Server Private note synchronization backend Python 3.11 Automation, scripting, and tooling Wireshark Network inspection and troubleshooting 📐 Architecture \u0026amp; Methodology 1. Proxmox (Bare Metal) Installed directly on sv-001 Used strictly as a hypervisor No application services run on the host itself 2. Debian Virtual Machine Created and managed via Proxmox Acts as an isolated service container Snapshots and backups handled at VM level 3. Joplin Server Deployment Installed inside the Debian VM Used exclusively for personal note synchronization Syncs multiple devices (desktop + mobile) No dependency on Joplin Cloud or third-party storage 4. Network \u0026amp; Security Service isolation via VM boundaries Network traffic validated during setup using Wireshark Designed to later integrate VPN-only access 🔎 Results Item Status Proxmox installed and stable ✅ Debian VM provisioned ✅ Joplin Server operational ✅ Multi-device sync verified ✅ 💡 Lessons Learned Running services inside a VM dramatically simplifies recovery and migration. Proxmox snapshots provide a clean rollback strategy before upgrades. Self-hosting Joplin removes vendor lock-in and long-term pricing risk. Clear separation between hypervisor, OS, and application reduces operational mistakes. ➡️ Next Steps Automated VM backups to NAS-001 VPN-only access for Joplin Server Hardening Debian (firewall rules, SSH lockdown) Monitoring uptime and resource usage Optional integration with additional self-hosted services 📍 References https://joplinapp.org/help/ https://github.com/laurent22/joplin https://pve.proxmox.com/wiki/Main_Page ","permalink":"http://localhost:1313/projects/joplin/_index_backup_2-7-26/","summary":"Private, self-hosted Joplin Server running on Debian inside Proxmox for secure note synchronization","title":"Self-Hosted Joplin Server"},{"content":"📋 Overview 🗺️ Key Takeaways Insight #1 Insight #2 📐 Process / Method Explain steps, code snippets, or screenshots.\nexample command here 🔎 Results / Lessons 📍 References [link to docs] ","permalink":"http://localhost:1313/write-ups/how-i-setup-ssh/","summary":"Write Ups Template","title":"Write-Ups Template"},{"content":"✍️ Formatting Tricks To center a column in Markdown tables:\n|:--------:| This centers the column text.\n🖥️ Commands I Use Often hugo server -D hugo new content/blog/new-post.md 📝 Things to Note Never run hugo from inside /content/ paginate was replaced by pagination.pagerSize Now when you run the server, you’ll have:\nhttp://localhost:1313/notes/template\n📑 HTML Getting Hugo to list pages in descending order date (newest \u0026ndash;\u0026gt; oldest), vs. ascending order\nOpen themes/PaperMod/layouts/_default/list.html since we\u0026rsquo;re using the PaperMod theme Change {{- range $index, $page := $paginator.Pages }} to {{- range $index, $page := $paginator.Pages.ByDate.Reverse }} ","permalink":"http://localhost:1313/notes/hugo/","summary":"Personal notes and tips for building Hugo sites efficiently.","title":"Hugo"},{"content":"📢 Purpose Explain why this SOP exists.\n📑 Scope Where and when it applies.\n🗃️ Prerequisites Tools, permissions, configurations needed.\n📋 Procedure Numbered list of steps.\n✅ Verification How to confirm the procedure worked.\n❗ Troubleshooting Common issues and fixes.\n🔧 Maintenance Review frequency and version tracking.\n📚 References Reference 1 ","permalink":"http://localhost:1313/sop/template-sop/","summary":"Reusable SOP format for documenting repeatable processes.","title":"SOP – Template"},{"content":"🎯 Objective State exactly what problem or goal the project addressed.\nExample: “Detect DNS exfiltration in the Splunk BOTS v3 dataset.”\n🔧 Environment / Tools List system setup and versions.\nComponent Purpose Splunk 9.2 SIEM and data analysis Python 3.11 Scripting and data parsing Wireshark Network packet inspection 📐 Methodology Explain how you approached the problem.\nDescribe setup or data ingestion.\nShow key commands or configs in fenced code blocks:\nindex=botsv3 sourcetype=dns earliest=-24h Mention reasoning, patterns, or troubleshooting steps.\n🔎 Results Summarize measurable output, screenshots, or outcomes.\nMetric Result Queries built 12 True positives 8 False positives 1 Include images: 💡 Lessons Learned Bullet or paragraph format works fine.\nDiscovered that DNS queries with TXT records are common indicators.\nLearned how to filter out false positives using field qtype.\n➡️ Next Steps What would you add, automate, or scale?\nAutomate query generation with Python.\nIntegrate with an alerting system.\n📍 References Splunk BOTS v3 Dataset Docs\nWireshark Filters Cheat Sheet\n","permalink":"http://localhost:1313/projects/splunk-bots3/","summary":"Spunk Bots Example","title":"Projects Template"},{"content":"Formatting Tricks To center a column in Markdown tables:\n|:--------:| This centers the column text.\nCommands I Use Often hugo server -D hugo new content/blog/new-post.md Things to Note Never run hugo from inside /content/ paginate was replaced by pagination.pagerSize Now when you run the server, you’ll have:\nhttp://localhost:1313/notes/template\n","permalink":"http://localhost:1313/notes/template/","summary":"Personal notes and tips for building Hugo sites efficiently.","title":"Template - Notes"}][m
+\ No newline at end of file[m
+[32m+[m[32m[{"content":"The 4-Question Method You don’t memorize method lists. That’s a waste of time.\nYou memorize patterns.\nHere’s the only mental model that works long-term:\nThe 4-Question Method (this is the core skill)\nEvery time you touch a variable, ask in this order:\n1️⃣ What type is this?\ntype(message) If you don’t know the type, you’re guessing.\nDo this to figure out the type:\nprint(type(message)) or in PyCharm:\nhover over message or temporarily insert the print You must see output, e.g.:\n\u0026lt;class 'str'\u0026gt;\nDon\u0026rsquo;t proceed until you\u0026rsquo;ve figured out the type.\n2️⃣ What problem am I trying to solve?\nExamples:\nBreak text apart → split\nGlue text together → join\nClean text → strip, replace\nInspect text → startswith, isdigit\nMethods exist because these problems are common.\n3️⃣ Does this problem belong to the object or the algorithm?\nRule:\nIf the action is about the data itself, it’s probably a method\nIf it’s about logic across many things, it’s probably a function\nExamples:\nmessage.split() # about THIS string len(message) # general operation sorted(items) # general algorithm 4️⃣ Ask Python what’s available (no memory required)\nIn REPL / PyCharm:\ndir(message) This is not cheating. This is how professionals work.\nYou’ll see:\nsplit replace strip lower upper startswith endswith Your brain will naturally start recognizing:\n“Oh, text cleanup → string methods”\n","permalink":"http://localhost:1313/notes/python/memorize-methods/","summary":"A practical framework for learning and recalling Python methods.","title":"How to Memorize Python Methods (4-Question Method)"},{"content":"Python Notes — Master Index This page is a high-level index of Python concepts I’m learning. Each topic below links to a focused deep-dive note.\nTopics Memorizing Python Methods (4-Question Method) Strings \u0026amp; Text Processing ","permalink":"http://localhost:1313/notes/python/","summary":"Personal notes and tips for learning the Python programming language.","title":"Python"},{"content":"Overview Intel CPUs are divided into product tiers (i3, i5, i7, i9) and generations (e.g., 12th Gen “Alder Lake”, 13th Gen “Raptor Lake”, 14th Gen “Meteor Lake”).\nThe first digit(s) in the CPU model number usually indicate the generation, while the suffix defines the performance class.\nHow Intel CPU Naming Works 1. Core tier: i3 / i5 / i7 / i9\nThis is the performance tier:\ni3 = budget / entry-level (fewer cores, lower clocks)\ni5 = mainstream (balanced price vs performance)\ni7 = high-end consumer (more cores, higher turbo)\ni9 = top-tier (maximum cores, clocks, cache)\n2. Generation number\nThe first two digits after the dash show the generation (for most modern CPUs):\nExample: i5-13600K\n“13” → 13th generation (Raptor Lake, released 2022–2023)\nExample: i7-9700K\n“9” → 9th generation (Coffee Lake Refresh, released 2018–2019)\nIf it’s an older model (before 10th gen), it might only have one digit:\ni5-8400 → 8th gen\ni7-4790K → 4th gen\nFrom 10th gen onward, Intel switched to five-digit model numbers, like 10400, 12400, etc.\n3. SKU (model) number\nThe next two or three digits after the generation show the specific model within that generation. Example:\ni5-13600K → model “600” (mid-tier within i5 lineup)\ni5-13400 → lower-end\ni5-13900K → high-end (close to i9 performance)\nHigher model numbers usually = more cores or better clocks.\n4. Suffix letters (very important)\nLetters after the number describe the type of chip:\nK = unlocked (you can overclock)\nKF = unlocked + no integrated graphics\nF = locked + no integrated graphics\nT = low-power desktop version ← (Note: Ideal for Low-Power Homelabs - what we\u0026rsquo;re using)\nH = high-performance laptop chip\nU = ultra-low-power laptop chip\nG = includes discrete-class graphics\nE / TE = embedded / industrial versions\nExample:\ni7-13700K → 13th-gen unlocked desktop CPU\ni5-13400F → 13th-gen locked desktop, no iGPU\ni7-12700H → 12th-gen laptop CPU, high performance\n5. Quick comparison\nExample CPU Gen Tier Suffix Meaning i3-12100 12th Entry none budget desktop i5-13500 13th Mid none solid midrange desktop i7-13700K 13th High K unlocked desktop i9-14900KF 14th Top KF overclockable, no iGPU i5-1135G7 11th Mid G7 laptop, integrated Iris Xe GPU 6. In short\nThe prefix (i3/i5/i7/i9) tells you the tier.\nThe first two digits tell you the generation.\nThe next two–three digits tell you the model ranking.\nThe suffix letter(s) tell you the type (desktop, laptop, low power, unlocked, etc).\n","permalink":"http://localhost:1313/notes/intel-cpu/","summary":"Technical notes, architecture breakdowns, and generation reference for Intel CPUs.","title":"Intel CPUs"},{"content":"Overview Markdown is a lightweight markup language used to format text for notes, documentation, and websites.\nIt converts plain text into structured HTML, making it ideal for fast, readable writing that looks clean in editors like Joplin and static site generators like Hugo.\nThis note collects key syntax, shortcuts, and best practices for consistent formatting.\nKey Details **Bold** for emphasis *Italics* for subtle context Inline `code` for commands or filenames Left Arrow ( ←) with \u0026amp;larr; (See more below) \u0026amp;nbsp; to add an inline extra space Cheat Sheet / Quick Reference Arrows Symbol Description Markdown Code ↑ Up arrow \u0026amp;uarr; ↓ Down arrow \u0026amp;darr; ← Left arrow \u0026amp;larr; → Right arrow \u0026amp;rarr; ↔ Double-headed arrow \u0026amp;harr; Notes Additional clarifications, context, or links:\nMarkdown entities list Works in HTML-rendered markdown (like Hugo). Commands I Use Often # Example for Hugo hugo new content/notes/new-note.md hugo server -D ","permalink":"http://localhost:1313/notes/markdown/","summary":"References for using Markdown Language.","title":"Markdown Language"},{"content":"This SOP defines the exact process for hosting a Hugo site for free using Cloudflare Pages, starting from the point where your Hugo site is already pushed to GitHub.\nPush Hugo Site to Cloudflare for Free Hosting (Cloudflare Pages) 1️⃣ Prepare Your Hugo Repo on GitHub Make sure:\nYour site’s repo (e.g., eryklabs) contains the full Hugo project — not just the public/ folder.\nThere’s a valid hugo.toml or config.toml file in the root.\nYour Hugo theme is either:\nincluded as a Git submodule, or\ncopied into /themes/.\nCheck by running locally:\nhugo server If it builds correctly, it’s ready.\n2️⃣ Go to Cloudflare Pages Visit: https://dash.cloudflare.com/\nLog in (or create a free account).\nThen:\nSearch \u0026ldquo;Pages\u0026rdquo; in the top right search box. Click on \u0026ldquo;Workers and Pages\u0026rdquo;, and select the \u0026ldquo;Pages\u0026rdquo; tab.\nClick “Import an existing Git repository.”\nChoose “Connect to Git.”\nSelect GitHub, authorize access, and choose your Hugo repo.\n(Note: \u0026ldquo;Install \u0026amp; Authorize\u0026rdquo; for \u0026ldquo;Only select repositories\u0026rdquo;. Granting access to \u0026ldquo;All repositories\u0026rdquo; leads to unnecessary exposure. In my case I only chose the eryklabs repository.) Follow the steps for \u0026ldquo;Deploy a site from your account.\u0026rdquo; 3️⃣ Configure the Build Settings When Cloudflare asks for build options, set them exactly like this:\nSetting Value Framework preset Hugo Build command hugo Build output directory public Environment variable HUGO_VERSION = 0.151.0 (or whatever version you use locally) If you’re using Hugo extended (for SCSS, etc.), use:\nHUGO_VERSION = 0.151.0 HUGO_ENV = production Then click Save and Deploy.\n4️⃣ Wait for the Build Cloudflare will automatically:\nPull your repo from GitHub\nRun the Hugo build\nHost it on a free .pages.dev subdomain (like eryklabs.pages.dev)\nIf it succeeds, the log will end with something like:\nSite successfully built and deployed! 5️⃣ Connect Your Custom Domain Once the .pages.dev version works:\nIn the Pages project dashboard → “Custom domains” (Next to \u0026ldquo;Metrics\u0026rdquo;)\nClick “Set up a custom domain”\nEnter your domain: eryklabs.com\nCloudflare will give you DNS records to add:\nCNAME www → eryklabs.pages.dev\nOptional: A record for the root (@) if needed\nIf your domain is already on Cloudflare DNS, it’s automatic.\n(Note: Make sure your domain is managed by Cloudflare DNS, for this to work correctly)\n6️⃣ Connect Your Custom Domain Redirect www to Root (or vice versa)\nSidebar → Click Rules → Create Rule → Redirect Rules:\nTo make www.eryklabs.com → eryklabs.com:\nSelect Redirect from WWW to root [Template]\n7️⃣ Verify HTTPS and Cache Cloudflare automatically gives:\nFree HTTPS (no certificate setup needed)\nCDN caching and DDoS protection\n8️⃣ Optional (but Recommended) - Edit hugo.toml: Add this to your hugo.toml:\nbaseURL = \u0026#34;https://eryklabs.com/\u0026#34; Then rebuild and push again:\ngit add hugo.toml git commit -m \u0026#34;update baseURL for deployment\u0026#34; git push ","permalink":"http://localhost:1313/sop/cloudflare/","summary":"Cloudflare Pages: Step-by-step procedure to host Hugo sites for free using Cloudflare Pages.","title":"Cloudflare Pages - Standard Operating Procedures (SOPs)"},{"content":"These SOPs define the standard process for hosting and maintaining Hugo static sites through GitHub Pages.\nThis covers both the manual and automated (GitHub Actions) workflows.\n1. Initial Setup 1️⃣ Create a new repository on GitHub.\nName it whatever you want — e.g. eryklabs or my-hugo-site.\n2️⃣ In your local machine, initialize your Hugo site (if not already done):\nhugo new site my-hugo-site 2. Push Updates to GitHub (Hugo Site) This SOP covers the exact steps to commit and push changes (content, config, or theme updates) from your local Hugo site to GitHub.\nRemember to make sure you have cd\u0026rsquo;d into your Hugo directory.\ncd C:\\folder\\folder\\eryklabs 1️⃣ Check Status Before pushing, verify what’s changed:\ngit status Red files = modified or deleted but not staged\nGreen files = staged (ready to commit)\n2️⃣ Stage Changes To stage all new and modified files:\ngit add . *(What this code does is \u0026ldquo;Add (stage) all changes in the current directory and its subdirectories to the next commit.\u0026rdquo;)\n(The \u0026ldquo;.\u0026rdquo; means current directory, and everything inside of it, recursively.) Or, to stage specific files:\ngit add content/sops/hugo.md git add config.toml 3️⃣ Commit with a Clear Message Commit all staged files:\ngit commit -m \u0026#34;Update SOPs and fix image paths\u0026#34; Commit message format (recommended):\n\u0026lt;category\u0026gt;: \u0026lt;short description\u0026gt; Examples: git commit -m \u0026#34;content: updated hugo commands section\u0026#34; git commit -m \u0026#34;config: fixed baseURL for github pages\u0026#34; git commit -m \u0026#34;images: replaced outdated hugo logo\u0026#34; git commit -m \u0026#34;sops: added github push procedure\u0026#34; 4️⃣ Push to GitHub (Main Branch) Push your changes to the main branch:\ngit push origin main If you’re using another branch (e.g. dev):\ngit push origin dev 5️⃣ (Optional) Pull Latest Changes Before Next Edit Before making more edits or switching devices, always sync your repo:\ngit pull origin main This ensures you’re working on the most current version and prevents merge conflicts.\n✅ Summary Step Command Description 1 git status Review what changed 2 git add . Stage all changes 3 git commit -m \u0026ldquo;\u0026hellip;\u0026rdquo; Commit with message 4 git push origin main Push updates 5 git pull origin main Sync next time ","permalink":"http://localhost:1313/sop/documentation/","summary":"GitHub Pages: Step-by-step deployment procedures for hosting Hugo sites on GitHub.","title":"GitHub Pages - Standard Operating Procedures (SOPs)"},{"content":"These SOPs define the standard process for hosting and maintaining Hugo static sites through GitHub Pages.\nThis covers both the manual and automated (GitHub Actions) workflows.\n1. Initial Setup 1️⃣ Create a new repository on GitHub.\nName it whatever you want — e.g. eryklabs or my-hugo-site.\n2️⃣ In your local machine, initialize your Hugo site (if not already done):\nhugo new site my-hugo-site 2. Push Updates to GitHub (Hugo Site) This SOP covers the exact steps to commit and push changes (content, config, or theme updates) from your local Hugo site to GitHub.\nRemember to make sure you have cd\u0026rsquo;d into your Hugo directory.\ncd C:\\folder\\folder\\eryklabs 1️⃣ Check Status Before pushing, verify what’s changed:\ngit status Red files = modified or deleted but not staged\nGreen files = staged (ready to commit)\n2️⃣ Stage Changes To stage all new and modified files:\ngit add . *(What this code does is \u0026ldquo;Add (stage) all changes in the current directory and its subdirectories to the next commit.\u0026rdquo;)\n(The \u0026ldquo;.\u0026rdquo; means current directory, and everything inside of it, recursively.) Or, to stage specific files:\ngit add content/sops/hugo.md git add config.toml 3️⃣ Commit with a Clear Message Commit all staged files:\ngit commit -m \u0026#34;Update SOPs and fix image paths\u0026#34; Commit message format (recommended):\n\u0026lt;category\u0026gt;: \u0026lt;short description\u0026gt; Examples: git commit -m \u0026#34;content: updated hugo commands section\u0026#34; git commit -m \u0026#34;config: fixed baseURL for github pages\u0026#34; git commit -m \u0026#34;images: replaced outdated hugo logo\u0026#34; git commit -m \u0026#34;sops: added github push procedure\u0026#34; 4️⃣ Push to GitHub (Main Branch) Push your changes to the main branch:\ngit push origin main If you’re using another branch (e.g. dev):\ngit push origin dev 5️⃣ (Optional) Pull Latest Changes Before Next Edit Before making more edits or switching devices, always sync your repo:\ngit pull origin main This ensures you’re working on the most current version and prevents merge conflicts.\n✅ Summary Step Command Description 1 git status Review what changed 2 git add . Stage all changes 3 git commit -m \u0026ldquo;\u0026hellip;\u0026rdquo; Commit with message 4 git push origin main Push updates 5 git pull origin main Sync next time ","permalink":"http://localhost:1313/sop/github/","summary":"GitHub Pages: Step-by-step deployment procedures for hosting Hugo sites on GitHub.","title":"GitHub Pages - Standard Operating Procedures (SOPs)"},{"content":"These SOPs serve as a reference and memory base for using AutoHotkey: mapping shortcuts, automating repetitive sequences, and controlling Windows programs with precision.\n1. Startup and Script Management 1. Open AHK Script Right-click any .ahk file → Run Script\nTo edit → Edit Script (opens in Notepad or your preferred editor).\n2. Launch AHK on Windows Startup Create a shortcut to your AHK script and place it in:\nC:\\Users\u0026lt;username\u0026gt;\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\n2. Useful Syntax and General Overview 1. Common Keycodes ^ = Ctrl\n! = Alt\n+ = Shift\n# = Win\nExample: #n::Run, notepad.exe → Press Win+N to open Notepad.\n2. Common Workflow Examples Action Command Example Send text Send, text Send, Hello World Open program Run, path Run, C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe Reload script ^!r::Reload Ctrl+Alt+R reloads your active script Exit script ^!q::ExitApp Ctrl+Alt+Q quits AHK Comment a line ; ; This is a comment 3. Useful Built-in Variables Variable Description %A_ScriptDir% Directory of the running script %A_Desktop% Path to the user desktop %A_Temp% Path to Windows temporary folder %A_Hour%, %A_Min%, %A_Sec% Current time 3. Useful Scripts / Shortcuts / Macros I\u0026rsquo;ve Made 1. Markdown 1. Ctrl + Alt + B = Insert Break, Line Separator, and Break ; =========================================== ; Inserts line break separator block for Markdown/HTML spacing (edit 11/3/25) ; Explanation: ; ^!b = Ctrl + Alt + B (no major software conflicts) ; SendRaw = sends text exactly as written (without interpreting symbols) ; `n = newline ; =========================================== ^!b::SendText(\u0026#34;\u0026lt;br/\u0026gt;`n`n---`n`n\u0026lt;br/\u0026gt;\u0026#34;)\t; ^!b:: = Ctrl + Alt + B This will insert the following text:\n\u0026lt;br/\u0026gt; --- \u0026lt;br/\u0026gt; This is very useful for formatting, when creating notes in Joplin, or creating content within Hugo (such as this very page). I found myself typing out \u0026lt;br/\u0026gt; --- \u0026lt;br/\u0026gt; a bunch of times over and over, so this saves a lot of time within those programs (and anywhere markdown is used).\n2. Left Ctrl + Left Shift + C = Insert Colored Text Style: \u0026lt;span style=\u0026quot;color: #00d28f;\u0026quot;\u0026gt; 3. Left Ctrl + Left Shift + X = Insert Text : \u0026lt;/span\u0026gt; ; 2/14/26 ; =============================== ; For use ONLY inside of Notepad++, to make a text colored ; It will insert the text: \u0026lt;span style=\u0026#34;color: #00d28f;\u0026#34;\u0026gt; ; (You still have to add \u0026lt;/span\u0026gt; at the end of it, with Left Control + Left Shift + X) ; ; Activate this macro with: Left Control + Left Shift + C ; Then to close the span element, press: Left Control + Left Shift + X ; =============================== #HotIf WinActive(\u0026#34;ahk_exe notepad++.exe\u0026#34;) \u0026lt;^\u0026lt;+c::SendText \u0026#39;\u0026lt;span style=\u0026#34;color: #00d28f;\u0026#34;\u0026gt;\u0026#39; \u0026lt;^\u0026lt;+x::SendText \u0026#39;\u0026lt;/span\u0026gt;\u0026#39; #HotIf This will insert the following text:\n\u0026lt;span style=\u0026#34;color: #00d28f;\u0026#34;\u0026gt; \u0026hellip; But only inside of the Notepad++ program.\nNote that we still have to add the at the end of text snippet, to close the \u0026lt;span\u0026gt; element, but for that we\u0026rsquo;ve added the 2nd shortcut within the code, activated by Left Control + Left Shift + X, which will insert:\n\u0026lt;/span\u0026gt; The colored text \u0026lt;span\u0026gt; element is something I use very often when writing up markdown files, for use in notes, documentation, and this website.\nNote that in the future, it might be better practice to use a shortcode, and implement something like:\n\u0026lt;span class=\u0026#34;green-text\u0026#34;\u0026gt; And then define the color in CSS:\n.green-text { color: #00d28f; } This will make inline styles:\nEasier to maintain Reusable Theme-aware Can reuse the site architecture (theme)\u0026hellip; but modify the individual colors inside the .css file\u0026hellip; thus changing the whole color scheme and feel of the site\u0026hellip; while only changing a few lines of code in the .css file\u0026hellip; instead of individually going through the whole site and changing every single #00d28f instance. Reference Links Official AHK Documentation\nAutoHotkey Forum\nAHK GitHub Repository\n","permalink":"http://localhost:1313/sop/ahk/","summary":"AHK: Reference notes and step-by-step systems for keyboard automation, macros, and workflow shortcuts.","title":"AutoHotkey (AHK) - Standard Operating Procedures (SOPs)"},{"content":"🎯 Objective Implement a long-term, low-maintenance cold-storage system using M-Disc Blu-ray technology within the TrueNAS backup server (NAS-001).\nThis ensures data remains readable for centuries without dependency on cloud providers, power, or magnetic storage integrity.\n🧱 System Overview Component Description TrueNAS Server (NAS-001) Primary data repository, ZFS RAIDZ2 array, 60 TB+ usable. M-Disc Burner LG WH16NS58 (SATA) with BDXL support. Backup Manager SV-001 (EliteDesk 800 G4 Mini) runs scheduled jobs and Wake-on-LAN triggers. Backup Media Verbatim M-Disc BD-R 25 GB (archival grade). 🗺️ Considerations / Specifications 🔥 Best Burners for M-Disc LG WH16NS40 / WH16NS58 — Official M-Disc support, consistent write quality. ASUS BW-16D1HT — Supports both M-Disc and BDXL (100 GB). Good for testing, not ideal for long-term critical data. Best Practices\nUse only Verbatim or Milleniata branded media. Burn at 4× speed or lower — slower burns improve pit formation and readability. Always enable verify-after-write in ImgBurn or Nero. Generate checksums before and after burn: sha256sum * \u0026gt; checksums.txt ","permalink":"http://localhost:1313/projects/truenas/m-disc/","summary":"Offline, immutable long-term data storage using Verbatim M-Disc technology integrated with TrueNAS SCALE.","title":"M-Disc Archival Solutions"},{"content":"🎯 Objective Implement a\n🗺️ Considerations / Specifications Best Burners for M-Disc LG WH16NS40 or LG WH16NS58 → Both support M-Disc officially.\nASUS BW-16D1HT → Supports M-Disc and BDXL, reliable if you ever want to experiment with 100 GB discs.\nMake sure to:\nUse Verbatim or Milleniata-branded M-Disc media only.\nBurn at 4× speed (slow and consistent = best long-term integrity).\nUse ImgBurn or Nero Burning ROM with “verify after write” enabled.\nGenerate and store checksums (sha256sum * \u0026gt; checksums.txt).\n3-2-1 M-Disc Workflow Example How the M-Disc burner will function within our TrueNAS backup server (NAS-001):\nOnce per quarter: Snapshot important datasets (e.g. /mnt/pool01/Documents, /mnt/pool01/MusicProjects).\nCompress into .7z archives of ≤23 GB each.\nGenerate checksums and burn to Verbatim M-Disc 25 GB.\nVerification: After each burn, run a full CRC/SHA check against source data.\nLog results in backup_log_YYYYMMDD.txt.\nOffsite: Copy same discs and store at a secondary site.\nOptionally upload encrypted duplicates to cloud storage.\nResult:\nNAS = fast access + redundancy\nM-Disc = offline, immutable, EMP-resistant backup\nCloud = disaster insurance\nThe result is a classic 3-2-1 architecture: physically and digitally redundant.\nPower Consumption To save on power consumption, our homelab (EliteDesk 800 G4) server (SV-001) will be the server with 24/7 availability, and this TrueNAS server will utilize WoL (Wake-on-LAN) to power on, on a as-needed basis, or with scheduled cron jobs.\nLong-Term Backup Solution Strong focus on long-term backups. A pain point of mine has been running out of storage on every device (phones, laptops, desktops, etc.)\u0026hellip; Keeping track of backups on various external drives scattered about is not good practice, and thus I am looking to find a proper long term, scaleable solution.\nCold Storage: M-Disc BD-R 25 GB Taking the 3-2-1 principle into consideration, long term cold-storage backups on 25 GB M-Disks is something I think worthwhile to implement. These disks can easily be stored in offsite locations, taking up minimal space (inside a DVD binder, for example). Hence, the choice to add a BDXL-capable drive, for burning 25 GB disks (verified with checksum) for long-term archival.\nEach disk will get:\nSHA256 checksum text file inside. Label printed with permanent ink or laser etching (no stickers, no sharpies). Stored vertically in jewel cases or archival sleeves (avoid spindles). Kept in an airtight plastic bin with silica gel, inside a closet (no sunlight). Note: 25 GB single-layer discs are more reliable than 50 GB ones: fewer layers, fewer focus calibration issues, and much lower uncorrectable error rates over time.) I might use 50 GB disks for less critical data however, and verify immediately with checksum after burning.\nI was considering 128 GB BDXL disks, however I later became aware of the fact that the lower capacity M-Disks have a much longer true archival lifespan (between 300-1,000 years, theoretically). 100-128 GB disks are supposed to be much less stable long-term, only 5-10 years, which won\u0026rsquo;t fit our use case.\n(Note: Disks should be checked periodically to ensure readability and confirm the efficacy of the backup system).\n🔧 Environment / Hardware Component Purpose Cooler Master HAF 932 Full-tower chassis with airflow and drive capacity Corsair RM850x Stable, silent 850W PSU H60x RGB Elite CPU cooler (repurposed) ECC-capable motherboard + Ryzen CPU ZFS stability and data integrity 64GB ECC DDR4 RAM ZFS ARC cache + container workloads 6× 16TB Seagate Exos drives RAIDZ2 pool (tank) for redundancy 2× 480GB SSDs Boot mirror (TrueNAS OS) LSI 9300-8i HBA (IT Mode) Direct SATA access for ZFS Intel X520-DA2 Dual-port 10GbE NIC APC Smart-UPS Power protection and clean shutdowns 🧠 Software Stack Tool / Service Function TrueNAS SCALE (23.x) Core NAS OS ZFS RAIDZ2 Redundant storage pool SMB / NFS / iSCSI File sharing and VM storage MinIO (S3) Object storage for Proxmox backups Rsyslog / Fluent Bit Centralized log forwarding Scrub / Snapshot / Replication Data protection and versioning AD / LDAP integration Simulated enterprise ACL structure UPS daemon (NUT) Power loss detection and shutdown 📐 Configuration \u0026amp; Methodology ZFS Pool Setup\nPool: tank Layout: 6×16TB → RAIDZ2 Compression: zstd Atime: off Snapshots: 15-min: 48h retention Hourly: 7 days Daily: 90 days Replication: weekly off-box copy via external disk. Network Configuration\n10GbE backbone → main switch → Proxmox node (SV-001) VLAN segmentation for storage vs management Jumbo frames (MTU 9000) for NFS/iSCSI throughput File Services\nSMB: Auth via Active Directory (simulated domain) NFS: For Linux VM mounts iSCSI: For Proxmox test VMs / backup targets Security \u0026amp; Monitoring\nSyslog forwarding from firewall and Proxmox Audit logging on SMB shares Monthly SMART tests + ZFS scrubs Ransomware rollback demo via snapshots Applications\nMinIO container (S3 backup target) Rsyslog → Splunk indexer Fluent Bit → Security Onion Zabbix / Grafana for uptime and temperature monitoring 🔎 Results Metric Result Network Throughput 9.8 Gbps sustained ZFS Pool IOPS (cached) ~110k Snapshot Restore Time \u0026lt;30 sec Power Usage (avg) 85–110 W Data Availability 99.99% uptime since deployment Example ZFS pool layout:\nNAME STATE READ WRITE CKSUM tank ONLINE 0 0 0 raidz2-0 ONLINE 0 0 0 da0 ONLINE da1 ONLINE da2 ONLINE da3 ONLINE da4 ONLINE da5 ONLINE\n💡 Lessons Learned ZFS + ECC = mandatory for long-term reliability. Consumer RAM is a liability. RAIDZ1 is obsolete for multi-terabyte drives — URE risk is real. iSCSI performs best with separate VLAN and jumbo frames. TrueNAS SCALE’s Kubernetes layer is useful but overkill for critical data — isolate core datasets. UPS integration with NUT daemon is non-negotiable. Sudden power loss will corrupt metadata. ➡️ Next Steps Deploy Proxmox Backup Server with MinIO offload. Automate snapshot replication to secondary node (SV-001). Add immutable dataset for ransomware forensics demo. Publish internal SOPs and architecture diagram to eryklabs.com documentation. Expand to two-node failover cluster with ZFS replication. 📍 References TrueNAS SCALE Documentation ZFS Best Practices Guide MinIO Documentation NUT UPS Daemon Config Proxmox Backup + S3 Integration ","permalink":"http://localhost:1313/projects/truenas/m-disc_backup/","summary":"M-Disc Archival Solutions","title":"M-Disc Archival Solutions"},{"content":"Best Editors Draw.io\nFree, runs locally or in browser, imports/export PNG/SVG/PDF. If you want professional network symbols: Diagrams.net + Cisco symbol pack is best. ","permalink":"http://localhost:1313/notes/network-diagrams/","summary":"Resources for drawing network diagrams","title":"Network Diagrams"},{"content":"These SOPs serve as detailed, repeatable checklists for Hugo, a simple yet powerful website editor.\n1. Most basic commands and sequences to remember: 1. Hugo Startup (Local) Starting up your Hugo Site Locally\n1. Open your terminal or PowerShell and cd into your site’s root directory — the one that contains config.toml, themes/, and content/.\ncd D:\\path\\to\\your\\hugo-site\n2. Start the local server\nRun this command:\nhugo server\nor if you want it to automatically rebuild on file changes:\nhugo server -D\n3. Open in your browser\nOnce it starts, Hugo will print something like:\nWeb Server is available at http://localhost:1313/\nOpen that URL in your browser.\n2. Correct global image locations (for Cover Image in Frontmatter) If you want images available globally (to any page or post), use:\n/static/images/\nSo in your filesystem:\nC:\\Projects\\ProjectName\\static\\images\\homelab\\example.jpg\nThen anywhere in your Markdown:\n![My Logo](/images/logo.png)\nThat will render correctly on both the local server and deployed site, because /static maps directly to the web root /.\nFor example, on this page, the Hugo logo is inserted via this code snippet in the frontmatter:\ncover:\nimage: \u0026quot;/images/hugo/hugo-logo-wide.svg\u0026quot;\n3. Insert an image into the page If you don’t need custom margins or width:\n![Example text](/images/image.jpg)\nExample used at the top of this page:\n![Hugo logo](/images/hugo/hugo-logo-wide.svg)\nImage Standardation SOP my site\nImage SOP\n4. Insert code block Like this:\n```bash\rhugo server -D``` Explanation:\nStart of code block →\n```bash ``` tells Markdown “start a fenced code block” and “use Bash syntax highlighting.” (The word bash is optional — it just enables color-coding for shell commands.)\nResult:\nhugo server -D 5. Make a hyperlink open in new tab Option 1:\nMarkdown itself doesn\u0026rsquo;t support opening links in a new tab.\nTo do so, we\u0026rsquo;ll have to insert HTML inside Markdown, like so:\nCheck out \u0026lt;a href=\u0026quot;https://eryklabs.com\u0026quot; target=\u0026quot;_blank\u0026quot; rel=\u0026quot;noopener noreferrer\u0026quot;\u0026gt;my site\u0026lt;/a\u0026gt;.\nOption 2:\nMake all external links open in new tabs automatically\nAdd this JavaScript snippet to your PaperMod footer partial or via custom JS (e.g., /assets/js/custom.js):\n\u0026lt;script\u0026gt; document.querySelectorAll(\u0026#39;a[href^=\u0026#34;http\u0026#34;]\u0026#39;).forEach(link =\u0026gt; { if (!link.href.includes(window.location.hostname)) { link.setAttribute(\u0026#39;target\u0026#39;, \u0026#39;_blank\u0026#39;); link.setAttribute(\u0026#39;rel\u0026#39;, \u0026#39;noopener noreferrer\u0026#39;); } }); \u0026lt;/script\u0026gt; 6. Link to another page within your Hugo site Use ref (absolute to site root)\nIf you want links to stay valid regardless of the page\u0026rsquo;s location:\nUse [Home Page]({{\u0026lt; ref \u0026ldquo;index.md\u0026rdquo; \u0026gt;}}) to link to another page.\nref creates an absolute link from the site root. Another example:\n[TrueNAS Project]({{\u0026lt; ref \u0026ldquo;projects/truenas/index.md\u0026rdquo; \u0026gt;}})\n7. Making text colored Insert the code \u0026lt;span style=\u0026quot;color: #00d28f;\u0026quot;\u0026gt;colored text\u0026lt;/span\u0026gt; between the text you want a different color.\n8. How to add tables Follow this format:\n| Level\t| Tolerance\t| Efficiency\t| Notes | |------------|----------|----------|----------| RAIDZ1\t|1 disk fails|\t~N-1 drives usable|\tNot safe with modern large disks; rebuild risk too high| RAIDZ2\t|2 disks fail|\t~N-2 drives usable|\tBest trade-off between safety and capacity| RAIDZ3\t|3 disks fail|\t~N-3 drives usable|\tGood for mission-critical or 12-16+ disk arrays| That code will create the following table:\nLevel Tolerance Efficiency Notes RAIDZ1 1 disk fails ~N-1 drives usable Not safe with modern large disks; rebuild risk too high RAIDZ2 2 disks fail ~N-2 drives usable Best trade-off between safety and capacity RAIDZ3 3 disks fail ~N-3 drives usable Good for mission-critical or 12-16+ disk arrays 9. Add a page in Hugo Everything you want Hugo to publish must be a Markdown file (.md) under the content/ folder. Hugo will turn that .md into an HTML page.\nIf you want to create a new page (for example a Joplin page under the Projects section of the website), then:\nCreate a new folder under that section of the site (e.g. a joplin folder, inside of the projects folder, of the eryklabs hugo site). Create (or copy/paste an existing) _index.md file in the joplin folder. Your new joplin page is now live at yourwebsite.com/projects/joplin. Note: If you want to create any subpages under the new joplin folder, just add them into the same projects folder. See the trueNAS section for an example.\n","permalink":"http://localhost:1313/sop/hugo/","summary":"Hugo: Documented step-by-step systems and procedures I’ve built or standardized.","title":"Hugo - Standard Operating Procedures (SOPs)"},{"content":"🎯 Objective Deploy a fully private, self-hosted Joplin Server to synchronize notes across multiple personal devices without relying on third-party cloud providers.\nPrimary goals:\nFull data ownership End-to-end control of infrastructure Long-term reliability with minimal maintenance Clean separation between hypervisor and application services 🔧 Environment / Tools Component Purpose HP EliteDesk 800 G4 Mini (i7-8700T, 64 GB RAM) Physical host (sv-001) Proxmox VE Bare-metal hypervisor Debian (VM) Dedicated service host OS Joplin Server Private note synchronization backend Python 3.11 Automation, scripting, and tooling Wireshark Network inspection and troubleshooting 📐 Architecture \u0026amp; Methodology 1. Proxmox (Bare Metal) Installed directly on sv-001 Used strictly as a hypervisor No application services run on the host itself 2. Debian Virtual Machine Created and managed via Proxmox Acts as an isolated service container Snapshots and backups handled at VM level 3. Joplin Server Deployment Installed inside the Debian VM Used exclusively for personal note synchronization Syncs multiple devices (desktop + mobile) No dependency on Joplin Cloud or third-party storage 4. Network \u0026amp; Security Service isolation via VM boundaries Network traffic validated during setup using Wireshark Designed to later integrate VPN-only access 🔎 Results Item Status Proxmox installed and stable ✅ Debian VM provisioned ✅ Joplin Server operational ✅ Multi-device sync verified ✅ 💡 Lessons Learned Running services inside a VM dramatically simplifies recovery and migration. Proxmox snapshots provide a clean rollback strategy before upgrades. Self-hosting Joplin removes vendor lock-in and long-term pricing risk. Clear separation between hypervisor, OS, and application reduces operational mistakes. ➡️ Next Steps Automated VM backups to NAS-001 VPN-only access for Joplin Server Hardening Debian (firewall rules, SSH lockdown) Monitoring uptime and resource usage Optional integration with additional self-hosted services 📍 References https://joplinapp.org/help/ https://github.com/laurent22/joplin https://pve.proxmox.com/wiki/Main_Page ","permalink":"http://localhost:1313/projects/joplin/_index_backup_2-7-26/","summary":"Private, self-hosted Joplin Server running on Debian inside Proxmox for secure note synchronization","title":"Self-Hosted Joplin Server"},{"content":"📋 Overview 🗺️ Key Takeaways Insight #1 Insight #2 📐 Process / Method Explain steps, code snippets, or screenshots.\nexample command here 🔎 Results / Lessons 📍 References [link to docs] ","permalink":"http://localhost:1313/write-ups/how-i-setup-ssh/","summary":"Write Ups Template","title":"Write-Ups Template"},{"content":"✍️ Formatting Tricks To center a column in Markdown tables:\n|:--------:| This centers the column text.\n🖥️ Commands I Use Often hugo server -D hugo new content/blog/new-post.md 📝 Things to Note Never run hugo from inside /content/ paginate was replaced by pagination.pagerSize Now when you run the server, you’ll have:\nhttp://localhost:1313/notes/template\n📑 HTML Getting Hugo to list pages in descending order date (newest \u0026ndash;\u0026gt; oldest), vs. ascending order\nOpen themes/PaperMod/layouts/_default/list.html since we\u0026rsquo;re using the PaperMod theme Change {{- range $index, $page := $paginator.Pages }} to {{- range $index, $page := $paginator.Pages.ByDate.Reverse }} ","permalink":"http://localhost:1313/notes/hugo/","summary":"Personal notes and tips for building Hugo sites efficiently.","title":"Hugo"},{"content":"📢 Purpose Explain why this SOP exists.\n📑 Scope Where and when it applies.\n🗃️ Prerequisites Tools, permissions, configurations needed.\n📋 Procedure Numbered list of steps.\n✅ Verification How to confirm the procedure worked.\n❗ Troubleshooting Common issues and fixes.\n🔧 Maintenance Review frequency and version tracking.\n📚 References Reference 1 ","permalink":"http://localhost:1313/sop/template-sop/","summary":"Reusable SOP format for documenting repeatable processes.","title":"SOP – Template"},{"content":"🎯 Objective State exactly what problem or goal the project addressed.\nExample: “Detect DNS exfiltration in the Splunk BOTS v3 dataset.”\n🔧 Environment / Tools List system setup and versions.\nComponent Purpose Splunk 9.2 SIEM and data analysis Python 3.11 Scripting and data parsing Wireshark Network packet inspection 📐 Methodology Explain how you approached the problem.\nDescribe setup or data ingestion.\nShow key commands or configs in fenced code blocks:\nindex=botsv3 sourcetype=dns earliest=-24h Mention reasoning, patterns, or troubleshooting steps.\n🔎 Results Summarize measurable output, screenshots, or outcomes.\nMetric Result Queries built 12 True positives 8 False positives 1 Include images: 💡 Lessons Learned Bullet or paragraph format works fine.\nDiscovered that DNS queries with TXT records are common indicators.\nLearned how to filter out false positives using field qtype.\n➡️ Next Steps What would you add, automate, or scale?\nAutomate query generation with Python.\nIntegrate with an alerting system.\n📍 References Splunk BOTS v3 Dataset Docs\nWireshark Filters Cheat Sheet\n","permalink":"http://localhost:1313/projects/splunk-bots3/","summary":"Spunk Bots Example","title":"Projects Template"},{"content":"Formatting Tricks To center a column in Markdown tables:\n|:--------:| This centers the column text.\nCommands I Use Often hugo server -D hugo new content/blog/new-post.md Things to Note Never run hugo from inside /content/ paginate was replaced by pagination.pagerSize Now when you run the server, you’ll have:\nhttp://localhost:1313/notes/template\n","permalink":"http://localhost:1313/notes/template/","summary":"Personal notes and tips for building Hugo sites efficiently.","title":"Template - Notes"}][m
+\ No newline at end of file[m
+[1mdiff --git a/public/index.xml b/public/index.xml[m
+[1mindex 74f3ce7..4c7e6b5 100644[m
+[1m--- a/public/index.xml[m
+[1m+++ b/public/index.xml[m
+[36m@@ -15,6 +15,13 @@[m
+       <guid>http://localhost:1313/notes/python/memorize-methods/</guid>[m
+       <description>A practical framework for learning and recalling Python methods.</description>[m
+     </item>[m
+[32m+[m[32m    <item>[m
+[32m+[m[32m      <title>Python</title>[m
+[32m+[m[32m      <link>http://localhost:1313/notes/python/</link>[m
+[32m+[m[32m      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>[m
+[32m+[m[32m      <guid>http://localhost:1313/notes/python/</guid>[m
+[32m+[m[32m      <description>Personal notes and tips for learning the Python programming language.</description>[m
+[32m+[m[32m    </item>[m
+     <item>[m
+       <title>Intel CPUs</title>[m
+       <link>http://localhost:1313/notes/intel-cpu/</link>[m
+[1mdiff --git a/public/notes/index.html b/public/notes/index.html[m
+[1mindex 2afe086..73b4fb7 100644[m
+[1m--- a/public/notes/index.html[m
+[1m+++ b/public/notes/index.html[m
+[36m@@ -150,18 +150,27 @@[m
+ </header>[m
+ [m
+ <article class="post-entry"> [m
+[31m-<figure class="entry-cover">[m
+[31m-        <img loading="lazy" src="http://localhost:1313/images/python/python-logo.png" alt="Python logo">[m
+[31m-</figure>[m
+   <header class="entry-header">[m
+[31m-    <h2 class="entry-hint-parent">Python Notes[m
+[32m+[m[32m    <h2 class="entry-hint-parent">Python[m
+     </h2>[m
+   </header>[m
+   <div class="entry-content">[m
+[31m-    <p>Central hub for Python learning notes and deep dives.</p>[m
+[32m+[m[32m    <p>Personal notes and tips for learning the Python programming language.</p>[m
+   </div>[m
+[31m-  <footer class="entry-footer"><span title='2026-01-16 00:00:00 +0000 UTC'>January 16, 2026</span>&nbsp;·&nbsp;<span>1 min</span></footer>[m
+[31m-  <a class="entry-link" aria-label="post link to Python Notes" href="http://localhost:1313/notes/python/"></a>[m
+[32m+[m[32m  <footer class="entry-footer"><span title='2026-01-23 00:00:00 +0000 UTC'>January 23, 2026</span>&nbsp;·&nbsp;<span>1 min</span></footer>[m
+[32m+[m[32m  <a class="entry-link" aria-label="post link to Python" href="http://localhost:1313/notes/python/"></a>[m
+[32m+[m[32m</article>[m
+[32m+[m
+[32m+[m[32m<article class="post-entry">[m[41m [m
+[32m+[m[32m  <header class="entry-header">[m
+[32m+[m[32m    <h2 class="entry-hint-parent">How to Memorize Python Methods (4-Question Method)[m
+[32m+[m[32m    </h2>[m
+[32m+[m[32m  </header>[m
+[32m+[m[32m  <div class="entry-content">[m
+[32m+[m[32m    <p>A practical framework for learning and recalling Python methods.</p>[m
+[32m+[m[32m  </div>[m
+[32m+[m[32m  <footer class="entry-footer"><span title='2026-01-23 00:00:00 +0000 UTC'>January 23, 2026</span>&nbsp;·&nbsp;<span>2 min</span></footer>[m
+[32m+[m[32m  <a class="entry-link" aria-label="post link to How to Memorize Python Methods (4-Question Method)" href="http://localhost:1313/notes/python/memorize-methods/"></a>[m
+ </article>[m
+ [m
+ <article class="post-entry"> [m
+[1mdiff --git a/public/notes/index.xml b/public/notes/index.xml[m
+[1mindex b9ad96b..9d101b4 100644[m
+[1m--- a/public/notes/index.xml[m
+[1m+++ b/public/notes/index.xml[m
+[36m@@ -6,8 +6,22 @@[m
+     <description>Recent content in Notes on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>[m
+     <generator>Hugo -- 0.151.0</generator>[m
+     <language>en-us</language>[m
+[31m-    <lastBuildDate>Sun, 09 Nov 2025 00:00:00 +0000</lastBuildDate>[m
+[32m+[m[32m    <lastBuildDate>Fri, 23 Jan 2026 00:00:00 +0000</lastBuildDate>[m
+     <atom:link href="http://localhost:1313/notes/index.xml" rel="self" type="application/rss+xml" />[m
+[32m+[m[32m    <item>[m
+[32m+[m[32m      <title>How to Memorize Python Methods (4-Question Method)</title>[m
+[32m+[m[32m      <link>http://localhost:1313/notes/python/memorize-methods/</link>[m
+[32m+[m[32m      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>[m
+[32m+[m[32m      <guid>http://localhost:1313/notes/python/memorize-methods/</guid>[m
+[32m+[m[32m      <description>A practical framework for learning and recalling Python methods.</description>[m
+[32m+[m[32m    </item>[m
+[32m+[m[32m    <item>[m
+[32m+[m[32m      <title>Python</title>[m
+[32m+[m[32m      <link>http://localhost:1313/notes/python/</link>[m
+[32m+[m[32m      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>[m
+[32m+[m[32m      <guid>http://localhost:1313/notes/python/</guid>[m
+[32m+[m[32m      <description>Personal notes and tips for learning the Python programming language.</description>[m
+[32m+[m[32m    </item>[m
+     <item>[m
+       <title>Intel CPUs</title>[m
+       <link>http://localhost:1313/notes/intel-cpu/</link>[m
+[1mdiff --git a/public/notes/python/index.html b/public/notes/python/index.html[m
+[1mindex e0c7dc5..43b3278 100644[m
+[1m--- a/public/notes/python/index.html[m
+[1m+++ b/public/notes/python/index.html[m
+[36m@@ -5,9 +5,9 @@[m
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">[m
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">[m
+ <meta name="robots" content="noindex, nofollow">[m
+[31m-<title>Python Notes | Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>[m
+[31m-<meta name="keywords" content="python">[m
+[31m-<meta name="description" content="Central hub for Python learning notes and deep dives.">[m
+[32m+[m[32m<title>Python | Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>[m
+[32m+[m[32m<meta name="keywords" content="python, programming, learning">[m
+[32m+[m[32m<meta name="description" content="Personal notes and tips for learning the Python programming language.">[m
+ <meta name="author" content="">[m
+ <link rel="canonical" href="http://localhost:1313/notes/python/">[m
+ <link crossorigin="anonymous" href="/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">[m
+[36m@@ -18,7 +18,6 @@[m
+ <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">[m
+ <meta name="theme-color" content="#2e2e33">[m
+ <meta name="msapplication-TileColor" content="#2e2e33">[m
+[31m-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/notes/python/index.xml" title="rss">[m
+ <link rel="alternate" hreflang="en" href="http://localhost:1313/notes/python/">[m
+ <noscript>[m
+     <style>[m
+[36m@@ -59,7 +58,7 @@[m
+ </noscript>[m
+ </head>[m
+ [m
+[31m-<body class="list" id="top">[m
+[32m+[m[32m<body class="" id="top">[m
+ <script>[m
+     if (localStorage.getItem("pref-theme") === "dark") {[m
+         document.body.classList.add('dark');[m
+[36m@@ -142,15 +141,38 @@[m
+         </ul>[m
+     </nav>[m
+ </header>[m
+[31m-<main class="main"> [m
+[31m-<header class="page-header">[m
+[31m-  <h1>[m
+[31m-    Python Notes[m
+[31m-  </h1>[m
+[31m-</header>[m
+[31m-<div class="post-content"><p><img alt="Hugo logo" loading="lazy" src="/images/python/python-logo.png"></p>[m
+[31m-<br/>[m
+[31m-<h2 id="python-notes--master-index">Python Notes — Master Index<a hidden class="anchor" aria-hidden="true" href="#python-notes--master-index">#</a></h2>[m
+[32m+[m[32m<main class="main">[m
+[32m+[m
+[32m+[m[32m<article class="post-single">[m
+[32m+[m[32m  <header class="post-header">[m
+[32m+[m[41m    [m
+[32m+[m[32m    <h1 class="post-title entry-hint-parent">[m
+[32m+[m[32m      Python[m
+[32m+[m[32m    </h1>[m
+[32m+[m[32m    <div class="post-meta"><span title='2026-01-23 00:00:00 +0000 UTC'>January 23, 2026</span>&nbsp;·&nbsp;<span>1 min</span>[m
+[32m+[m
+[32m+[m[32m</div>[m
+[32m+[m[32m  </header> <div class="toc">[m
+[32m+[m[32m    <details >[m
+[32m+[m[32m        <summary accesskey="c" title="(Alt + C)">[m
+[32m+[m[32m            <span class="details">Table of Contents</span>[m
+[32m+[m[32m        </summary>[m
+[32m+[m
+[32m+[m[32m        <div class="inner"><ul>[m
+[32m+[m[32m                <li>[m
+[32m+[m[32m                    <a href="#python-notes--master-index" aria-label="Python Notes — Master Index">Python Notes — Master Index</a><ul>[m
+[32m+[m[41m                        [m
+[32m+[m[32m                <li>[m
+[32m+[m[32m                    <a href="#topics" aria-label="Topics">Topics</a>[m
+[32m+[m[32m                </li>[m
+[32m+[m[32m            </ul>[m
+[32m+[m[32m            </li>[m
+[32m+[m[32m            </ul>[m
+[32m+[m[32m        </div>[m
+[32m+[m[32m    </details>[m
+[32m+[m[32m</div>[m
+[32m+[m
+[32m+[m[32m  <div class="post-content"><h2 id="python-notes--master-index">Python Notes — Master Index<a hidden class="anchor" aria-hidden="true" href="#python-notes--master-index">#</a></h2>[m
+ <p>This page is a high-level index of Python concepts I’m learning.[m
+ Each topic below links to a focused deep-dive note.</p>[m
+ <h3 id="topics">Topics<a hidden class="anchor" aria-hidden="true" href="#topics">#</a></h3>[m
+[36m@@ -158,25 +180,17 @@[m [mEach topic below links to a focused deep-dive note.</p>[m
+ <li><a href="memorize-methods/">Memorizing Python Methods (4-Question Method)</a></li>[m
+ <li><a href="strings/">Strings &amp; Text Processing</a></li>[m
+ </ul>[m
+[31m- <br/>[m
+[31m-<hr>[m
+[31m- <br/>[m
+[31m-<h2 id="-attribution">📜 Attribution<a hidden class="anchor" aria-hidden="true" href="#-attribution">#</a></h2>[m
+[31m-<p>Python logo courtesy of python.org</p>[m
+ [m
+ [m
+[31m-</div>[m
+[31m-[m
+[31m-<article class="post-entry"> [m
+[31m-  <header class="entry-header">[m
+[31m-    <h2 class="entry-hint-parent">How to Memorize Python Methods (4-Question Method)[m
+[31m-    </h2>[m
+[31m-  </header>[m
+[31m-  <div class="entry-content">[m
+[31m-    <p>A practical framework for learning and recalling Python methods.</p>[m
+   </div>[m
+[31m-  <footer class="entry-footer"><span title='2026-01-23 00:00:00 +0000 UTC'>January 23, 2026</span>&nbsp;·&nbsp;<span>2 min</span></footer>[m
+[31m-  <a class="entry-link" aria-label="post link to How to Memorize Python Methods (4-Question Method)" href="http://localhost:1313/notes/python/memorize-methods/"></a>[m
+[32m+[m
+[32m+[m[32m  <footer class="post-footer">[m
+[32m+[m[32m    <ul class="post-tags">[m
+[32m+[m[32m      <li><a href="http://localhost:1313/tags/python/">Python</a></li>[m
+[32m+[m[32m      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>[m
+[32m+[m[32m      <li><a href="http://localhost:1313/tags/learning/">Learning</a></li>[m
+[32m+[m[32m    </ul>[m
+[32m+[m[32m  </footer>[m
+ </article>[m
+     </main>[m
+     [m
+[36m@@ -249,6 +263,53 @@[m [mEach topic below links to a focused deep-dive note.</p>[m
+     })[m
+ [m
+ </script>[m
+[32m+[m[32m<script>[m
+[32m+[m[32m    document.querySelectorAll('pre > code').forEach((codeblock) => {[m
+[32m+[m[32m        const container = codeblock.parentNode.parentNode;[m
+[32m+[m
+[32m+[m[32m        const copybutton = document.createElement('button');[m
+[32m+[m[32m        copybutton.classList.add('copy-code');[m
+[32m+[m[32m        copybutton.innerHTML = 'copy';[m
+[32m+[m
+[32m+[m[32m        function copyingDone() {[m
+[32m+[m[32m            copybutton.innerHTML = 'copied!';[m
+[32m+[m[32m            setTimeout(() => {[m
+[32m+[m[32m                copybutton.innerHTML = 'copy';[m
+[32m+[m[32m            }, 2000);[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        copybutton.addEventListener('click', (cb) => {[m
+[32m+[m[32m            if ('clipboard' in navigator) {[m
+[32m+[m[32m                navigator.clipboard.writeText(codeblock.textContent);[m
+[32m+[m[32m                copyingDone();[m
+[32m+[m[32m                return;[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            const range = document.createRange();[m
+[32m+[m[32m            range.selectNodeContents(codeblock);[m
+[32m+[m[32m            const selection = window.getSelection();[m
+[32m+[m[32m            selection.removeAllRanges();[m
+[32m+[m[32m            selection.addRange(range);[m
+[32m+[m[32m            try {[m
+[32m+[m[32m                document.execCommand('copy');[m
+[32m+[m[32m                copyingDone();[m
+[32m+[m[32m            } catch (e) { };[m
+[32m+[m[32m            selection.removeRange(range);[m
+[32m+[m[32m        });[m
+[32m+[m
+[32m+[m[32m        if (container.classList.contains("highlight")) {[m
+[32m+[m[32m            container.appendChild(copybutton);[m
+[32m+[m[32m        } else if (container.parentNode.firstChild == container) {[m
+[32m+[m[41m            [m
+[32m+[m[32m        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {[m
+[32m+[m[41m            [m
+[32m+[m[32m            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);[m
+[32m+[m[32m        } else {[m
+[32m+[m[41m            [m
+[32m+[m[32m            codeblock.parentNode.appendChild(copybutton);[m
+[32m+[m[32m        }[m
+[32m+[m[32m    });[m
+[32m+[m[32m</script>[m
+ </body>[m
+ [m
+ </html>[m
+[1mdiff --git a/public/progress/homelab/index.html b/public/progress/homelab/index.html[m
+[1mindex 813462e..53b51e0 100644[m
+[1m--- a/public/progress/homelab/index.html[m
+[1m+++ b/public/progress/homelab/index.html[m
+[36m@@ -165,7 +165,205 @@[m
+ </ul>[m
+ <hr>[m
+ <h2 id="-progress-log">👷 Progress Log<a hidden class="anchor" aria-hidden="true" href="#-progress-log">#</a></h2>[m
+[31m-<h3 id="-2026-03-15">📅 2026-03-15<a hidden class="anchor" aria-hidden="true" href="#-2026-03-15">#</a></h3>[m
+[32m+[m[32m<br/>[m
+[32m+[m[32m<h3 id="-2026-03-27">📅 2026-03-27<a hidden class="anchor" aria-hidden="true" href="#-2026-03-27">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Built a full internal access stack (DNS + WireGuard + reverse proxy) to access homelab services via clean hostnames instead of IP:port</li>[m
+[32m+[m[32m<li>Solved multiple connectivity issues across DNS resolution, VPN routing, reverse proxy config, and Docker service exposure</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h2 id="-systems-worked-on">🔧 Systems Worked On<a hidden class="anchor" aria-hidden="true" href="#-systems-worked-on">#</a></h2>[m
+[32m+[m[32m<h3 id="technitium-internal-dns-server">Technitium (Internal DNS Server)<a hidden class="anchor" aria-hidden="true" href="#technitium-internal-dns-server">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Set up Technitium internal DNS to resolve local services to a single server IP</li>[m
+[32m+[m[32m<li>Verified resolution works both locally and over VPN</li>[m
+[32m+[m[32m<li>Fixed inconsistent resolution caused by OS using multiple DNS sources</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="wireguard-vpn--dns-routing">WireGuard (VPN + DNS Routing)<a hidden class="anchor" aria-hidden="true" href="#wireguard-vpn--dns-routing">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Configured clients to use internal DNS server instead of ISP DNS</li>[m
+[32m+[m[32m<li>Ensured DNS queries route through VPN instead of leaking externally</li>[m
+[32m+[m[32m<li>Verified full internal access via VPN subnet (10.x network)</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="reverse-proxy-nginx-proxy-manager">Reverse Proxy (Nginx Proxy Manager)<a hidden class="anchor" aria-hidden="true" href="#reverse-proxy-nginx-proxy-manager">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Configured hostname-based routing to internal services (no ports)</li>[m
+[32m+[m[32m<li>Fixed multiple 502 errors caused by incorrect upstream targets</li>[m
+[32m+[m[32m<li>Learned correct proxy flow: DNS → proxy → service</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="joplin-server">Joplin Server<a hidden class="anchor" aria-hidden="true" href="#joplin-server">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Debugged “Invalid origin” error caused by base URL mismatch</li>[m
+[32m+[m[32m<li>Fixed environment config (<code>APP_BASE_URL</code>)</li>[m
+[32m+[m[32m<li>Verified correct behavior via curl + Host header simulation</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="syncthing">Syncthing<a hidden class="anchor" aria-hidden="true" href="#syncthing">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Diagnosed container crash loop due to permission issues</li>[m
+[32m+[m[32m<li>Fixed volume ownership + permissions</li>[m
+[32m+[m[32m<li>Successfully exposed UI and routed via reverse proxy</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="-decisions-made">⚖️ Decisions Made<a hidden class="anchor" aria-hidden="true" href="#-decisions-made">#</a></h3>[m
+[32m+[m[32m<h4 id="use-reverse-proxy-instead-of-direct-ports">Use Reverse Proxy instead of Direct Ports<a hidden class="anchor" aria-hidden="true" href="#use-reverse-proxy-instead-of-direct-ports">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li><strong>Pros:</strong>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Clean URLs (no ports)</li>[m
+[32m+[m[32m<li>Centralized routing</li>[m
+[32m+[m[32m<li>Matches real-world production setups</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m</li>[m
+[32m+[m[32m<li><strong>Cons:</strong>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Adds complexity (can break with misconfig)</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m</li>[m
+[32m+[m[32m<li><strong>Decision:</strong> Use reverse proxy → necessary for scaling + professionalism</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h4 id="keep-services-internal-vpn-only">Keep Services Internal (VPN-only)<a hidden class="anchor" aria-hidden="true" href="#keep-services-internal-vpn-only">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li><strong>Pros:</strong>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Reduces attack surface</li>[m
+[32m+[m[32m<li>Avoids exposing home network publicly</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m</li>[m
+[32m+[m[32m<li><strong>Cons:</strong>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Requires VPN for access</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m</li>[m
+[32m+[m[32m<li><strong>Decision:</strong> VPN-first architecture → security over convenience</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h4 id="run-services-in-docker">Run Services in Docker<a hidden class="anchor" aria-hidden="true" href="#run-services-in-docker">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li><strong>Pros:</strong>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Consistency across services</li>[m
+[32m+[m[32m<li>Easier deployment + rebuild</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m</li>[m
+[32m+[m[32m<li><strong>Cons:</strong>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Permissions + networking issues can break things</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m</li>[m
+[32m+[m[32m<li><strong>Decision:</strong> Continue using Docker → industry standard skill</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="-problems-encountered">⚠️ Problems Encountered<a hidden class="anchor" aria-hidden="true" href="#-problems-encountered">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>DNS resolving inconsistently → caused by OS mixing DNS sources</li>[m
+[32m+[m[32m<li>Reverse proxy 502 errors → caused by wrong IP/port targets</li>[m
+[32m+[m[32m<li>Joplin rejecting requests → caused by base URL mismatch</li>[m
+[32m+[m[32m<li>Syncthing failing to start → caused by filesystem permissions</li>[m
+[32m+[m[32m<li>Services working via IP but not domain → caused by DNS misconfiguration</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="-lessons-learned">🧠 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h3>[m
+[32m+[m[32m<h4 id="dns-vs-routing-critical">DNS vs Routing (critical)<a hidden class="anchor" aria-hidden="true" href="#dns-vs-routing-critical">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>DNS only resolves names → does NOT control traffic path</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h4 id="reverse-proxy-behavior">Reverse Proxy Behavior<a hidden class="anchor" aria-hidden="true" href="#reverse-proxy-behavior">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Routes based on <strong>hostname (Host header)</strong>, not IP</li>[m
+[32m+[m[32m<li>All domains should point to proxy, not services directly</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h4 id="wireguard-reality">WireGuard Reality<a hidden class="anchor" aria-hidden="true" href="#wireguard-reality">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>DNS must be explicitly configured per client</li>[m
+[32m+[m[32m<li>Otherwise system falls back to ISP DNS silently</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h4 id="docker-networking">Docker Networking<a hidden class="anchor" aria-hidden="true" href="#docker-networking">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Binding services to wrong interface breaks proxy access</li>[m
+[32m+[m[32m<li>Services must be reachable from proxy layer</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h4 id="permissions-are-a-common-failure-point">Permissions Are a Common Failure Point<a hidden class="anchor" aria-hidden="true" href="#permissions-are-a-common-failure-point">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Many container crashes are caused by volume permission issues, not app bugs</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h4 id="standard-homelab-architecture-validated">Standard Homelab Architecture (validated)<a hidden class="anchor" aria-hidden="true" href="#standard-homelab-architecture-validated">#</a></h4>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>DNS + Reverse Proxy + VPN is a common pattern for secure access</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="-final-architecture-built">🔁 Final Architecture Built<a hidden class="anchor" aria-hidden="true" href="#-final-architecture-built">#</a></h3>[m
+[32m+[m[32m<p>Client (PC / Phone) <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mWireGuard VPN <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mInternal DNS <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mReverse Proxy <br/>[m
+[32m+[m[32m↓ <br/>[m
+[32m+[m[32mDocker Services <br/></p>[m
+[32m+[m[32m<hr>[m
+[32m+[m[32m<h3 id="-ultra-short-summary">🧾 Ultra-Short Summary<a hidden class="anchor" aria-hidden="true" href="#-ultra-short-summary">#</a></h3>[m
+[32m+[m[32m<ul>[m
+[32m+[m[32m<li>Built internal DNS for service discovery across LAN + VPN</li>[m
+[32m+[m[32m<li>Integrated WireGuard with DNS to prevent leaks and ensure consistency</li>[m
+[32m+[m[32m<li>Deployed reverse proxy for clean hostname-based routing</li>[m
+[32m+[m[32m<li>Fixed Joplin origin issues and proxy misconfiguration</li>[m
+[32m+[m[32m<li>Debugged and deployed Syncthing with correct permissions</li>[m
+[32m+[m[32m</ul>[m
+[32m+[m[32m<br/>[m
+[32m+[m[32m<p>Current new <code>Homelab</code> architecture:</p>[m
+[32m+[m[32m<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl">[m
+[32m+[m[32m</span></span><span class="line"><span class="cl"><span class="n">internet</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span> <span class="n">UDP</span> <span class="mi">51820</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">▼</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl"><span class="n">router</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl"><span class="mf">192.168.0.0</span><span class="o">/</span><span class="mi">24</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span> <span class="p">(</span><span class="n">proxmox</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="n">services</span> <span class="o">-</span> <span class="n">Debian</span> <span class="n">VM</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>       <span class="err">├─</span> <span class="n">wireguard</span> <span class="p">(</span><span class="n">wg0</span> <span class="err">→</span> <span class="mf">10.6.0.1</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>       <span class="err">└─</span> <span class="n">docker</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">technitium</span> <span class="p">(</span><span class="n">DNS</span> <span class="n">server</span><span class="p">,</span> <span class="n">port</span> <span class="mi">53</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">nginx</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">manager</span> <span class="p">(</span><span class="n">ports</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">443</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">gitea</span> <span class="p">(</span><span class="mi">3000</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">joplin</span> <span class="p">(</span><span class="mi">22300</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">└─</span> <span class="n">syncthing</span> <span class="p">(</span><span class="mi">8384</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">nas</span><span class="o">-</span><span class="mi">001</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">other</span> <span class="n">devices</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span> <span class="n">DNS</span> <span class="n">resolution</span> <span class="n">path</span><span class="p">:</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>   <span class="n">device</span> <span class="err">→</span> <span class="n">DNS</span> <span class="p">(</span><span class="mf">192.168.0.22</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>           <span class="err">→</span> <span class="n">resolves</span> <span class="n">to</span> <span class="mf">192.168.0.22</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>           <span class="err">→</span> <span class="n">nginx</span> <span class="p">(</span><span class="n">port</span> <span class="mi">80</span><span class="o">/</span><span class="mi">443</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>           <span class="err">→</span> <span class="n">service</span> <span class="p">(</span><span class="n">port</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">▼</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">[m
+[32m+[m[32m</span></span><span class="line"><span class="cl"><span class="n">VPN</span> <span class="n">network</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl"><span class="mf">10.6.0.0</span><span class="o">/</span><span class="mi">24</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="mf">10.6.0.1</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>       <span class="err">└─</span> <span class="n">DNS</span> <span class="o">+</span> <span class="n">reverse</span> <span class="n">proxy</span> <span class="n">entry</span> <span class="n">point</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">clients</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">           <span class="err">├─</span> <span class="n">DNS</span> <span class="o">=</span> <span class="mf">10.6.0.1</span> <span class="p">(</span><span class="err">→</span> <span class="n">forwards</span> <span class="n">to</span> <span class="mf">192.168.0.22</span><span class="p">)</span>[m
+[32m+[m[32m</span></span><span class="line"><span class="cl">           <span class="err">└─</span> <span class="n">access</span> <span class="n">services</span> <span class="n">via</span> <span class="n">hostnames</span> <span class="p">(</span><span class="n">no</span> <span class="n">ports</span><span class="p">)</span>[m
+[32m+[m[32m</span></span></code></pre></div><h3 id="-2026-03-15">📅 2026-03-15<a hidden class="anchor" aria-hidden="true" href="#-2026-03-15">#</a></h3>[m
+ <ul>[m
+ <li>Troubleshooting <code>WireGuard</code> service, assigning <code>DHCP</code> addresses in router configuration to keep persistant IPs in homelab LAN.[m
+ (I hadn&rsquo;t been able to login to <code>Homelab</code> server remotely lately).</li>[m
+[36m@@ -219,8 +417,7 @@[m
+ </span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="mf">10.6.0.1</span><span class="p">)</span>[m
+ </span></span><span class="line"><span class="cl">   <span class="err">│</span>[m
+ </span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">clients</span>[m
+[31m-</span></span></code></pre></div><br/>[m
+[31m-<h3 id="-2026-02-27">📅 2026-02-27<a hidden class="anchor" aria-hidden="true" href="#-2026-02-27">#</a></h3>[m
+[32m+[m[32m</span></span></code></pre></div><h3 id="-2026-02-27">📅 2026-02-27<a hidden class="anchor" aria-hidden="true" href="#-2026-02-27">#</a></h3>[m
+ <ul>[m
+ <li>Troubleshooting why <code>Homelab</code> server keeps crashing and restarting every 1-2 days.</li>[m
+ <li>Solved: Had to add <code>i915.enable_dc=0</code> to <code>GRUB_CMDLINE_LINUX_DEFAULT</code> in <code>/etc/default/grub</code>[m
+[1mdiff --git a/public/progress/index.html b/public/progress/index.html[m
+[1mindex c21762d..b50227a 100644[m
+[1m--- a/public/progress/index.html[m
+[1m+++ b/public/progress/index.html[m
+[36m@@ -227,7 +227,7 @@[m
+   <div class="entry-content">[m
+     <p>Progress Log for Homelab Build</p>[m
+   </div>[m
+[31m-  <footer class="entry-footer"><span title='2025-10-22 12:47:32 -0700 PDT'>October 22, 2025</span>&nbsp;·&nbsp;<span>7 min</span></footer>[m
+[32m+[m[32m  <footer class="entry-footer"><span title='2025-10-22 12:47:32 -0700 PDT'>October 22, 2025</span>&nbsp;·&nbsp;<span>10 min</span></footer>[m
+   <a class="entry-link" aria-label="post link to Homelab Progress Log" href="http://localhost:1313/progress/homelab/"></a>[m
+ </article>[m
+     </main>[m
+[1mdiff --git a/public/projects/truenas/index.html b/public/projects/truenas/index.html[m
+[1mindex b92f62f..814c5d6 100644[m
+[1m--- a/public/projects/truenas/index.html[m
+[1m+++ b/public/projects/truenas/index.html[m
+[36m@@ -509,6 +509,7 @@[m [mda5 ONLINE</p>[m
+ <h2 id="-references">📍 References<a hidden class="anchor" aria-hidden="true" href="#-references">#</a></h2>[m
+ <ul>[m
+ <li><a href="https://www.truenas.com/docs/scale/">TrueNAS SCALE Documentation</a></li>[m
+[32m+[m[32m<li><a href="https://www.truenas.com/community/resources/building-burn-in-and-testing-your-freenas-system.38/">Building, Burn-In, and Testing your FreeNAS system (jgreco)</a></li>[m
+ <li><a href="https://openzfs.org/wiki/Performance_tuning">ZFS Best Practices Guide</a></li>[m
+ <li><a href="https://pve.proxmox.com/wiki/Backup_and_Restore">Proxmox Backup + S3 Integration</a></li>[m
+ <li><a href="https://www.youtube.com/watch?v=ykhaXo6m-04">Choosing The BEST Drive Layout For Your NAS (Hardware Haven)</a></li>[m
+[1mdiff --git a/public/sitemap.xml b/public/sitemap.xml[m
+[1mindex 66dc14d..39f75ae 100644[m
+[1m--- a/public/sitemap.xml[m
+[1m+++ b/public/sitemap.xml[m
+[36m@@ -62,17 +62,22 @@[m
+     <changefreq>weekly</changefreq>[m
+     <priority>0.5</priority>[m
+   </url><url>[m
+[31m-    <loc>http://localhost:1313/tags/python/</loc>[m
+[32m+[m[32m    <loc>http://localhost:1313/tags/programming/</loc>[m
+     <lastmod>2026-01-23T00:00:00+00:00</lastmod>[m
+     <changefreq>weekly</changefreq>[m
+     <priority>0.5</priority>[m
+   </url><url>[m
+[31m-    <loc>http://localhost:1313/tags/portfolio/</loc>[m
+[31m-    <lastmod>2026-01-16T00:00:00+00:00</lastmod>[m
+[32m+[m[32m    <loc>http://localhost:1313/notes/python/</loc>[m
+[32m+[m[32m    <lastmod>2026-01-23T00:00:00+00:00</lastmod>[m
+     <changefreq>weekly</changefreq>[m
+     <priority>0.5</priority>[m
+   </url><url>[m
+[31m-    <loc>http://localhost:1313/notes/python/</loc>[m
+[32m+[m[32m    <loc>http://localhost:1313/tags/python/</loc>[m
+[32m+[m[32m    <lastmod>2026-01-23T00:00:00+00:00</lastmod>[m
+[32m+[m[32m    <changefreq>weekly</changefreq>[m
+[32m+[m[32m    <priority>0.5</priority>[m
+[32m+[m[32m  </url><url>[m
+[32m+[m[32m    <loc>http://localhost:1313/tags/portfolio/</loc>[m
+     <lastmod>2026-01-16T00:00:00+00:00</lastmod>[m
+     <changefreq>weekly</changefreq>[m
+     <priority>0.5</priority>[m
+[1mdiff --git a/public/tags/index.html b/public/tags/index.html[m
+[1mindex 9b28890..70c40be 100644[m
+[1m--- a/public/tags/index.html[m
+[1m+++ b/public/tags/index.html[m
+[36m@@ -194,7 +194,7 @@[m
+         <a href="http://localhost:1313/tags/joplin/">joplin <sup><strong><sup>4</sup></strong></sup> </a>[m
+     </li>[m
+     <li>[m
+[31m-        <a href="http://localhost:1313/tags/learning/">learning <sup><strong><sup>3</sup></strong></sup> </a>[m
+[32m+[m[32m        <a href="http://localhost:1313/tags/learning/">learning <sup><strong><sup>4</sup></strong></sup> </a>[m
+     </li>[m
+     <li>[m
+         <a href="http://localhost:1313/tags/markdown/">markdown <sup><strong><sup>3</sup></strong></sup> </a>[m
+[36m@@ -217,6 +217,9 @@[m
+     <li>[m
+         <a href="http://localhost:1313/tags/portfolio/">portfolio <sup><strong><sup>3</sup></strong></sup> </a>[m
+     </li>[m
+[32m+[m[32m    <li>[m
+[32m+[m[32m        <a href="http://localhost:1313/tags/programming/">programming <sup><strong><sup>1</sup></strong></sup> </a>[m
+[32m+[m[32m    </li>[m
+     <li>[m
+         <a href="http://localhost:1313/tags/progress-log/">progress log <sup><strong><sup>1</sup></strong></sup> </a>[m
+     </li>[m
+[1mdiff --git a/public/tags/index.xml b/public/tags/index.xml[m
+[1mindex 94b1a46..c4e5792 100644[m
+[1m--- a/public/tags/index.xml[m
+[1m+++ b/public/tags/index.xml[m
+[36m@@ -57,6 +57,13 @@[m
+       <guid>http://localhost:1313/tags/methods/</guid>[m
+       <description></description>[m
+     </item>[m
+[32m+[m[32m    <item>[m
+[32m+[m[32m      <title>Programming</title>[m
+[32m+[m[32m      <link>http://localhost:1313/tags/programming/</link>[m
+[32m+[m[32m      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>[m
+[32m+[m[32m      <guid>http://localhost:1313/tags/programming/</guid>[m
+[32m+[m[32m      <description></description>[m
+[32m+[m[32m    </item>[m
+     <item>[m
+       <title>Python</title>[m
+       <link>http://localhost:1313/tags/python/</link>[m
+[1mdiff --git a/public/tags/learning/index.html b/public/tags/learning/index.html[m
+[1mindex 53f1f5a..9fceafa 100644[m
+[1m--- a/public/tags/learning/index.html[m
+[1m+++ b/public/tags/learning/index.html[m
+[36m@@ -149,6 +149,18 @@[m
+   </h1>[m
+ </header>[m
+ [m
+[32m+[m[32m<article class="post-entry tag-entry">[m[41m [m
+[32m+[m[32m  <header class="entry-header">[m
+[32m+[m[32m    <h2 class="entry-hint-parent">Python[m
+[32m+[m[32m    </h2>[m
+[32m+[m[32m  </header>[m
+[32m+[m[32m  <div class="entry-content">[m
+[32m+[m[32m    <p>Personal notes and tips for learning the Python programming language.</p>[m
+[32m+[m[32m  </div>[m
+[32m+[m[32m  <footer class="entry-footer"><span title='2026-01-23 00:00:00 +0000 UTC'>January 23, 2026</span>&nbsp;·&nbsp;<span>1 min</span></footer>[m
+[32m+[m[32m  <a class="entry-link" aria-label="post link to Python" href="http://localhost:1313/notes/python/"></a>[m
+[32m+[m[32m</article>[m
+[32m+[m
+ <article class="post-entry tag-entry"> [m
+   <header class="entry-header">[m
+     <h2 class="entry-hint-parent">How to Memorize Python Methods (4-Question Method)[m
+[1mdiff --git a/public/tags/learning/index.xml b/public/tags/learning/index.xml[m
+[1mindex 2979ec1..6852e21 100644[m
+[1m--- a/public/tags/learning/index.xml[m
+[1m+++ b/public/tags/learning/index.xml[m
+[36m@@ -15,6 +15,13 @@[m
+       <guid>http://localhost:1313/notes/python/memorize-methods/</guid>[m
+       <description>A practical framework for learning and recalling Python methods.</description>[m
+     </item>[m
+[32m+[m[32m    <item>[m
+[32m+[m[32m      <title>Python</title>[m
+[32m+[m[32m      <link>http://localhost:1313/notes/python/</link>[m
+[32m+[m[32m      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>[m
+[32m+[m[32m      <guid>http://localhost:1313/notes/python/</guid>[m
+[32m+[m[32m      <description>Personal notes and tips for learning the Python programming language.</description>[m
+[32m+[m[32m    </item>[m
+     <item>[m
+       <title>Hugo</title>[m
+       <link>http://localhost:1313/notes/hugo/</link>[m
+[1mdiff --git a/public/tags/python/index.html b/public/tags/python/index.html[m
+[1mindex e3ba7a8..e6f2210 100644[m
+[1m--- a/public/tags/python/index.html[m
+[1m+++ b/public/tags/python/index.html[m
+[36m@@ -149,6 +149,18 @@[m
+   </h1>[m
+ </header>[m
+ [m
+[32m+[m[32m<article class="post-entry tag-entry">[m[41m [m
+[32m+[m[32m  <header class="entry-header">[m
+[32m+[m[32m    <h2 class="entry-hint-parent">Python[m
+[32m+[m[32m    </h2>[m
+[32m+[m[32m  </header>[m
+[32m+[m[32m  <div class="entry-content">[m
+[32m+[m[32m    <p>Personal notes and tips for learning the Python programming language.</p>[m
+[32m+[m[32m  </div>[m
+[32m+[m[32m  <footer class="entry-footer"><span title='2026-01-23 00:00:00 +0000 UTC'>January 23, 2026</span>&nbsp;·&nbsp;<span>1 min</span></footer>[m
+[32m+[m[32m  <a class="entry-link" aria-label="post link to Python" href="http://localhost:1313/notes/python/"></a>[m
+[32m+[m[32m</article>[m
+[32m+[m
+ <article class="post-entry tag-entry"> [m
+   <header class="entry-header">[m
+     <h2 class="entry-hint-parent">How to Memorize Python Methods (4-Question Method)[m
+[1mdiff --git a/public/tags/python/index.xml b/public/tags/python/index.xml[m
+[1mindex 6cb8394..4cd73bf 100644[m
+[1m--- a/public/tags/python/index.xml[m
+[1m+++ b/public/tags/python/index.xml[m
+[36m@@ -15,5 +15,12 @@[m
+       <guid>http://localhost:1313/notes/python/memorize-methods/</guid>[m
+       <description>A practical framework for learning and recalling Python methods.</description>[m
+     </item>[m
+[32m+[m[32m    <item>[m
+[32m+[m[32m      <title>Python</title>[m
+[32m+[m[32m      <link>http://localhost:1313/notes/python/</link>[m
+[32m+[m[32m      <pubDate>Fri, 23 Jan 2026 00:00:00 +0000</pubDate>[m
+[32m+[m[32m      <guid>http://localhost:1313/notes/python/</guid>[m
+[32m+[m[32m      <description>Personal notes and tips for learning the Python programming language.</description>[m
+[32m+[m[32m    </item>[m
+   </channel>[m
+ </rss>[m
