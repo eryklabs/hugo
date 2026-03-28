@@ -19,6 +19,52 @@ cover:
 ## 🌐 Overview
 Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server (`sv-001`).
 
+Current `Homelab` architecture (updated 3/27/26):
+
+```python
+
+internet
+   │
+   │ UDP 51820
+   ▼
+router
+   │
+192.168.0.0/24
+   │
+   ├── sv-001 (proxmox)
+   │
+   ├── sv-001-svc (services - Debian VM)
+   │       ├─ wireguard (wg0 → 10.6.0.1)
+   │       └─ docker
+   │            ├─ technitium (DNS server, port 53)
+   │            ├─ nginx-proxy-manager (ports 80, 443)
+   │            ├─ gitea (3000)
+   │            ├─ joplin (22300)
+   │            └─ syncthing (8384)
+   │
+   ├── nas-001
+   │
+   └── other devices
+   │
+   │ DNS resolution path:
+   │   device → DNS (192.168.0.22)
+   │           → resolves to 192.168.0.22
+   │           → nginx (port 80/443)
+   │           → service (port)
+   │
+   ▼
+
+VPN network
+10.6.0.0/24
+   │
+   ├── sv-001-svc (10.6.0.1)
+   │       └─ DNS + reverse proxy entry point
+   │
+   └── clients
+           ├─ DNS = 10.6.0.1 (→ forwards to 192.168.0.22)
+           └─ access services via hostnames (no ports)
+```
+
 ---
 
 ## 🏁 Milestones
