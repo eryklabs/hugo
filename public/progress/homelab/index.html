@@ -165,7 +165,205 @@
 </ul>
 <hr>
 <h2 id="-progress-log">👷 Progress Log<a hidden class="anchor" aria-hidden="true" href="#-progress-log">#</a></h2>
-<h3 id="-2026-03-15">📅 2026-03-15<a hidden class="anchor" aria-hidden="true" href="#-2026-03-15">#</a></h3>
+<br/>
+<h3 id="-2026-03-27">📅 2026-03-27<a hidden class="anchor" aria-hidden="true" href="#-2026-03-27">#</a></h3>
+<ul>
+<li>Built a full internal access stack (DNS + WireGuard + reverse proxy) to access homelab services via clean hostnames instead of IP:port</li>
+<li>Solved multiple connectivity issues across DNS resolution, VPN routing, reverse proxy config, and Docker service exposure</li>
+</ul>
+<hr>
+<h2 id="-systems-worked-on">🔧 Systems Worked On<a hidden class="anchor" aria-hidden="true" href="#-systems-worked-on">#</a></h2>
+<h3 id="technitium-internal-dns-server">Technitium (Internal DNS Server)<a hidden class="anchor" aria-hidden="true" href="#technitium-internal-dns-server">#</a></h3>
+<ul>
+<li>Set up Technitium internal DNS to resolve local services to a single server IP</li>
+<li>Verified resolution works both locally and over VPN</li>
+<li>Fixed inconsistent resolution caused by OS using multiple DNS sources</li>
+</ul>
+<hr>
+<h3 id="wireguard-vpn--dns-routing">WireGuard (VPN + DNS Routing)<a hidden class="anchor" aria-hidden="true" href="#wireguard-vpn--dns-routing">#</a></h3>
+<ul>
+<li>Configured clients to use internal DNS server instead of ISP DNS</li>
+<li>Ensured DNS queries route through VPN instead of leaking externally</li>
+<li>Verified full internal access via VPN subnet (10.x network)</li>
+</ul>
+<hr>
+<h3 id="reverse-proxy-nginx-proxy-manager">Reverse Proxy (Nginx Proxy Manager)<a hidden class="anchor" aria-hidden="true" href="#reverse-proxy-nginx-proxy-manager">#</a></h3>
+<ul>
+<li>Configured hostname-based routing to internal services (no ports)</li>
+<li>Fixed multiple 502 errors caused by incorrect upstream targets</li>
+<li>Learned correct proxy flow: DNS → proxy → service</li>
+</ul>
+<hr>
+<h3 id="joplin-server">Joplin Server<a hidden class="anchor" aria-hidden="true" href="#joplin-server">#</a></h3>
+<ul>
+<li>Debugged “Invalid origin” error caused by base URL mismatch</li>
+<li>Fixed environment config (<code>APP_BASE_URL</code>)</li>
+<li>Verified correct behavior via curl + Host header simulation</li>
+</ul>
+<hr>
+<h3 id="syncthing">Syncthing<a hidden class="anchor" aria-hidden="true" href="#syncthing">#</a></h3>
+<ul>
+<li>Diagnosed container crash loop due to permission issues</li>
+<li>Fixed volume ownership + permissions</li>
+<li>Successfully exposed UI and routed via reverse proxy</li>
+</ul>
+<hr>
+<h3 id="-decisions-made">⚖️ Decisions Made<a hidden class="anchor" aria-hidden="true" href="#-decisions-made">#</a></h3>
+<h4 id="use-reverse-proxy-instead-of-direct-ports">Use Reverse Proxy instead of Direct Ports<a hidden class="anchor" aria-hidden="true" href="#use-reverse-proxy-instead-of-direct-ports">#</a></h4>
+<ul>
+<li><strong>Pros:</strong>
+<ul>
+<li>Clean URLs (no ports)</li>
+<li>Centralized routing</li>
+<li>Matches real-world production setups</li>
+</ul>
+</li>
+<li><strong>Cons:</strong>
+<ul>
+<li>Adds complexity (can break with misconfig)</li>
+</ul>
+</li>
+<li><strong>Decision:</strong> Use reverse proxy → necessary for scaling + professionalism</li>
+</ul>
+<hr>
+<h4 id="keep-services-internal-vpn-only">Keep Services Internal (VPN-only)<a hidden class="anchor" aria-hidden="true" href="#keep-services-internal-vpn-only">#</a></h4>
+<ul>
+<li><strong>Pros:</strong>
+<ul>
+<li>Reduces attack surface</li>
+<li>Avoids exposing home network publicly</li>
+</ul>
+</li>
+<li><strong>Cons:</strong>
+<ul>
+<li>Requires VPN for access</li>
+</ul>
+</li>
+<li><strong>Decision:</strong> VPN-first architecture → security over convenience</li>
+</ul>
+<hr>
+<h4 id="run-services-in-docker">Run Services in Docker<a hidden class="anchor" aria-hidden="true" href="#run-services-in-docker">#</a></h4>
+<ul>
+<li><strong>Pros:</strong>
+<ul>
+<li>Consistency across services</li>
+<li>Easier deployment + rebuild</li>
+</ul>
+</li>
+<li><strong>Cons:</strong>
+<ul>
+<li>Permissions + networking issues can break things</li>
+</ul>
+</li>
+<li><strong>Decision:</strong> Continue using Docker → industry standard skill</li>
+</ul>
+<hr>
+<h3 id="-problems-encountered">⚠️ Problems Encountered<a hidden class="anchor" aria-hidden="true" href="#-problems-encountered">#</a></h3>
+<ul>
+<li>DNS resolving inconsistently → caused by OS mixing DNS sources</li>
+<li>Reverse proxy 502 errors → caused by wrong IP/port targets</li>
+<li>Joplin rejecting requests → caused by base URL mismatch</li>
+<li>Syncthing failing to start → caused by filesystem permissions</li>
+<li>Services working via IP but not domain → caused by DNS misconfiguration</li>
+</ul>
+<hr>
+<h3 id="-lessons-learned">🧠 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h3>
+<h4 id="dns-vs-routing-critical">DNS vs Routing (critical)<a hidden class="anchor" aria-hidden="true" href="#dns-vs-routing-critical">#</a></h4>
+<ul>
+<li>DNS only resolves names → does NOT control traffic path</li>
+</ul>
+<hr>
+<h4 id="reverse-proxy-behavior">Reverse Proxy Behavior<a hidden class="anchor" aria-hidden="true" href="#reverse-proxy-behavior">#</a></h4>
+<ul>
+<li>Routes based on <strong>hostname (Host header)</strong>, not IP</li>
+<li>All domains should point to proxy, not services directly</li>
+</ul>
+<hr>
+<h4 id="wireguard-reality">WireGuard Reality<a hidden class="anchor" aria-hidden="true" href="#wireguard-reality">#</a></h4>
+<ul>
+<li>DNS must be explicitly configured per client</li>
+<li>Otherwise system falls back to ISP DNS silently</li>
+</ul>
+<hr>
+<h4 id="docker-networking">Docker Networking<a hidden class="anchor" aria-hidden="true" href="#docker-networking">#</a></h4>
+<ul>
+<li>Binding services to wrong interface breaks proxy access</li>
+<li>Services must be reachable from proxy layer</li>
+</ul>
+<hr>
+<h4 id="permissions-are-a-common-failure-point">Permissions Are a Common Failure Point<a hidden class="anchor" aria-hidden="true" href="#permissions-are-a-common-failure-point">#</a></h4>
+<ul>
+<li>Many container crashes are caused by volume permission issues, not app bugs</li>
+</ul>
+<hr>
+<h4 id="standard-homelab-architecture-validated">Standard Homelab Architecture (validated)<a hidden class="anchor" aria-hidden="true" href="#standard-homelab-architecture-validated">#</a></h4>
+<ul>
+<li>DNS + Reverse Proxy + VPN is a common pattern for secure access</li>
+</ul>
+<hr>
+<h3 id="-final-architecture-built">🔁 Final Architecture Built<a hidden class="anchor" aria-hidden="true" href="#-final-architecture-built">#</a></h3>
+<p>Client (PC / Phone) <br/>
+↓ <br/>
+WireGuard VPN <br/>
+↓ <br/>
+Internal DNS <br/>
+↓ <br/>
+Reverse Proxy <br/>
+↓ <br/>
+Docker Services <br/></p>
+<hr>
+<h3 id="-ultra-short-summary">🧾 Ultra-Short Summary<a hidden class="anchor" aria-hidden="true" href="#-ultra-short-summary">#</a></h3>
+<ul>
+<li>Built internal DNS for service discovery across LAN + VPN</li>
+<li>Integrated WireGuard with DNS to prevent leaks and ensure consistency</li>
+<li>Deployed reverse proxy for clean hostname-based routing</li>
+<li>Fixed Joplin origin issues and proxy misconfiguration</li>
+<li>Debugged and deployed Syncthing with correct permissions</li>
+</ul>
+<br/>
+<p>Current new <code>Homelab</code> architecture:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">internet</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span> <span class="n">UDP</span> <span class="mi">51820</span>
+</span></span><span class="line"><span class="cl">   <span class="err">▼</span>
+</span></span><span class="line"><span class="cl"><span class="n">router</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl"><span class="mf">192.168.0.0</span><span class="o">/</span><span class="mi">24</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span> <span class="p">(</span><span class="n">proxmox</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="n">services</span> <span class="o">-</span> <span class="n">Debian</span> <span class="n">VM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>       <span class="err">├─</span> <span class="n">wireguard</span> <span class="p">(</span><span class="n">wg0</span> <span class="err">→</span> <span class="mf">10.6.0.1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>       <span class="err">└─</span> <span class="n">docker</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">technitium</span> <span class="p">(</span><span class="n">DNS</span> <span class="n">server</span><span class="p">,</span> <span class="n">port</span> <span class="mi">53</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">nginx</span><span class="o">-</span><span class="n">proxy</span><span class="o">-</span><span class="n">manager</span> <span class="p">(</span><span class="n">ports</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">443</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">gitea</span> <span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">├─</span> <span class="n">joplin</span> <span class="p">(</span><span class="mi">22300</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>            <span class="err">└─</span> <span class="n">syncthing</span> <span class="p">(</span><span class="mi">8384</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">nas</span><span class="o">-</span><span class="mi">001</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">other</span> <span class="n">devices</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span> <span class="n">DNS</span> <span class="n">resolution</span> <span class="n">path</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>   <span class="n">device</span> <span class="err">→</span> <span class="n">DNS</span> <span class="p">(</span><span class="mf">192.168.0.22</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>           <span class="err">→</span> <span class="n">resolves</span> <span class="n">to</span> <span class="mf">192.168.0.22</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>           <span class="err">→</span> <span class="n">nginx</span> <span class="p">(</span><span class="n">port</span> <span class="mi">80</span><span class="o">/</span><span class="mi">443</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>           <span class="err">→</span> <span class="n">service</span> <span class="p">(</span><span class="n">port</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">▼</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">VPN</span> <span class="n">network</span>
+</span></span><span class="line"><span class="cl"><span class="mf">10.6.0.0</span><span class="o">/</span><span class="mi">24</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="mf">10.6.0.1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>       <span class="err">└─</span> <span class="n">DNS</span> <span class="o">+</span> <span class="n">reverse</span> <span class="n">proxy</span> <span class="n">entry</span> <span class="n">point</span>
+</span></span><span class="line"><span class="cl">   <span class="err">│</span>
+</span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">clients</span>
+</span></span><span class="line"><span class="cl">           <span class="err">├─</span> <span class="n">DNS</span> <span class="o">=</span> <span class="mf">10.6.0.1</span> <span class="p">(</span><span class="err">→</span> <span class="n">forwards</span> <span class="n">to</span> <span class="mf">192.168.0.22</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">           <span class="err">└─</span> <span class="n">access</span> <span class="n">services</span> <span class="n">via</span> <span class="n">hostnames</span> <span class="p">(</span><span class="n">no</span> <span class="n">ports</span><span class="p">)</span>
+</span></span></code></pre></div><h3 id="-2026-03-15">📅 2026-03-15<a hidden class="anchor" aria-hidden="true" href="#-2026-03-15">#</a></h3>
 <ul>
 <li>Troubleshooting <code>WireGuard</code> service, assigning <code>DHCP</code> addresses in router configuration to keep persistant IPs in homelab LAN.
 (I hadn&rsquo;t been able to login to <code>Homelab</code> server remotely lately).</li>
@@ -219,8 +417,7 @@
 </span></span><span class="line"><span class="cl">   <span class="err">├──</span> <span class="n">sv</span><span class="o">-</span><span class="mi">001</span><span class="o">-</span><span class="n">svc</span> <span class="p">(</span><span class="mf">10.6.0.1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">   <span class="err">│</span>
 </span></span><span class="line"><span class="cl">   <span class="err">└──</span> <span class="n">clients</span>
-</span></span></code></pre></div><br/>
-<h3 id="-2026-02-27">📅 2026-02-27<a hidden class="anchor" aria-hidden="true" href="#-2026-02-27">#</a></h3>
+</span></span></code></pre></div><h3 id="-2026-02-27">📅 2026-02-27<a hidden class="anchor" aria-hidden="true" href="#-2026-02-27">#</a></h3>
 <ul>
 <li>Troubleshooting why <code>Homelab</code> server keeps crashing and restarting every 1-2 days.</li>
 <li>Solved: Had to add <code>i915.enable_dc=0</code> to <code>GRUB_CMDLINE_LINUX_DEFAULT</code> in <code>/etc/default/grub</code>

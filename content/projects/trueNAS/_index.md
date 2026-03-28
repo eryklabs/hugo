@@ -326,6 +326,7 @@ da5 ONLINE
 ## 📍 References
 
 - [TrueNAS SCALE Documentation](https://www.truenas.com/docs/scale/)
+- [Building, Burn-In, and Testing your FreeNAS system (jgreco)](https://www.truenas.com/community/resources/building-burn-in-and-testing-your-freenas-system.38/)
 - [ZFS Best Practices Guide](https://openzfs.org/wiki/Performance_tuning)
 - [Proxmox Backup + S3 Integration](https://pve.proxmox.com/wiki/Backup_and_Restore)
 - [Choosing The BEST Drive Layout For Your NAS (Hardware Haven)](https://www.youtube.com/watch?v=ykhaXo6m-04)

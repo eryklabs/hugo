@@ -41,6 +41,204 @@ Tracking setup and upgrades for my EliteDesk G4 800 Mini Proxmox server.
 ---
 ## 👷 Progress Log
 
+
+
+<br/>
+
+### 📅 2026-03-27
+
+- Built a full internal access stack (DNS + WireGuard + reverse proxy) to access homelab services via clean hostnames instead of IP:port
+- Solved multiple connectivity issues across DNS resolution, VPN routing, reverse proxy config, and Docker service exposure
+
+---
+
+## 🔧 Systems Worked On
+
+### Technitium (Internal DNS Server)
+- Set up Technitium internal DNS to resolve local services to a single server IP
+- Verified resolution works both locally and over VPN
+- Fixed inconsistent resolution caused by OS using multiple DNS sources
+
+---
+
+### WireGuard (VPN + DNS Routing)
+- Configured clients to use internal DNS server instead of ISP DNS
+- Ensured DNS queries route through VPN instead of leaking externally
+- Verified full internal access via VPN subnet (10.x network)
+
+---
+
+### Reverse Proxy (Nginx Proxy Manager)
+- Configured hostname-based routing to internal services (no ports)
+- Fixed multiple 502 errors caused by incorrect upstream targets
+- Learned correct proxy flow: DNS → proxy → service
+
+---
+
+### Joplin Server
+- Debugged “Invalid origin” error caused by base URL mismatch
+- Fixed environment config (`APP_BASE_URL`)
+- Verified correct behavior via curl + Host header simulation
+
+---
+
+### Syncthing
+- Diagnosed container crash loop due to permission issues
+- Fixed volume ownership + permissions
+- Successfully exposed UI and routed via reverse proxy
+
+---
+
+### ⚖️ Decisions Made
+
+#### Use Reverse Proxy instead of Direct Ports
+- **Pros:**
+  - Clean URLs (no ports)
+  - Centralized routing
+  - Matches real-world production setups 
+- **Cons:**
+  - Adds complexity (can break with misconfig)
+- **Decision:** Use reverse proxy → necessary for scaling + professionalism
+
+---
+
+#### Keep Services Internal (VPN-only)
+- **Pros:**
+  - Reduces attack surface
+  - Avoids exposing home network publicly 
+- **Cons:**
+  - Requires VPN for access
+- **Decision:** VPN-first architecture → security over convenience
+
+---
+
+#### Run Services in Docker
+- **Pros:**
+  - Consistency across services
+  - Easier deployment + rebuild
+- **Cons:**
+  - Permissions + networking issues can break things
+- **Decision:** Continue using Docker → industry standard skill
+
+---
+
+### ⚠️ Problems Encountered
+
+- DNS resolving inconsistently → caused by OS mixing DNS sources
+- Reverse proxy 502 errors → caused by wrong IP/port targets
+- Joplin rejecting requests → caused by base URL mismatch
+- Syncthing failing to start → caused by filesystem permissions
+- Services working via IP but not domain → caused by DNS misconfiguration
+
+---
+
+### 🧠 Lessons Learned
+
+#### DNS vs Routing (critical)
+- DNS only resolves names → does NOT control traffic path
+
+---
+
+#### Reverse Proxy Behavior
+- Routes based on **hostname (Host header)**, not IP
+- All domains should point to proxy, not services directly 
+
+---
+
+#### WireGuard Reality
+- DNS must be explicitly configured per client
+- Otherwise system falls back to ISP DNS silently
+
+---
+
+#### Docker Networking
+- Binding services to wrong interface breaks proxy access
+- Services must be reachable from proxy layer
+
+---
+
+#### Permissions Are a Common Failure Point
+- Many container crashes are caused by volume permission issues, not app bugs
+
+---
+
+#### Standard Homelab Architecture (validated)
+- DNS + Reverse Proxy + VPN is a common pattern for secure access 
+
+---
+
+### 🔁 Final Architecture Built
+
+Client (PC / Phone) <br/>
+↓ <br/>
+WireGuard VPN <br/>
+↓ <br/>
+Internal DNS <br/>
+↓ <br/>
+Reverse Proxy <br/>
+↓ <br/>
+Docker Services <br/>
+
+
+---
+
+### 🧾 Ultra-Short Summary
+
+- Built internal DNS for service discovery across LAN + VPN  
+- Integrated WireGuard with DNS to prevent leaks and ensure consistency  
+- Deployed reverse proxy for clean hostname-based routing  
+- Fixed Joplin origin issues and proxy misconfiguration  
+- Debugged and deployed Syncthing with correct permissions  
+
+<br/>
+
+Current new `Homelab` architecture:
+
+```python
+
+internet
+   │
+   │ UDP 51820
+   ▼
+router
+   │
+192.168.0.0/24
+   │
+   ├── sv-001 (proxmox)
+   │
+   ├── sv-001-svc (services - Debian VM)
+   │       ├─ wireguard (wg0 → 10.6.0.1)
+   │       └─ docker
+   │            ├─ technitium (DNS server, port 53)
+   │            ├─ nginx-proxy-manager (ports 80, 443)
+   │            ├─ gitea (3000)
+   │            ├─ joplin (22300)
+   │            └─ syncthing (8384)
+   │
+   ├── nas-001
+   │
+   └── other devices
+   │
+   │ DNS resolution path:
+   │   device → DNS (192.168.0.22)
+   │           → resolves to 192.168.0.22
+   │           → nginx (port 80/443)
+   │           → service (port)
+   │
+   ▼
+
+VPN network
+10.6.0.0/24
+   │
+   ├── sv-001-svc (10.6.0.1)
+   │       └─ DNS + reverse proxy entry point
+   │
+   └── clients
+           ├─ DNS = 10.6.0.1 (→ forwards to 192.168.0.22)
+           └─ access services via hostnames (no ports)
+```
+
+
 ### 📅 2026-03-15
 
 - Troubleshooting `WireGuard` service, assigning `DHCP` addresses in router configuration to keep persistant IPs in homelab LAN.
@@ -87,7 +285,8 @@ VPN network
    └── clients
 ```
 
-<br/>
+
+
 
 ### 📅 2026-02-27
 
