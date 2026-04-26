@@ -12,7 +12,7 @@ cover:
   relative: false
 ---
 
-![Hugo logo](/images/python/python-logo.png) 
+![Python logo](/images/python/python-logo.png) 
 
 <br/>
 
@@ -24,7 +24,7 @@ Each topic below links to a focused deep-dive note.
 ### Topics
 - [Memorizing Python Methods (4-Question Method)](memorize-methods/)
 - [Strings & Text Processing](strings/)
-
+- [Dictionaries](dictionaries/)
 
   
  <br/>

@@ -23,9 +23,17 @@ These SOPs serve as detailed, repeatable checklists for Hugo, a simple yet power
 
 ---
 
+## **<span style="color: #00ff7f">General Notes to Remember**</span>
+
+*<span style="color: #00ff7f">When you add pages to your Hugo website...* </span> 
+- Remember to add your `.md` files in `~/content/`! 
+- Not `~/public/`...  as that is where Hugo will build your website files, from what you put into the `/content/` folder.
+
+<br/>
+
 ## 1. **<span style="color: #00ff7f">Most basic commands and sequences to remember:</span>** 
 
-<br/> 
+
 
 
 

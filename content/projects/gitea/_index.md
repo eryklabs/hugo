@@ -90,7 +90,7 @@ Proxmox → Debian VM (`VM 100`) → Docker → Gitea (+ Postgres)
 
 - `.env` excluded from Git
 - `.env.template` committed instead
-- `chmod 700 .env` applied
+- `chmod 600 .env` applied
 - Secrets stored in KeePassXC (not inside repo)
 
 This follows enterprise-style separation between:

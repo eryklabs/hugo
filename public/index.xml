@@ -6,8 +6,36 @@
     <description>Recent content in Home on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
     <generator>Hugo -- 0.151.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Apr 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PuTTY</title>
+      <link>http://localhost:1313/notes/putty/</link>
+      <pubDate>Sun, 26 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/putty/</guid>
+      <description>Personal notes and tips for using the PuTTY open-source terminal emulator.</description>
+    </item>
+    <item>
+      <title>Python Dictionaries</title>
+      <link>http://localhost:1313/notes/python/dictionaries/</link>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/python/dictionaries/</guid>
+      <description>A practical framework for learning and recalling Python methods.</description>
+    </item>
+    <item>
+      <title>Python Lists</title>
+      <link>http://localhost:1313/notes/python/lists/</link>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/python/lists/</guid>
+      <description>Python Lists</description>
+    </item>
+    <item>
+      <title>Reddit JSON</title>
+      <link>http://localhost:1313/notes/reddit/</link>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/reddit/</guid>
+      <description>Technical notes on Reddit JSON and working with Reddit datasets</description>
+    </item>
     <item>
       <title>How to Memorize Python Methods (4-Question Method)</title>
       <link>http://localhost:1313/notes/python/memorize-methods/</link>

@@ -16,3 +16,4 @@ Each topic below links to a focused deep-dive note.
 ### Topics
 - [Memorizing Python Methods (4-Question Method)](memorize-methods/)
 - [Strings & Text Processing](strings/)
+- [Dictionaries](dictionaries/)
