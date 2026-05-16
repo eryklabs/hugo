@@ -6,8 +6,15 @@
     <description>Recent content in Home on Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</description>
     <generator>Hugo -- 0.151.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 15 May 2026 12:26:32 -0700</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TrueNAS - Standard Operating Procedures (SOPs)</title>
+      <link>http://localhost:1313/sop/truenas/</link>
+      <pubDate>Fri, 15 May 2026 12:26:32 -0700</pubDate>
+      <guid>http://localhost:1313/sop/truenas/</guid>
+      <description>A collection of repeatable TrueNAS workflows for nas-001.</description>
+    </item>
     <item>
       <title>PuTTY</title>
       <link>http://localhost:1313/notes/putty/</link>
@@ -65,11 +72,11 @@
       <description>A complete SOP for connecting a GitHub-hosted Hugo site to Cloudflare Pages for free hosting.</description>
     </item>
     <item>
-      <title>GitHub Pages - Standard Operating Procedures (SOPs)</title>
+      <title>Documentation - under construction</title>
       <link>http://localhost:1313/sop/documentation/</link>
       <pubDate>Wed, 05 Nov 2025 09:00:00 -0700</pubDate>
       <guid>http://localhost:1313/sop/documentation/</guid>
-      <description>A complete SOP for deploying, updating, and maintaining Hugo sites using GitHub Pages.</description>
+      <description>Documentation - under construction</description>
     </item>
     <item>
       <title>GitHub Pages - Standard Operating Procedures (SOPs)</title>

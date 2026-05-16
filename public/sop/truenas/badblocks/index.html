@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Badblocks SOP | Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</title>
+<meta name="keywords" content="">
+<meta name="description" content="TrueNAS SOP for identifying new drives, saving baseline SMART logs, running short and long SMART tests, and exporting the results for review.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/sop/truenas/badblocks/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/sop/truenas/badblocks/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering (Alt + H)">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/resume/" title="Résumé">
+                    <span>Résumé</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/write-ups/" title="Write-Ups">
+                    <span>Write-Ups</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/notes/" title="Notes">
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/sop/" title="SOPs">
+                    <span>SOPs</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/progress/" title="Progress">
+                    <span>Progress</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/contact/" title="Contact">
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Badblocks SOP
+    </h1>
+    <div class="post-description">
+      TrueNAS SOP for identifying new drives, saving baseline SMART logs, running short and long SMART tests, and exporting the results for review.
+    </div>
+    <div class="post-meta"><span title='2026-05-15 12:00:00 -0700 PDT'>May 15, 2026</span>&nbsp;·&nbsp;<span>7 min</span>
+
+</div>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#" aria-label="1. Prep for running badblocks (&#43; tmux)">1. Prep for running badblocks (+ tmux)</a></li>
+                <li>
+                    <a href="#" aria-label="2. Start tmux">2. Start tmux</a><ul>
+                        
+                <li>
+                    <a href="#" aria-label="3. Launch badblocks in each drive&rsquo;s pane">3. Launch badblocks in each drive&rsquo;s pane</a></li>
+                <li>
+                    <a href="#" aria-label="3. (Optional) Monitoring pane">3. (Optional) Monitoring pane</a></li>
+                <li>
+                    <a href="#" aria-label="4. Detach and wait">4. Detach and wait</a></li></ul>
+                </li>
+                <li>
+                    <a href="#" aria-label="After the run">After the run</a><ul>
+                        
+                <li>
+                    <a href="#1-capture-after-snapshots" aria-label="1. Capture AFTER snapshots">1. Capture AFTER snapshots</a></li>
+                <li>
+                    <a href="#2-run-a-smart-long-test" aria-label="2. Run a SMART long test">2. Run a SMART long test</a></li>
+                <li>
+                    <a href="#3-what-to-look-for" aria-label="3. What to look for">3. What to look for</a></li>
+                <li>
+                    <a href="#4-re-enable-scheduled-smart-tests" aria-label="4. Re-enable scheduled SMART tests">4. Re-enable scheduled SMART tests</a></li></ul>
+                </li>
+                <li>
+                    <a href="#common-pitfalls" aria-label="Common pitfalls">Common pitfalls</a></li>
+                <li>
+                    <a href="#what-this-doesnt-catch" aria-label="What this doesn&rsquo;t catch">What this doesn&rsquo;t catch</a></li>
+                <li>
+                    <a href="#references" aria-label="References">References</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2><em><span style="color: #00ff7f">1. Prep for running <code>badblocks</code> (+ tmux)</span></em></h2>
+<p><em><strong><span style="color: #ffff00">NOTE: badblocks will erase everything on the drive!!! Do not run if you have any data you value on the drive, or have created a pool!</span></strong></em></p>
+<p>Also - <span style="color: #ffff00"><code>/dev/sdX</code> is not stable!</span></p>
+<p><code>/dev/sda</code>, <code>/dev/sdb</code>, etc. are assigned in whatever order the kernel enumerates devices at boot. After a reboot, an HBA reset, or a hot-swap, a drive that was sda yesterday can be sdc today. <span style="color: #ffff00">Running <code>badblocks -w /dev/sda</code> against the wrong drive is how you wipe a pool member.</span></p>
+<p>Always work via <code>/dev/disk/by-id/</code>. Those paths are bound to the drive&rsquo;s serial number / WWN and follow the drive across reshuffles.</p>
+<br>
+<p><em><span style="color: #00ff7f">1.1 Identify the exact replacement drives first</span></em></p>
+<p>Do not trust old <code>/dev/sdX</code> names.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsblk -d -o NAME,MODEL,SERIAL,WWN,SIZE,ROTA,TRAN
+</span></span><span class="line"><span class="cl">smartctl -i /dev/sdX
+</span></span></code></pre></div><p>Write down:</p>
+<p><code>/dev/sdX = serial ______ = WWN ______ = physical bay ______</code></p>
+<p>Only continue when you know exactly which two drives are the replacements.</p>
+<br>
+<p><em><span style="color: #00ff7f">1.2 Make a log folder on a real path</span></em></p>
+<p>Use the folder you already made:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /root/drive-tests/2026-05-15/badblocks
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /root/drive-tests/2026-05-15/badblocks
+</span></span><span class="line"><span class="cl"><span class="nb">pwd</span>
+</span></span></code></pre></div><br>
+<p>Confirm you are there:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">pwd</span>
+</span></span></code></pre></div><br>
+<p><em><span style="color: #00ff7f">1.3 (Optional but recommended) Disable scheduled SMART tests in the UI</span></em></p>
+<p><code>System Settings -&gt; Data Protection -&gt; S.M.A.R.T. Tests</code></p>
+<p>(Since the SMART tests can interfere with the badblocks process)</p>
+<br>
+<p><em><span style="color: #00ff7f">1.4 Confirm drives and capture a BEFORE SMART snapshot per drive</span></em></p>
+<p>Identify the drives by serial, not by <code>sdX</code>:</p>
+<ul>
+<li><code>lsblk -d -o NAME,MODEL,SERIAL,WWN,SIZE,ROTA,TRAN</code></li>
+</ul>
+<br>
+<p>Confirm none of the target drives are part of an existing pool:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">zpool status
+</span></span></code></pre></div><br>
+<p>Capture a BEFORE SMART snapshot per drive</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mkdir -p /root/drive-tests/<span class="k">$(</span>date +%F<span class="k">)</span>/badblocks
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /root/drive-tests/<span class="k">$(</span>date +%F<span class="k">)</span>/badblocks
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">SERIAL</span><span class="o">=</span>&lt;DRIVE_SERIAL&gt;
+</span></span><span class="line"><span class="cl"><span class="nv">MODEL</span><span class="o">=</span>&lt;DRIVE_MODEL&gt;     
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">smartctl -x /dev/disk/by-id/ata-<span class="si">${</span><span class="nv">MODEL</span><span class="si">}</span>_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> tee BEFORE_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>.txt
+</span></span></code></pre></div><br>
+<p><em><span style="color: #00ff7f">1.5 Disable scheduled SMART tests</span></em></p>
+<p>SMART scheduled tests. If TrueNAS already has a SMART task scheduled (System Settings → Data Protection → S.M.A.R.T. Tests), it&rsquo;ll fire during your badblocks run and slow it down or get queued behind I/O. Worth disabling before, re-enabling after.</p>
+<br> 
+<h2><em><span style="color: #00ff7f">2. Start tmux</span></em></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tmux new -s burnin
+</span></span></code></pre></div><ul>
+<li><em><span style="color: #ffff00">(NOTE: You can&rsquo;t do this as <code>root</code> for some reason. Use <code>exit</code> to exit <code>root</code> and become <code>truenas_admin</code> user again)</span></em></li>
+</ul>
+<br>
+<p>To detach later:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Ctrl+b, <span class="k">then</span> d
+</span></span></code></pre></div><br>
+To reattach later:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tmux attach -t burnin
+</span></span></code></pre></div><br>
+To list tmux sessions:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tmux ls
+</span></span></code></pre></div><br>
+<p><em><span style="color: #00ff7f">3.1 Create X panes for your X HDDs</span></em></p>
+<p>Become root inside tmux</p>
+<ul>
+<li><code>sudo -s</code>
+<ul>
+<li>Use sudo -s specificially. Not sudu su -, or sudo -i</li>
+</ul>
+</li>
+</ul>
+ <br>
+<ul>
+<li>Before creating panes
+<ul>
+<li>
+<p><span style="color: #00ff7f">Bump the scrollback buffer - the default 2000 lines will not hold 8 days of verbose output:</span></p>
+<ul>
+<li><code>Ctrl-B + :</code></li>
+<li>Then paste: <code>set-option -g history-limit 100000</code></li>
+<li>Press <code>&lt;Enter&gt;</code></li>
+<li><span style="color: #ffff00"><em>(Do this before splitting the panes!</span> Otherwise you&rsquo;ll have to do it for each pane)</em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<p>Then:</p>
+<ul>
+<li>
+<p><code>Ctrl + B, then %</code></p>
+</li>
+<li>
+<p><code>Ctrl + B, then &quot;</code></p>
+</li>
+<li>
+<p>repeat until X panes</p>
+</li>
+<li>
+<p>move between panes: <code>Ctrl + B + arrow keys</code></p>
+</li>
+<li>
+<p><code>Ctrl-B z</code> - toggle <strong>zoom</strong> on the current pane (useful when monitoring one drive closely)</p>
+</li>
+</ul>
+<br> 
+<br>
+<h3><em><span style="color: #00ff7f">3. Launch <code>badblocks</code> in each drive&rsquo;s pane</span></em></h3>
+<p>Paste the code below in each pane, making sure to fill in values for <code>&lt;DRIVE_SERIAL&gt;</code> and <code>&lt;DRIVE_MODEL&gt;</code></p>
+<br>
+<p><em><span style="color: #ffff00">Remember: Identify the drives by serial, not by sdX:</span> <code>lsblk -d -o NAME,MODEL,SERIAL,WWN,SIZE,ROTA,TRAN</code></em></p>
+<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nv">SERIAL</span><span class="o">=</span>&lt;DRIVE_SERIAL&gt;
+</span></span><span class="line"><span class="cl"><span class="nv">MODEL</span><span class="o">=</span>&lt;DRIVE_MODEL&gt;
+</span></span><span class="line"><span class="cl"><span class="nv">DEV</span><span class="o">=</span>/dev/disk/by-id/ata-<span class="si">${</span><span class="nv">MODEL</span><span class="si">}</span>_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">date <span class="p">|</span> tee START_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>.txt
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">badblocks -b <span class="m">8192</span> -c <span class="m">8192</span> -wsv <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -o badblocks_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>.txt <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="s2">&#34;</span><span class="si">${</span><span class="nv">DEV</span><span class="si">}</span><span class="s2">&#34;</span> 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> tee console_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>.log
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">date <span class="p">|</span> tee END_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>.txt
+</span></span></code></pre></div><br>
+<p><em>(Note: If you&rsquo;re doing two drives, you&rsquo;d run the <code>SERIAL=... / MODEL=... / smartctl</code> &hellip; block twice with different serials. The <code>mkdir/cd</code> only needs to run once.)</em></p>
+<br>
+<p><em>Flag explanation:</em></p>
+<table>
+  <thead>
+      <tr>
+          <th>Flag</th>
+          <th>Why</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>-b 8192</code></td>
+          <td>Block size in bytes. <strong>Required for drives &gt;16 TB.</strong> badblocks uses signed 32-bit integers for block counts in places; a 24 TB drive at <code>-b 4096</code> overflows (~5.9 × 10⁹ blocks &gt; 2³¹). You&rsquo;ll get <code>Value too large for defined data type</code>. 8 KB blocks halve the count and fit.</td>
+      </tr>
+      <tr>
+          <td><code>-c 8192</code></td>
+          <td>Blocks per chunk = 64 MB working set. <code>-c 32768</code> (256 MB) is fine if you have RAM to spare; throughput difference on HDDs is unmeasurable because they saturate sequential I/O at far smaller chunk sizes.</td>
+      </tr>
+      <tr>
+          <td><code>-w</code></td>
+          <td>Destructive write-mode test. Writes four patterns: 0xaa, 0x55, 0xff, 0x00 — full drive each pass — with a read-verify after each.</td>
+      </tr>
+      <tr>
+          <td><code>-s</code></td>
+          <td>Progress display.</td>
+      </tr>
+      <tr>
+          <td><code>-v</code></td>
+          <td>Verbose.</td>
+      </tr>
+      <tr>
+          <td><code>-o file</code></td>
+          <td>Writes only the list of bad blocks to <code>file</code>. Empty if none found. Separate from the <code>tee</code> log.</td>
+      </tr>
+      <tr>
+          <td><code>2&gt;&amp;1</code></td>
+          <td><strong>Critical.</strong> badblocks writes progress to stderr. Without <code>2&gt;&amp;1</code>, <code>tee</code> only captures the start/end banners — most of your log will be empty and you&rsquo;ll have no record if the run dies mid-way.</td>
+      </tr>
+  </tbody>
+</table>
+<br>
+<h3><em><span style="color: #00ff7f">3. (Optional) Monitoring pane</span></em></h3>
+<p>In a separate pane:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">watch -n <span class="m">300</span> <span class="s1">&#39;for s in &lt;SERIAL1&gt; &lt;SERIAL2&gt;; do
+</span></span></span><span class="line"><span class="cl"><span class="s1">  echo &#34;=== $s ===&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s1">  smartctl -A /dev/disk/by-id/ata-&lt;MODEL&gt;_$s \
+</span></span></span><span class="line"><span class="cl"><span class="s1">    | grep -E &#34;Temperature_Celsius|Reallocated|Pending|Offline_Unc|UDMA_CRC&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s1">done&#39;</span>
+</span></span></code></pre></div><p><span style="color: #ffff00"><em>(Note: Replace <code>&lt;SERIAL1&gt;</code> with the actual serial number of your drives. This example is for only two drives. Add/subtract according to your needs)</em></span></p>
+<p>Refreshes every 5 minutes. Lets you catch a drive overheating or starting to throw pending sectors without interrupting the badblocks run.</p>
+<br>
+<h3><em><span style="color: #00ff7f">4. Detach and wait</span></em></h3>
+<ul>
+<li>
+<p><code>Ctrl-B d</code> <span style="color: #00ff7f">to detach from tmux</span></p>
+</li>
+<li>
+<p><code>exit</code> <span style="color: #00ff7f">from the SSH session — tmux keeps running</span></p>
+</li>
+<li>
+<p><code>tmux ls</code> to list all active tmux sessions</p>
+</li>
+<li>
+<p>Reattach later with <code>tmux attach -t burnin</code>
+Expected wall-clock time for 24 TB drives at ~260 MB/s sequential:</p>
+</li>
+<li>
+<p>Per write pass: ~25.6 hours</p>
+</li>
+<li>
+<p>4 patterns × (1 write + 1 read) = ~205 hours ≈ <strong>8.5 days per drive</strong></p>
+</li>
+<li>
+<p>Running multiple drives in parallel doesn&rsquo;t extend the per-drive time as long as the HBA, PSU, and cooling can sustain the aggregate load</p>
+</li>
+</ul>
+<br/>
+<hr>
+<br/>
+<h2><em><span style="color: #00ff7f">After the run</span></em></h2>
+<br>
+<h3 id="1-capture-after-snapshots">1. Capture AFTER snapshots<a hidden class="anchor" aria-hidden="true" href="#1-capture-after-snapshots">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">smartctl -x /dev/disk/by-id/ata-<span class="si">${</span><span class="nv">MODEL</span><span class="si">}</span>_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> tee AFTER_BADBLOCKS_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>.txt
+</span></span></code></pre></div><br>
+<h3 id="2-run-a-smart-long-test">2. Run a SMART long test<a hidden class="anchor" aria-hidden="true" href="#2-run-a-smart-long-test">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">smartctl -t long /dev/disk/by-id/ata-<span class="si">${</span><span class="nv">MODEL</span><span class="si">}</span>_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>
+</span></span></code></pre></div><p>Polling time for 24 TB drives is ~43 hours. After it completes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">smartctl -x /dev/disk/by-id/ata-<span class="si">${</span><span class="nv">MODEL</span><span class="si">}</span>_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> tee AFTER_LONG_<span class="si">${</span><span class="nv">SERIAL</span><span class="si">}</span>.txt
+</span></span></code></pre></div><br>
+<h3 id="3-what-to-look-for">3. What to look for<a hidden class="anchor" aria-hidden="true" href="#3-what-to-look-for">#</a></h3>
+<p>Compare BEFORE / AFTER_BADBLOCKS / AFTER_LONG outputs. <strong>None of these counters should have moved off zero:</strong></p>
+<ul>
+<li>
+<p><code>Reallocated_Sector_Ct</code></p>
+</li>
+<li>
+<p><code>Current_Pending_Sector</code></p>
+</li>
+<li>
+<p><code>Offline_Uncorrectable</code></p>
+</li>
+<li>
+<p><code>Reported Uncorrectable Errors</code> (Device Statistics)</p>
+</li>
+<li>
+<p><code>UDMA_CRC_Error_Count</code> (anything here is a cable / backplane / HBA issue, not the drive)</p>
+</li>
+<li>
+<p><code>Pending Defects log</code> (must be empty)</p>
+</li>
+<li>
+<p>Reallocated Event Count
+Should still be <code>100</code>:</p>
+</li>
+<li>
+<p><code>Helium_Level</code> (for helium-filled drives)
+Worth noting but not fail conditions:</p>
+</li>
+<li>
+<p><code>Read Recovery Attempts</code> — expect a small number (single to low double digits) for a clean drive. A drive that needed many times more retries than its siblings under identical workload is a yellow flag, not a failure. Statistically correlated with above-average failure rate.</p>
+</li>
+<li>
+<p><code>Lifetime Max Temp</code> — should stay below the drive&rsquo;s spec (typically 60 °C). If a drive ran significantly hotter than its siblings under the same workload, that&rsquo;s a chassis airflow issue, not a drive issue.</p>
+</li>
+</ul>
+<br>
+<h3 id="4-re-enable-scheduled-smart-tests">4. Re-enable scheduled SMART tests<a hidden class="anchor" aria-hidden="true" href="#4-re-enable-scheduled-smart-tests">#</a></h3>
+<p>Undo the UI change from step 6.</p>
+<br>
+<h2 id="common-pitfalls">Common pitfalls<a hidden class="anchor" aria-hidden="true" href="#common-pitfalls">#</a></h2>
+<ul>
+<li><strong>Forgetting <code>2&gt;&amp;1</code> before <code>tee</code></strong> — silently produces near-empty log files. The single most common mistake with this command.</li>
+<li><strong>Using <code>/dev/sdX</code> instead of <code>/dev/disk/by-id/</code></strong> — a kernel reshuffle between reboots wipes the wrong drive.</li>
+<li><strong>Not verifying the drive isn&rsquo;t in a pool first</strong> — <code>zpool status</code> takes two seconds.</li>
+<li><strong>Running tmux as root on TrueNAS SCALE</strong> — hits the sudoers regression. Run as admin, <code>sudo -s</code> inside.</li>
+<li><strong>Using <code>sudo su -</code> or <code>sudo -i</code></strong> — triggers the same <code>argv[0]</code> mismatch.</li>
+<li><strong>Default scrollback buffer in tmux</strong> — 2000 lines is not enough for 8 days of verbose output. Bump it.</li>
+<li><strong>Leaving scheduled SMART tests on</strong> — they&rsquo;ll queue behind I/O and slow things down.</li>
+<li><strong>Forgetting that <code>-b 4096</code> overflows on &gt;16 TB drives</strong> — use <code>-b 8192</code> minimum. Some guides written before large drives existed still recommend 4096.</li>
+</ul>
+<br>
+<h2 id="what-this-doesnt-catch">What this doesn&rsquo;t catch<a hidden class="anchor" aria-hidden="true" href="#what-this-doesnt-catch">#</a></h2>
+<p>Burn-in is a high-confidence check that a drive isn&rsquo;t infant-mortality material. It is not a guarantee.</p>
+<ul>
+<li>Firmware bugs that manifest only under random I/O, specific access patterns, or unusual command sequences</li>
+<li>Slow mechanical or media degradation that only shows up after months of use</li>
+<li>Power-loss-protection failures</li>
+<li>Specific issues with the drive&rsquo;s behavior during ZFS resilver or scrub workloads</li>
+<li>Bugs in the HBA or its firmware
+ZFS RAID-Z2 / RAID-Z3 / mirror redundancy is still the right way to actually protect data. Burn-in just lowers the probability that one of your redundancy slots is occupied by a ticking drive on day one.</li>
+</ul>
+<br>
+<h2 id="references">References<a hidden class="anchor" aria-hidden="true" href="#references">#</a></h2>
+<ul>
+<li><a href="https://man7.org/linux/man-pages/man8/badblocks.8.html"><code>badblocks(8)</code></a></li>
+<li><a href="https://www.smartmontools.org/browser/trunk/smartmontools/smartctl.8.in"><code>smartctl(8)</code></a></li>
+<li><a href="https://man7.org/linux/man-pages/man1/tmux.1.html"><code>tmux(1)</code></a></li>
+<li>TrueNAS forum thread on the tmux/sudo regression: search &ldquo;Is tmux broken on EE?&rdquo; on the TrueNAS Community Forums</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Eric (Eryk) O - Cybersecurity Professional with a background in Mechanical Engineering</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
